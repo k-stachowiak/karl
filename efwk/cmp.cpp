@@ -9,55 +9,55 @@ namespace cmp {
 
 // TODO: Remember to remove geoms from space, becaus now, the deleters don't do it.
 
-static struct Vec3 verbose_cube_definition[36] = {
+static glm::vec3 verbose_cube_definition[36] = {
 
 	/* To the front! */
-	{{ -1, -1, +1 }},
-	{{ -1, +1, +1 }},
-	{{ +1, +1, +1 }},
-	{{ -1, -1, +1 }},
-	{{ +1, +1, +1 }},
-	{{ +1, -1, +1 }},
+	{ -1, -1, +1 },
+	{ -1, +1, +1 },
+	{ +1, +1, +1 },
+	{ -1, -1, +1 },
+	{ +1, +1, +1 },
+	{ +1, -1, +1 },
 
 	/* To the back! */
-	{{ +1, -1, -1 }},
-	{{ +1, +1, -1 }},
-	{{ -1, +1, -1 }},
-	{{ +1, -1, -1 }},
-	{{ -1, +1, -1 }},
-	{{ -1, -1, -1 }},
+	{ +1, -1, -1 },
+	{ +1, +1, -1 },
+	{ -1, +1, -1 },
+	{ +1, -1, -1 },
+	{ -1, +1, -1 },
+	{ -1, -1, -1 },
 
 	/* To the right! */
-	{{ +1, -1, +1 }},
-	{{ +1, +1, +1 }},
-	{{ +1, +1, -1 }},
-	{{ +1, -1, +1 }},
-	{{ +1, +1, -1 }},
-	{{ +1, -1, -1 }},
+	{ +1, -1, +1 },
+	{ +1, +1, +1 },
+	{ +1, +1, -1 },
+	{ +1, -1, +1 },
+	{ +1, +1, -1 },
+	{ +1, -1, -1 },
 
 	/* To the left! */
-	{{ -1, -1, -1 }},
-	{{ -1, +1, -1 }},
-	{{ -1, +1, +1 }},
-	{{ -1, -1, -1 }},
-	{{ -1, +1, +1 }},
-	{{ -1, -1, +1 }},
+	{ -1, -1, -1 },
+	{ -1, +1, -1 },
+	{ -1, +1, +1 },
+	{ -1, -1, -1 },
+	{ -1, +1, +1 },
+	{ -1, -1, +1 },
 
 	/* To the bottom! */
-	{{ -1, -1, -1 }},
-	{{ -1, -1, +1 }},
-	{{ +1, -1, +1 }},
-	{{ -1, -1, -1 }},
-	{{ +1, -1, +1 }},
-	{{ +1, -1, -1 }},
+	{ -1, -1, -1 },
+	{ -1, -1, +1 },
+	{ +1, -1, +1 },
+	{ -1, -1, -1 },
+	{ +1, -1, +1 },
+	{ +1, -1, -1 },
 
 	/* To the top! */
-	{{ -1, +1, +1 }},
-	{{ -1, +1, -1 }},
-	{{ +1, +1, -1 }},
-	{{ -1, +1, +1 }},
-	{{ +1, +1, -1 }},
-	{{ +1, +1, +1 }},
+	{ -1, +1, +1 },
+	{ -1, +1, -1 },
+	{ +1, +1, -1 },
+	{ -1, +1, +1 },
+	{ +1, +1, -1 },
+	{ +1, +1, +1 },
 };
 
 Appearance Appearance::MakeFlat(
@@ -73,19 +73,19 @@ Appearance Appearance::MakeFlat(
 			const FLOATING base_x = (FLOATING)i + 0.5;
 			const FLOATING base_y = (FLOATING)j + 0.5;
 
-			result.vertexes.push_back(Vec3 {{ base_x - 0.5f, base_y - 0.5f, altitude(i, j) }});
-			result.vertexes.push_back(Vec3 {{ base_x - 0.5f, base_y + 0.5f, altitude(i, j + 1) }});
-			result.vertexes.push_back(Vec3 {{ base_x + 0.5f, base_y + 0.5f, altitude(i + 1, j + 1) }});
-			result.vertexes.push_back(Vec3 {{ base_x - 0.5f, base_y - 0.5f, altitude(i, j) }});
-			result.vertexes.push_back(Vec3 {{ base_x + 0.5f, base_y + 0.5f, altitude(i + 1, j + 1) }});
-			result.vertexes.push_back(Vec3 {{ base_x + 0.5f, base_y - 0.5f, altitude(i + 1, j) }});
+			result.vertexes.push_back(glm::vec3 { base_x - 0.5f, base_y - 0.5f, altitude(i, j) });
+			result.vertexes.push_back(glm::vec3 { base_x - 0.5f, base_y + 0.5f, altitude(i, j + 1) });
+			result.vertexes.push_back(glm::vec3 { base_x + 0.5f, base_y + 0.5f, altitude(i + 1, j + 1) });
+			result.vertexes.push_back(glm::vec3 { base_x - 0.5f, base_y - 0.5f, altitude(i, j) });
+			result.vertexes.push_back(glm::vec3 { base_x + 0.5f, base_y + 0.5f, altitude(i + 1, j + 1) });
+			result.vertexes.push_back(glm::vec3 { base_x + 0.5f, base_y - 0.5f, altitude(i + 1, j) });
 
-			result.colors.push_back(Vec3 {{ r, g, b }});
-			result.colors.push_back(Vec3 {{ r, g, b }});
-			result.colors.push_back(Vec3 {{ r, g, b }});
-			result.colors.push_back(Vec3 {{ r, g, b }});
-			result.colors.push_back(Vec3 {{ r, g, b }});
-			result.colors.push_back(Vec3 {{ r, g, b }});
+			result.colors.push_back(glm::vec3 { r, g, b });
+			result.colors.push_back(glm::vec3 { r, g, b });
+			result.colors.push_back(glm::vec3 { r, g, b });
+			result.colors.push_back(glm::vec3 { r, g, b });
+			result.colors.push_back(glm::vec3 { r, g, b });
+			result.colors.push_back(glm::vec3 { r, g, b });
 		}
 	}
 
@@ -104,10 +104,10 @@ Appearance Appearance::MakeBox(
 		std::back_inserter(result.vertexes));
 
 	for (int i = 0; i < 36; ++i) {
-		result.vertexes[i].data[0] *= lx / 2;
-		result.vertexes[i].data[1] *= ly / 2;
-		result.vertexes[i].data[2] *= lz / 2;
-		result.colors.push_back({{ r, g, b }});
+		result.vertexes[i][0] *= lx / 2;
+		result.vertexes[i][1] *= ly / 2;
+		result.vertexes[i][2] *= lz / 2;
+		result.colors.push_back({ r, g, b });
 	}
 
 	return result;
@@ -132,10 +132,10 @@ Appearance Appearance::MakeCar()
 		std::back_inserter(result.vertexes));
 
 	for (int i = 0; i < 36; ++i) {
-		result.vertexes[i].data[0] *= clx / 2;
-		result.vertexes[i].data[1] *= cly / 2;
-		result.vertexes[i].data[2] *= clz / 2;
-		result.colors.push_back({{ 0.25, 0, 0 }});
+		result.vertexes[i][0] *= clx / 2;
+		result.vertexes[i][1] *= cly / 2;
+		result.vertexes[i][2] *= clz / 2;
+		result.colors.push_back({ 0.25, 0, 0 });
 	}
 
 	/* Build track. */
@@ -146,13 +146,13 @@ Appearance Appearance::MakeCar()
 		std::back_inserter(result.vertexes));
 
 	for (int i = 36; i < 72; ++i) {
-		result.vertexes[i].data[0] *= tlx / 2;
-		result.vertexes[i].data[1] *= tly / 2;
-		result.vertexes[i].data[2] *= tlz / 2;
-		result.vertexes[i].data[0] += 0;
-		result.vertexes[i].data[1] += cly / 2;
-		result.vertexes[i].data[2] += -clz / 2;
-		result.colors.push_back({{ 0, 0, 0.25 }});
+		result.vertexes[i][0] *= tlx / 2;
+		result.vertexes[i][1] *= tly / 2;
+		result.vertexes[i][2] *= tlz / 2;
+		result.vertexes[i][0] += 0;
+		result.vertexes[i][1] += cly / 2;
+		result.vertexes[i][2] += -clz / 2;
+		result.colors.push_back({ 0, 0, 0.25 });
 	}
 
 	std::copy(
@@ -161,13 +161,13 @@ Appearance Appearance::MakeCar()
 		std::back_inserter(result.vertexes));
 
 	for (int i = 72; i < 108; ++i) {
-		result.vertexes[i].data[0] *= tlx / 2;
-		result.vertexes[i].data[1] *= tly / 2;
-		result.vertexes[i].data[2] *= tlz / 2;
-		result.vertexes[i].data[0] += 0;
-		result.vertexes[i].data[1] += -cly / 2;
-		result.vertexes[i].data[2] += -clz / 2;
-		result.colors.push_back({{ 0, 0, 0.25 }});
+		result.vertexes[i][0] *= tlx / 2;
+		result.vertexes[i][1] *= tly / 2;
+		result.vertexes[i][2] *= tlz / 2;
+		result.vertexes[i][0] += 0;
+		result.vertexes[i][1] += -cly / 2;
+		result.vertexes[i][2] += -clz / 2;
+		result.colors.push_back({ 0, 0, 0.25 });
 	}
 
 	return result;
@@ -176,24 +176,25 @@ Appearance Appearance::MakeCar()
 void Physics::GetDirection(FLOATING &dx, FLOATING &dy, FLOATING &dz) const
 {
 	FLOATING ode_rot_mat[4 * 3];
-	struct Mat4 rot_mat;
-	struct Vec4 front_vec;
+	glm::mat4 rot_mat;
+	glm::vec4 front_vec;
 
 	memcpy(ode_rot_mat, GetRotation(), sizeof(ode_rot_mat));
 
-	front_vec.data[0] = 1;
-	front_vec.data[1] = 0;
-	front_vec.data[2] = 0;
-	front_vec.data[3] = 0;
+	front_vec[0] = 1;
+	front_vec[1] = 0;
+	front_vec[2] = 0;
+	front_vec[3] = 0;
 
-	mat4_identity(rot_mat);
-	memcpy(rot_mat.data, ode_rot_mat, sizeof(ode_rot_mat));
+	rot_mat[0] = { ode_rot_mat[0], ode_rot_mat[1], ode_rot_mat[2], 0 };
+	rot_mat[1] = { ode_rot_mat[4], ode_rot_mat[5], ode_rot_mat[6], 0 };
+	rot_mat[2] = { ode_rot_mat[8], ode_rot_mat[9], ode_rot_mat[10], 0 };
 
-	vec4_mat4_multiply(front_vec, rot_mat);
+	front_vec = rot_mat * front_vec;
 
-	dx = front_vec.data[0];
-	dy = front_vec.data[1];
-	dz = front_vec.data[2];
+	dx = front_vec[0];
+	dy = front_vec[1];
+	dz = front_vec[2];
 }
 
 void Physics::GetRotationAngles(FLOATING &rx, FLOATING &ry, FLOATING &rz) const

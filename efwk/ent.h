@@ -5,7 +5,8 @@
 
 #include "common.h"
 #include "cmp.h"
-#include "sys.h"
+#include "sys_drawing.h"
+#include "sys_physics.h"
 
 struct EntGround {
 	long id;

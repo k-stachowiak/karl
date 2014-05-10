@@ -3,16 +3,18 @@
 
 #include <cassert>
 
-#include "sys.h"
+#include "sys_physics.h"
 
 using std::placeholders::_1;
 
 namespace sys {
 
-static void g_CollisionCallback(void *data, dGeomID geom_1, dGeomID geom_2)
-{
-	Physics* physics = (Physics*)data;
-	physics->OnCollision(geom_1, geom_2);
+namespace {
+	void g_CollisionCallback(void *data, dGeomID geom_1, dGeomID geom_2)
+	{
+		Physics* physics = (Physics*)data;
+		physics->OnCollision(geom_1, geom_2);
+	}
 }
 
 void Physics::m_ComputeFDir1(
@@ -85,6 +87,27 @@ void Physics::m_OnDefaultContact(dBodyID b1, dBodyID b2, dContact &contact)
 	dJointAttach(contact_joint, b1, b2);
 }
 
+Physics::Physics()
+{
+	dInitODE();
+
+	m_world.reset(dWorldCreate());
+	dWorldSetGravity(m_world.get(), 0, 0, -10);
+	dWorldSetERP(m_world.get(), 0.2);
+	dWorldSetCFM(m_world.get(), 10E-5);
+
+	m_space.reset(dSimpleSpaceCreate(0));
+	m_contact_group.reset(dJointGroupCreate(0));
+}
+
+Physics::~Physics()
+{
+	m_contact_group.reset();
+	m_space.reset();
+	m_world.reset();
+	dCloseODE();
+}
+
 void Physics::OnCollision(dGeomID geom_1, dGeomID geom_2)
 {
 	const int max_contacts = 5;
@@ -107,13 +130,13 @@ void Physics::OnCollision(dGeomID geom_1, dGeomID geom_2)
 		auto isTrack1 = [b1](const sys::NdPhysics& nd) { return nd.phys->HasTrack(b1); };
 		auto isTrack2 = [b2](const sys::NdPhysics& nd) { return nd.phys->HasTrack(b2); };
 
-		auto physIt1 = std::find_if(begin(nodes), end(nodes), isTrack1);
-		auto physIt2 = std::find_if(begin(nodes), end(nodes), isTrack2);
+		auto physIt1 = std::find_if(begin(m_nodes), end(m_nodes), isTrack1);
+		auto physIt2 = std::find_if(begin(m_nodes), end(m_nodes), isTrack2);
 
-		if (physIt1 != end(nodes) && physIt2 == end(nodes)) {
+		if (physIt1 != end(m_nodes) && physIt2 == end(m_nodes)) {
 			m_OnTrackNonTrackContact(b1, *physIt1, b2, contacts[i]);
 
-		} else if (physIt1 == end(nodes) && physIt2 != end(nodes)) {
+		} else if (physIt1 == end(m_nodes) && physIt2 != end(m_nodes)) {
 			m_OnTrackNonTrackContact(b2, *physIt2, b1, contacts[i]);
 
 		} else {
@@ -121,31 +144,6 @@ void Physics::OnCollision(dGeomID geom_1, dGeomID geom_2)
 
 		}
 	}
-}
-
-/* API implementation.
- * ===================
- */
-
-Physics::Physics()
-{
-	dInitODE();
-
-	m_world.reset(dWorldCreate());
-	dWorldSetGravity(m_world.get(), 0, 0, -10);
-	dWorldSetERP(m_world.get(), 0.2);
-	dWorldSetCFM(m_world.get(), 10E-5);
-
-	m_space.reset(dSimpleSpaceCreate(0));
-	m_contact_group.reset(dJointGroupCreate(0));
-}
-
-Physics::~Physics()
-{
-	m_contact_group.reset();
-	m_space.reset();
-	m_world.reset();
-	dCloseODE();
 }
 
 void Physics::Perform(double dt)

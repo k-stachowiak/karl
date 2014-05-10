@@ -4,8 +4,9 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_opengl.h>
 
+#include "common.h"
 #include "config.h"
-#include "sys.h"
+#include "sys_drawing.h"
 #include "resources.h"
 
 /* Camera management.
@@ -14,38 +15,31 @@
 
 namespace sys {
 
-void Drawing::m_CameraInit()
-{
-	camera.location.data[0] = 0;
-	camera.location.data[1] = 0;
-	camera.location.data[2] = -0.5;
-	camera.rotation.data[0] = 0;
-	camera.rotation.data[1] = 0;
-	camera.rotation.data[2] = 0;
-	m_CameraUpdateViewMatrix();
-
-	mat4_identity(camera.projection);
-	mat4_perspective(
-		camera.projection,
-		cfg_cam_fovy,
-		cfg_screen_w / cfg_screen_h,
-		cfg_cam_near,
-		cfg_cam_far);
-}
+Drawing::Camera::Camera() :
+	location { 0, 0, -0.5f },
+	rotation { 0, 0, 0 },
+	view {},
+	projection {
+		glm::perspective(
+			cfg_cam_fovy,
+			cfg_screen_w / cfg_screen_h,
+			cfg_cam_near,
+			cfg_cam_far) }
+{}
 
 void Drawing::m_CameraUpdateViewMatrix()
 {
-	mat4_identity(camera.view);
-	mat4_translatev(camera.view, camera.location);
-	mat4_rotate_x(camera.view, 3.1415 / 2);
-	mat4_rotate_y(camera.view, camera.rotation.data[1]);
-	mat4_rotate_x(camera.view, camera.rotation.data[0]);
+	m_camera.view = glm::mat4{};
+	m_camera.view = glm::rotate(m_camera.view, m_camera.rotation[0], glm::vec3 { 1, 0, 0 });
+	m_camera.view = glm::rotate(m_camera.view, m_camera.rotation[1], glm::vec3 { 0, 1, 0 });
+	m_camera.view = glm::rotate(m_camera.view, -3.1415f / 2, glm::vec3 { 1, 0, 0 });
+	m_camera.view = glm::translate(m_camera.view, m_camera.location);
 }
 
 void Drawing::m_CameraApply(const Shader &shader)
 {
-	glUniformMatrix4fv(shader.view_loc, 1, GL_FALSE, camera.view.data);
-	glUniformMatrix4fv(shader.projection_loc, 1, GL_FALSE, camera.projection.data);
+	glUniformMatrix4fv(shader.view_loc, 1, GL_FALSE, glm::value_ptr(m_camera.view));
+	glUniformMatrix4fv(shader.projection_loc, 1, GL_FALSE, glm::value_ptr(m_camera.projection));
 }
 
 void Drawing::m_ShaderBegin(const Shader &shader)
@@ -75,7 +69,7 @@ void Drawing::m_FrameEnd()
 {
 }
 
-void Drawing::m_ComputeModelMatrix(const NdDrawing& node, Mat4& model)
+void Drawing::m_ComputeModelMatrix(const NdDrawing& node, glm::mat4& model)
 {
 	FLOATING location[3];
 	FLOATING rotation[3 * 4];
@@ -83,33 +77,33 @@ void Drawing::m_ComputeModelMatrix(const NdDrawing& node, Mat4& model)
 	if (node.phys->HasBody()) {
 		memcpy(location, node.phys->GetLocation(), sizeof(location));
 		memcpy(rotation, node.phys->GetRotation(), sizeof(rotation));
-		model.data[0] =  rotation[0];
-		model.data[1] =  rotation[4];
-		model.data[2] =  rotation[8];
-		model.data[3] =  0;
-		model.data[4] =  rotation[1];
-		model.data[5] =  rotation[5];
-		model.data[6] =  rotation[9];
-		model.data[7] =  0;
-		model.data[8] =  rotation[2];
-		model.data[9] =  rotation[6];
-		model.data[10] = rotation[10];
-		model.data[11] = 0;
-		model.data[12] = location[0];
-		model.data[13] = location[1];
-		model.data[14] = location[2];
-		model.data[15] = 1;
+		model[0][0] = rotation[0];
+		model[0][1] = rotation[4];
+		model[0][2] = rotation[8];
+		model[0][3] = 0;
+		model[1][0] = rotation[1];
+		model[1][1] = rotation[5];
+		model[1][2] = rotation[9];
+		model[1][3] = 0;
+		model[2][0] = rotation[2];
+		model[2][1] = rotation[6];
+		model[2][2] = rotation[10];
+		model[2][3] = 0;
+		model[3][0] = location[0];
+		model[3][1] = location[1];
+		model[3][2] = location[2];
+		model[3][3] = 1;
 	} else {
-		mat4_identity(model);
+		model = glm::mat4{};
 	}
 }
 
 void Drawing::m_DrawMesh(const Shader& shader, const NdDrawing& node)
 {
-	struct Mat4 model;
+	glm::mat4 model;
 	m_ComputeModelMatrix(node, model);
 
-	glUniformMatrix4fv(shader.model_loc, 1, GL_FALSE, model.data);
+	glUniformMatrix4fv(shader.model_loc, 1, GL_FALSE, glm::value_ptr(model));
 	glVertexAttribPointer(shader.coord_loc, 3, GL_FLOAT, GL_FALSE, 0, &node.appr->vertexes[0]);
 	glVertexAttribPointer(shader.color_loc, 3, GL_FLOAT, GL_FALSE, 0, &node.appr->colors[0]);
 
@@ -123,43 +117,43 @@ void Drawing::m_DrawMesh(const Shader& shader, const NdDrawing& node)
 Drawing::Drawing(Resources& resources) :
 	m_resources(resources)
 {
-	m_CameraInit();
+	m_CameraUpdateViewMatrix();
 }
 
 void Drawing::CameraMove(FLOATING dx, FLOATING dy, FLOATING dz)
 {
-	camera.location.data[0] -= dx;
-	camera.location.data[1] -= dy;
-	camera.location.data[2] -= dz;
+	m_camera.location[0] -= dx;
+	m_camera.location[1] -= dy;
+	m_camera.location[2] -= dz;
 	m_CameraUpdateViewMatrix();
 }
 
 void Drawing::CameraWalk(FLOATING front, FLOATING side)
 {
 	FLOATING dx, dy;
-	cast_rotated_coords(front, side, camera.rotation.data[1], dx, dy);
+	cast_rotated_coords(front, side, m_camera.rotation[1], dx, dy);
 	CameraMove(dx, dy, 0);
 }
 
 void Drawing::CameraRotate(FLOATING pitch, FLOATING yaw, FLOATING roll)
 {
-	camera.rotation.data[0] -= pitch;
-	camera.rotation.data[1] -= yaw;
-	camera.rotation.data[2] -= roll;
+	m_camera.rotation[0] -= pitch;
+	m_camera.rotation[1] -= yaw;
+	m_camera.rotation[2] -= roll;
 	m_CameraUpdateViewMatrix();
 }
 
 void Drawing::Perform()
 {
 	m_FrameBegin();
-	m_ShaderBegin(m_resources.res_simple_shader);
-	m_CameraApply(m_resources.res_simple_shader);
+	m_ShaderBegin(*m_resources.res_simple_shader);
+	m_CameraApply(*m_resources.res_simple_shader);
 
-	for (auto& node : nodes) {
-		m_DrawMesh(m_resources.res_simple_shader, node);
+	for (auto& node : m_nodes) {
+		m_DrawMesh(*m_resources.res_simple_shader, node);
 	}
 
-	m_ShaderEnd(m_resources.res_simple_shader);
+	m_ShaderEnd(*m_resources.res_simple_shader);
 	m_FrameEnd();
 }
 

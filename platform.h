@@ -6,28 +6,19 @@
 #include <allegro5/allegro.h>
 
 #include "auto.h"
-
-struct State {
-	virtual ~State() {}
-	virtual void Tick(double dt) = 0;
-	virtual void Draw(double weight) = 0;
-	virtual void KeyDown(int key) {};
-	virtual void KeyUp(int key) {};
-	virtual void KeyTyped(int key) {};
-};
+#include "state.h"
 
 struct Platform {
 
-	bool m_done_flag;
+	double m_current_time;
+	double m_time_accumulator;
 	AlDisplay m_display;
 	AlEvQueue m_queue;
 
-	void m_CommonHandleEvent(const ALLEGRO_EVENT &ev, State& state);
-
 public:
 	Platform();
-	~Platform();
-	void Loop(std::unique_ptr<State> initialState);
+	Transition ProcessEvents(State& state);
+	Transition LoopStep(State& state);
 };
 
 #endif

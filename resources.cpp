@@ -1,12 +1,37 @@
 #include <cstdio>
+#include <array>
 
 #include <allegro5/allegro_ttf.h>
 
+#include "diagnostics.h"
 #include "resources.h"
 
 namespace {
 
-void PrintShaderErrorLog(GLuint shader)
+const char *g_simple_vsource =
+	"#version 330\n"
+	"attribute vec3 attr_coord;\n"
+	"attribute vec3 attr_color;\n"
+	"uniform mat4 uni_model;\n"
+	"uniform mat4 uni_view;\n"
+	"uniform mat4 uni_projection;\n"
+	"out vec3 frag_color;\n"
+	"void main(void) {\n"
+	"    frag_color = attr_color;\n"
+	"    gl_Position = uni_projection * uni_view * uni_model * vec4(attr_coord, 1.0);\n"
+//	"    gl_Position = vec4(attr_coord, 1.0) * uni_model * uni_view * uni_projection;\n"
+	"}";
+
+const char *g_simple_fsource =
+	"#version 330\n"
+	"in vec3 frag_color;\n"
+	"void main(void) {\n"
+	"    gl_FragColor = vec4(frag_color, 1.0);\n"
+	"}";
+
+}
+
+void Shader::m_PrintShaderErrorLog(GLuint shader)
 {
 	GLint log_size;
 	char *log_buffer;
@@ -20,7 +45,7 @@ void PrintShaderErrorLog(GLuint shader)
 	free(log_buffer);
 }
 
-void PrintProgramErrorLog(GLuint program)
+void Shader::m_PrintProgramErrorLog(GLuint program)
 {
 	GLint log_size;
 	char *log_buffer;
@@ -34,107 +59,81 @@ void PrintProgramErrorLog(GLuint program)
 	free(log_buffer);
 }
 
-bool MakeShader(const char *vsource, const char *fsource, struct Shader *shader)
+Shader::Shader(const std::string& vsource, const std::string& fsource)
 {
 	GLint result;
 
-	shader->vshader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(shader->vshader, 1, &vsource, NULL);
-	glCompileShader(shader->vshader);
-	glGetShaderiv(shader->vshader, GL_COMPILE_STATUS, &result);
+	const char *vsource_array[1] { vsource.c_str() };
+	const char *fsource_array[1] { fsource.c_str() };
+
+	vshader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vshader, 1, vsource_array, NULL);
+	glCompileShader(vshader);
+	glGetShaderiv(vshader, GL_COMPILE_STATUS, &result);
 	if (!result) {
-		PrintShaderErrorLog(shader->vshader);
-		glDeleteShader(shader->vshader);
-		return false;
+		m_PrintShaderErrorLog(vshader);
+		glDeleteShader(vshader);
+		DIAG_ERROR_EXIT("Failed initializing GLSL vertex shader.\n");
 	}
 
-	shader->fshader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(shader->fshader, 1, &fsource, NULL);
-	glCompileShader(shader->fshader);
-	glGetShaderiv(shader->fshader, GL_COMPILE_STATUS, &result);
+	fshader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fshader, 1, fsource_array, NULL);
+	glCompileShader(fshader);
+	glGetShaderiv(fshader, GL_COMPILE_STATUS, &result);
 	if (!result) {
-		PrintShaderErrorLog(shader->fshader);
-		glDeleteShader(shader->vshader);
-		glDeleteShader(shader->fshader);
-		return false;
+		m_PrintShaderErrorLog(fshader);
+		glDeleteShader(vshader);
+		glDeleteShader(fshader);
+		DIAG_ERROR_EXIT("Failed initializing GLSL fragment shader.\n");
 	}
 
-	shader->program = glCreateProgram();
-	glAttachShader(shader->program, shader->vshader);
-	glAttachShader(shader->program, shader->fshader);
-	glLinkProgram(shader->program);
-	glGetProgramiv(shader->program, GL_LINK_STATUS, &result);
+	program = glCreateProgram();
+	glAttachShader(program, vshader);
+	glAttachShader(program, fshader);
+	glLinkProgram(program);
+	glGetProgramiv(program, GL_LINK_STATUS, &result);
 	if (!result) {
-		PrintProgramErrorLog(shader->program);
-		glDeleteShader(shader->vshader);
-		glDeleteShader(shader->fshader);
-		glDeleteProgram(shader->program);
-		return false;
+		m_PrintProgramErrorLog(program);
+		glDeleteShader(vshader);
+		glDeleteShader(fshader);
+		glDeleteProgram(program);
+		DIAG_ERROR_EXIT("Failed initializing GLSL program.\n");
 	}
 
-	glDetachShader(shader->program, shader->vshader);
-	glDetachShader(shader->program, shader->fshader);
+	glDetachShader(program, vshader);
+	glDetachShader(program, fshader);
 
-	shader->coord_loc = glGetAttribLocation(shader->program, "attr_coord");
-	shader->color_loc = glGetAttribLocation(shader->program, "attr_color");
-	shader->model_loc = glGetUniformLocation(shader->program, "uni_model");
-	shader->view_loc = glGetUniformLocation(shader->program, "uni_view");
-	shader->projection_loc = glGetUniformLocation(shader->program, "uni_projection");
+	coord_loc = glGetAttribLocation(program, "attr_coord");
+	color_loc = glGetAttribLocation(program, "attr_color");
+	model_loc = glGetUniformLocation(program, "uni_model");
+	view_loc = glGetUniformLocation(program, "uni_view");
+	projection_loc = glGetUniformLocation(program, "uni_projection");
 
-	if (shader->coord_loc == -1 ||
-		shader->color_loc == -1 ||
-		shader->model_loc == -1 ||
-		shader->view_loc == -1 ||
-		shader->projection_loc == -1) {
-		return false;
+	if (coord_loc == -1 ||
+		color_loc == -1 ||
+		model_loc == -1 ||
+		view_loc == -1 ||
+		projection_loc == -1) {
+			DIAG_ERROR_EXIT("Failed finding locations in GLSL program.\n");
 	}
-
-	return true;
 }
 
-void DestroyShader(struct Shader *shader)
+Shader::~Shader()
 {
-	glDeleteShader(shader->vshader);
-	glDeleteShader(shader->fshader);
-	glDeleteProgram(shader->program);
-}
-
-bool MakeSimpleShader(struct Shader *shader)
-{
-	const char *vsource =
-		"#version 330\n"
-		"attribute vec3 attr_coord;\n"
-		"attribute vec3 attr_color;\n"
-		"uniform mat4 uni_model;\n"
-		"uniform mat4 uni_view;\n"
-		"uniform mat4 uni_projection;\n"
-		"out vec3 frag_color;\n"
-		"void main(void) {\n"
-		"    frag_color = attr_color;\n"
-		"    gl_Position = uni_projection * uni_view * uni_model * vec4(attr_coord, 1.0);\n"
-		"}";
-
-	const char *fsource =
-		"#version 330\n"
-		"in vec3 frag_color;\n"
-		"void main(void) {\n"
-		"    gl_FragColor = vec4(frag_color, 1.0);\n"
-		"}";
-
-	return MakeShader(vsource, fsource, shader);
-}
-
+	glDeleteShader(vshader);
+	glDeleteShader(fshader);
+	glDeleteProgram(program);
 }
 
 Resources::Resources() :
-	res_font_big { al_load_font("data/prstartk.ttf", -30, 0) }
+	res_font_big { al_load_font("data/prstartk.ttf", -30, 0) },
+	res_simple_shader { new Shader { g_simple_vsource, g_simple_fsource } }
 {
-	// TODO: Get rid of these asserts.
-	assert(res_font_big);
-	assert(MakeSimpleShader(&res_simple_shader));
+	if (!res_font_big) {
+		DIAG_ERROR_EXIT("Failed loading font.\n");
+	}
 }
 
 Resources::~Resources()
 {
-	DestroyShader(&res_simple_shader);
 }

@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include <glm/glm.hpp>
 #include <ode/ode.h>
 
 #include "auto.h"
@@ -25,8 +26,8 @@ namespace cmp {
 
 struct Appearance {
 
-	std::vector<Vec3> vertexes;
-	std::vector<Vec3> colors;
+	std::vector<glm::vec3> vertexes;
+	std::vector<glm::vec3> colors;
 
 	static Appearance MakeFlat(
 		int lx, int ly,
