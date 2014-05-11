@@ -5,8 +5,8 @@
 
 #include "common.h"
 
-/* This is obviously not mine.
- * If you don't recognize it, look up "fast inverse square root".
+/** This is obviously not mine.
+ *  If you don't recognize it, look up "fast inverse square root".
  */
 float Q_rsqrt( float number )
 {
@@ -26,9 +26,12 @@ float Q_rsqrt( float number )
 }
 
 void cast_rotated_coords(
-		FLOATING up, FLOATING right, FLOATING angle,
+		FLOATING front, FLOATING right, FLOATING angle,
 		FLOATING &dx, FLOATING &dy)
 {
-	dx = up * cos(angle) + right * sin(angle);
-	dy = up * -sin(angle) + right * cos(angle);
+	glm::vec3 coords { front, -right, 0 };
+	glm::quat rot = glm::angleAxis(angle, glm::vec3 { 0, 0, 1 });
+	coords = rot * coords;
+	dx = coords[0];
+	dy = coords[1];
 }

@@ -4,23 +4,10 @@
 #include <memory>
 #include <vector>
 
-#include <glm/glm.hpp>
 #include <ode/ode.h>
 
 #include "auto.h"
 #include "common.h"
-
-/*
- * Components module.
- *
- * This module defines the components that can build up an entity.
- * The different component types corresponds to the basic aspects of the
- * game simulations. The main assumption is:
- *
- * - The components encapsulate the given aspect strongly.
- */
-
-
 
 namespace cmp {
 
@@ -44,16 +31,20 @@ struct Appearance {
 };
 
 struct Physics {
+
+	glm::vec3 prev_location;
+	glm::quat prev_rotation;
+
 	virtual ~Physics() {}
 
 	virtual bool HasBody() const = 0;
-	virtual const FLOATING *GetLocation() const = 0;
-	virtual const FLOATING *GetRotation() const = 0;
+	virtual glm::vec3 GetLocation() const = 0;
+	virtual glm::quat GetRotation() const = 0;
 
-	virtual bool HasTrack(dBodyID new_maybe_track) const { return false; }
+	virtual bool HasTrack(dBodyID) const { return false; }
 
-	void GetDirection(FLOATING &dx, FLOATING &dy, FLOATING &dz) const;
-	void GetRotationAngles(FLOATING &rx, FLOATING &ry, FLOATING &rz) const;
+	glm::vec3 GetDirection() const;
+	glm::vec3 GetRotationAngles() const;
 };
 
 struct PhysicsSimple : public Physics {
@@ -69,8 +60,18 @@ struct PhysicsSimple : public Physics {
 		FLOATING lx, FLOATING ly, FLOATING lz);
 
 	bool HasBody() const { return (bool)body; }
-	const FLOATING *GetLocation() const { return dBodyGetPosition(body.get()); }
-	const FLOATING *GetRotation() const { return dBodyGetRotation(body.get()); }
+
+	glm::vec3 GetLocation() const
+	{
+		const FLOATING *pos = dBodyGetPosition(body.get());
+		return { pos[0], pos[1], pos[2] };
+	}
+
+	glm::quat GetRotation() const
+	{
+		const FLOATING* q = dBodyGetQuaternion(body.get());
+		return { q[0], q[1], q[2], q[3] };
+	}
 };
 
 struct PhysicsCar : public Physics {
@@ -91,8 +92,18 @@ struct PhysicsCar : public Physics {
 	bool HasTrack(dBodyID maybe_track) const;
 
 	bool HasBody() const { return true; }
-	const FLOATING *GetLocation() const { return dBodyGetPosition(chassis_body.get()); }
-	const FLOATING *GetRotation() const { return dBodyGetRotation(chassis_body.get()); }
+
+	glm::vec3 GetLocation() const
+	{
+		const FLOATING *pos = dBodyGetPosition(chassis_body.get());
+		return { pos[0], pos[1], pos[2] };
+	}
+
+	glm::quat GetRotation() const
+	{
+		const FLOATING* q = dBodyGetQuaternion(chassis_body.get());
+		return { q[0], q[1], q[2], q[3] };
+	}
 
 	dBodyID GetLTrackBody() const { return ltrack_body.get(); }
 	dBodyID GetRTrackBody() const { return rtrack_body.get(); }

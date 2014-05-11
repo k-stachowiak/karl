@@ -7,8 +7,6 @@
 
 namespace cmp {
 
-// TODO: Remember to remove geoms from space, becaus now, the deleters don't do it.
-
 static glm::vec3 verbose_cube_definition[36] = {
 
 	/* To the front! */
@@ -173,37 +171,17 @@ Appearance Appearance::MakeCar()
 	return result;
 }
 
-void Physics::GetDirection(FLOATING &dx, FLOATING &dy, FLOATING &dz) const
+glm::vec3 Physics::GetDirection() const
 {
-	FLOATING ode_rot_mat[4 * 3];
-	glm::mat4 rot_mat;
-	glm::vec4 front_vec;
-
-	memcpy(ode_rot_mat, GetRotation(), sizeof(ode_rot_mat));
-
-	front_vec[0] = 1;
-	front_vec[1] = 0;
-	front_vec[2] = 0;
-	front_vec[3] = 0;
-
-	rot_mat[0] = { ode_rot_mat[0], ode_rot_mat[1], ode_rot_mat[2], 0 };
-	rot_mat[1] = { ode_rot_mat[4], ode_rot_mat[5], ode_rot_mat[6], 0 };
-	rot_mat[2] = { ode_rot_mat[8], ode_rot_mat[9], ode_rot_mat[10], 0 };
-
+	glm::mat4 rot_mat = glm::mat4_cast(GetRotation());
+	glm::vec4 front_vec { 1, 0, 0, 0 };
 	front_vec = rot_mat * front_vec;
-
-	dx = front_vec[0];
-	dy = front_vec[1];
-	dz = front_vec[2];
+	return { front_vec[0], front_vec[1], front_vec[2] };
 }
 
-void Physics::GetRotationAngles(FLOATING &rx, FLOATING &ry, FLOATING &rz) const
+glm::vec3 Physics::GetRotationAngles() const
 {
-	FLOATING dir_x, dir_y, dir_z;
-	GetDirection(dir_x, dir_y, dir_z);
-	rx = atan2(dir_z, dir_y);
-	ry = atan2(dir_x, dir_z);
-	rz = atan2(dir_y, dir_x);
+	return glm::eulerAngles(GetRotation());
 }
 
 PhysicsSimple PhysicsSimple::MakePlane(dSpaceID space)

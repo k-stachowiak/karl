@@ -7,9 +7,10 @@ struct State {
 	virtual ~State() {}
 	virtual Transition Tick(double dt) = 0;
 	virtual void Draw(double weight) = 0;
-	virtual void KeyDown(int key) {};
-	virtual void KeyUp(int key) {};
-	virtual void KeyTyped(int key) {};
+	virtual void KeyDown(int) {};
+	virtual void KeyUp(int) {};
+	virtual void KeyTyped(int) {};
+	virtual void MouseMove(int, int) {};
 };
 
 #endif

@@ -15,9 +15,13 @@ class StateGame : public State {
 	sys::Drawing m_drawing_system;
 	sys::Physics m_physics_system;
 
-	bool m_keys[ALLEGRO_KEY_MAX];
-	struct EntGround m_ground;
-	struct EntTank m_tank;
+	std::vector<bool> m_keys;
+	struct { int dx = 0, dy = 0; } m_mouse_move;
+
+	bool m_done;
+
+	EntGround m_ground;
+	EntTank m_tank;
 
 	void m_DriveCamera(FLOATING dx, FLOATING dy, FLOATING dpitch, FLOATING dyaw, double dt);
 	void m_DriveTank(FLOATING boost, FLOATING turn);
@@ -28,6 +32,7 @@ public:
 	void Draw(double weight) override;
 	void KeyDown(int key) override;
 	void KeyUp(int key) override;
+	void MouseMove(int dx, int dy) override;
 };
 
 #endif

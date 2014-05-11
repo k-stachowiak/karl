@@ -1,33 +1,31 @@
 #include "state_game.h"
 
 void StateGame::m_DriveCamera(
-		FLOATING dx, FLOATING dy,
+		FLOATING dright, FLOATING dfront,
 		FLOATING dpitch, FLOATING dyaw,
 		double dt)
 {
 	const FLOATING cam_move_speed = 2.0;
-	const FLOATING cam_rotate_speed = 1.0;
+	const FLOATING cam_rotate_speed = 0.125;
 
 	m_drawing_system.CameraRotate(
 		dpitch * cam_rotate_speed * dt,
-		dyaw * cam_rotate_speed * dt,
-		0);
+		dyaw * cam_rotate_speed * dt);
 
 	m_drawing_system.CameraWalk(
-		dx * cam_move_speed * dt,
-		dy * cam_move_speed * dt);
+		dfront * cam_move_speed * dt,
+		dright * cam_move_speed * dt);
 }
 
 void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
 {
 	const FLOATING boost_force = 25;
-	FLOATING rot_x, rot_y, rot_z;
 	FLOATING tank_lfx, tank_lfy, tank_rfx, tank_rfy;
 
-	m_tank.phys.GetRotationAngles(rot_x, rot_y, rot_z);
+	glm::vec3 rot = m_tank.phys.GetRotationAngles();
 
-	cast_rotated_coords(boost + turn, 0, rot_z, tank_rfx, tank_rfy);
-	cast_rotated_coords(boost - turn, 0, rot_z, tank_lfx, tank_lfy);
+	cast_rotated_coords(boost + turn, 0, rot.z, tank_rfx, tank_rfy);
+	cast_rotated_coords(boost - turn, 0, rot.z, tank_lfx, tank_lfy);
 
 	dBodyAddForce(
 		m_tank.phys.GetRTrackBody(),
@@ -44,11 +42,11 @@ void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
 
 StateGame::StateGame(Resources& resources) :
 	m_drawing_system { resources },
+	m_keys(ALLEGRO_KEY_MAX, false),
+	m_done { false },
 	m_ground { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
 	m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() }
 {
-	memset(m_keys, 0, ALLEGRO_KEY_MAX * sizeof(*m_keys));
-
 	m_physics_system.AddNode(m_ground.MakePhysicsNode());
 	m_drawing_system.AddNode(m_ground.MakeDrawingNode());
 
@@ -58,22 +56,19 @@ StateGame::StateGame(Resources& resources) :
 
 Transition StateGame::Tick(double dt)
 {
-	FLOATING cam_dx = 0;
-	FLOATING cam_dy = 0;
-	FLOATING cam_dpitch = 0;
-	FLOATING cam_dyaw = 0;
+	FLOATING cam_dright = 0;
+	FLOATING cam_dfront = 0;
 	FLOATING tank_boost = 0;
 	FLOATING tank_turn = 0;
 
-	if (m_keys[ALLEGRO_KEY_UP]) cam_dy += 1;
-	if (m_keys[ALLEGRO_KEY_DOWN]) cam_dy -= 1;
-	if (m_keys[ALLEGRO_KEY_LEFT]) cam_dx -= 1;
-	if (m_keys[ALLEGRO_KEY_RIGHT]) cam_dx += 1;
-	if (m_keys[ALLEGRO_KEY_H]) cam_dyaw += 1;
-	if (m_keys[ALLEGRO_KEY_J]) cam_dpitch -= 1;
-	if (m_keys[ALLEGRO_KEY_K]) cam_dpitch += 1;
-	if (m_keys[ALLEGRO_KEY_L]) cam_dyaw -= 1;
-	m_DriveCamera(cam_dx, cam_dy, cam_dpitch, cam_dyaw, dt);
+	if (m_keys[ALLEGRO_KEY_UP]) cam_dfront += 1;
+	if (m_keys[ALLEGRO_KEY_DOWN]) cam_dfront -= 1;
+	if (m_keys[ALLEGRO_KEY_LEFT]) cam_dright -= 1;
+	if (m_keys[ALLEGRO_KEY_RIGHT]) cam_dright += 1;
+	m_DriveCamera(
+		cam_dright, cam_dfront,
+		-m_mouse_move.dy, -m_mouse_move.dx,
+		dt);
 
 	if (m_keys[ALLEGRO_KEY_A]) tank_turn -= 1;
 	if (m_keys[ALLEGRO_KEY_D]) tank_turn += 1;
@@ -83,13 +78,17 @@ Transition StateGame::Tick(double dt)
 
 	m_physics_system.Perform(dt);
 
-	return { Transition::State::THIS_STATE };
+	m_mouse_move.dx = 0;
+	m_mouse_move.dy = 0;
+
+	return m_done
+		? Transition { Transition::State::END }
+		: Transition { Transition::State::THIS_STATE };
 }
 
 void StateGame::Draw(double weight)
 {
-	// TODO: Incorporate weight.
-	m_drawing_system.Perform();
+	m_drawing_system.Perform(weight);
 }
 
 void StateGame::KeyDown(int key)
@@ -100,4 +99,14 @@ void StateGame::KeyDown(int key)
 void StateGame::KeyUp(int key)
 {
 	m_keys[key] = false;
+
+	if (key == ALLEGRO_KEY_ESCAPE) {
+		m_done = true;
+	}
+}
+
+void StateGame::MouseMove(int dx, int dy)
+{
+	m_mouse_move.dx = dx;
+	m_mouse_move.dy = dy;
 }

@@ -4,11 +4,10 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #define FLOATING float
-
-// TODO: Get rid of as many memcpy and memset as possible
 
 float Q_rsqrt( float number );
 

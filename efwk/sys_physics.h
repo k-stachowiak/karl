@@ -38,6 +38,8 @@ class Physics {
 		FLOATING nor_x, FLOATING nor_y, FLOATING nor_z,
 		FLOATING &fdir1_x, FLOATING &fdir1_y, FLOATING &fdir1_z);
 
+	void m_StoreNodesState();
+
 	void m_OnTrackNonTrackContact(
 		dBodyID track, struct NdPhysics track_node,
 		dBodyID nontrack, dContact &contact);
@@ -47,6 +49,8 @@ class Physics {
 public:
 	Physics();
 	~Physics();
+
+	// TODO: Remember to remove geoms from space, because the deleters don't do it.
 
 	void OnCollision(dGeomID geom_1, dGeomID geom_2);
 	void AddNode(const NdPhysics& node) { m_nodes.push_back(node); }

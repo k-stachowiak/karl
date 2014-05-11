@@ -40,16 +40,25 @@ void Physics::m_ComputeFDir1(
 	fdir1_z *= inv_len;
 }
 
+void Physics::m_StoreNodesState()
+{
+	for (auto& node : m_nodes) {
+		if (!node.phys->HasBody()) {
+			continue;
+		}
+		node.phys->prev_location = node.phys->GetLocation();
+		node.phys->prev_rotation = node.phys->GetRotation();
+	}
+}
+
 void Physics::m_OnTrackNonTrackContact(
 		dBodyID track, struct NdPhysics track_node,
 		dBodyID nontrack, dContact &contact)
 {
-	FLOATING dir_x, dir_y, dir_z;
-
 	/* Compute the friction 1 direction. */
-	track_node.phys->GetDirection(dir_x, dir_y, dir_z);
+	glm::vec3 dir = track_node.phys->GetDirection();
 	m_ComputeFDir1(
-		dir_x, dir_y,
+		dir.x, dir.y,
 		contact.geom.normal[0],
 		contact.geom.normal[1],
 		contact.geom.normal[2],
@@ -148,6 +157,7 @@ void Physics::OnCollision(dGeomID geom_1, dGeomID geom_2)
 
 void Physics::Perform(double dt)
 {
+	m_StoreNodesState();
 	dSpaceCollide(m_space.get(), this, g_CollisionCallback);
 	dWorldStep(m_world.get(), dt);
 	dJointGroupEmpty(m_contact_group.get());

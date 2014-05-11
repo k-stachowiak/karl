@@ -7,7 +7,7 @@
 
 Platform::Platform()
 {
-	/* Initialize Allegro. */
+	// Initialize Allegro.
 	if (!al_init()) {
 		DIAG_ERROR_EXIT("Failed initializing allegro.\n");
 	}
@@ -21,10 +21,14 @@ Platform::Platform()
 		DIAG_ERROR_EXIT("Failed installing keyboard.\n");
 	}
 
+	if (!al_install_mouse()) {
+		DIAG_ERROR_EXIT("Failed installing mouse.\n");
+	}
+
 	al_set_new_display_option(ALLEGRO_DEPTH_SIZE, 16, ALLEGRO_SUGGEST);
 	al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_OPENGL | ALLEGRO_OPENGL_3_0);
 
-	/* Initialize basic resources. */
+	// Initialize basic resources.
 	m_display.reset(al_create_display(cfg_screen_w, cfg_screen_h));
 	if (!m_display) {
 		DIAG_ERROR_EXIT("Failed creating display.\n");
@@ -37,6 +41,7 @@ Platform::Platform()
 
 	al_register_event_source(m_queue.get(), al_get_display_event_source(m_display.get()));
 	al_register_event_source(m_queue.get(), al_get_keyboard_event_source());
+	al_register_event_source(m_queue.get(), al_get_mouse_event_source());
 
 	m_current_time = al_get_time();
 	m_time_accumulator = 0;
@@ -61,6 +66,11 @@ Transition Platform::ProcessEvents(State& state)
 
 		case ALLEGRO_EVENT_KEY_CHAR:
 			state.KeyTyped(ev.keyboard.unichar);
+			break;
+
+		case ALLEGRO_EVENT_MOUSE_AXES:
+			state.MouseMove(ev.mouse.dx, ev.mouse.dy);
+			al_set_mouse_xy(m_display.get(), cfg_screen_w / 2, cfg_screen_h / 2);
 			break;
 
 		default:

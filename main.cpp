@@ -10,7 +10,7 @@ int main(void)
 	Machine machine {{
 		{
 			Transition::State::GAME,
-			[&resources](Transition::Data data) mutable {
+			[&resources](Transition::Data) mutable {
 				return std::unique_ptr<State> { new StateGame { resources } };
 			}
 		}
