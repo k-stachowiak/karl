@@ -21,26 +21,10 @@ class Drawing {
 
     Resources& m_resources;
 
+    Camera* m_camera;
+
     std::vector<NdDrawing> m_nodes;
 
-    struct Camera {
-        glm::vec3 location;
-        glm::vec3 prev_location;
-        glm::vec3 rotation;
-        glm::vec3 prev_rotation;
-
-        glm::mat4 view;
-        glm::mat4 projection;
-
-        Camera();
-
-        void Move(FLOATING dx, FLOATING dy);
-        void Walk(FLOATING front, FLOATING right);
-        void Rotate(FLOATING pitch, FLOATING yaw);
-
-    } m_camera;
-
-    void m_CameraUpdateViewMatrix(FLOATING weight);
     void m_CameraApply(const Shader &shader, FLOATING weight);
 
     static void m_ShaderBegin(const Shader &shader);
@@ -54,13 +38,8 @@ class Drawing {
 
 public:
     Drawing(Resources& resources);
-
+    void SetCamera(Camera* camera) { m_camera = camera; }
     void AddNode(const NdDrawing& node) { m_nodes.push_back(node); }
-
-    void CameraMove(FLOATING dx, FLOATING dy);
-    void CameraWalk(FLOATING front, FLOATING right);
-    void CameraRotate(FLOATING pitch, FLOATING yaw);
-
     void Perform(double weight);
 };
 

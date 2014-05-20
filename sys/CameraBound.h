@@ -1,9 +1,13 @@
-#ifndef CAMERA_FLYING_H
-#define CAMERA_FLYING_H
+#ifndef CAMERA_BOUND_H
+#define CAMERA_BOUND_H
 
 #include "Camera.h"
 
-class CameraFlying : public Camera {
+class CameraBound : public Camera {
+
+    // TODO: The data here is the same as in the flying camera.
+    //       consider putting the data in the base class - will this really
+    //       ever be different?
 
     glm::vec3 m_location, m_prev_location;
     glm::vec3 m_rotation, m_prev_rotation;
@@ -11,14 +15,12 @@ class CameraFlying : public Camera {
     glm::mat4 m_view, m_projection;
 
 public:
-    CameraFlying();
-
     void Update(FLOATING weight) override;
     const glm::mat4& GetViewMatrix() override { return m_view; }
     const glm::mat4& GetProjectionMatrix() override { return m_projection; }
 
-    void Move(FLOATING dx, FLOATING dy);
-    void Walk(FLOATING front, FLOATING right);
+    void SetAltitude(FLOATING altitude);
+    void SetLocation(FLOATING x, FLOATING y);
     void Rotate(FLOATING pitch, FLOATING yaw);
 };
 

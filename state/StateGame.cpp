@@ -9,14 +9,6 @@ void StateGame::m_DriveCamera(
     const FLOATING cam_move_speed = 2.0;
     const FLOATING cam_rotate_speed = 0.125;
 
-    m_drawing_system.CameraRotate(
-        dpitch * cam_rotate_speed * dt,
-        dyaw * cam_rotate_speed * dt);
-
-    m_drawing_system.CameraWalk(
-        dfront * cam_move_speed * dt,
-        dright * cam_move_speed * dt);
-
     m_camera.Rotate(
         dpitch * cam_rotate_speed * dt,
         dyaw * cam_rotate_speed * dt);
@@ -51,6 +43,8 @@ StateGame::StateGame(Resources& resources) :
     m_keys(ALLEGRO_KEY_MAX, false),
     m_done { false }
 {
+    m_drawing_system.SetCamera(&m_camera);
+
     m_physics_system.AddNode(m_ground.MakePhysicsNode());
     m_drawing_system.AddNode(m_ground.MakeDrawingNode());
 

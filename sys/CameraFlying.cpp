@@ -31,16 +31,6 @@ void CameraFlying::Update(FLOATING weight)
     m_view = glm::translate(m_view, -inter_location);
 }
 
-const glm::mat4& CameraFlying::GetViewMatrix()
-{
-    return m_view;
-}
-
-const glm::mat4& CameraFlying::GetProjectionMatrix()
-{
-    return m_projection;
-}
-
 void CameraFlying::Move(FLOATING dx, FLOATING dy)
 {
     m_prev_location = m_location;

@@ -15,62 +15,17 @@
 
 namespace sys {
 
-Drawing::Camera::Camera() :
-    location { 0, 0, 0.75f },
-    rotation { 0, 0, 0 },
-    view {},
-    projection {
-        glm::perspective(
-            cfg_cam_fovy,
-            cfg_screen_w / cfg_screen_h,
-            cfg_cam_near,
-            cfg_cam_far) }
-{}
-
-void Drawing::Camera::Move(FLOATING dx, FLOATING dy)
-{
-    prev_location = location;
-    location[0] += dx;
-    location[1] += dy;
-}
-
-void Drawing::Camera::Walk(FLOATING front, FLOATING right)
-{
-    FLOATING dx, dy;
-    CastRotatedCoords(front, right, rotation[1], dx, dy);
-    Move(dx, dy);
-}
-
-void Drawing::Camera::Rotate(FLOATING pitch, FLOATING yaw)
-{
-    prev_rotation = rotation;
-    rotation[0] += pitch;
-    rotation[1] += yaw;
-}
-
-void Drawing::m_CameraUpdateViewMatrix(FLOATING weight)
-{
-    glm::vec3 inter_location = (
-        weight * m_camera.prev_location +
-        (1 - weight) * m_camera.location);
-
-    glm::vec3 inter_rotation = (
-        weight * m_camera.prev_rotation +
-        (1 - weight) * m_camera.rotation);
-
-    m_camera.view = glm::mat4{};
-    m_camera.view = glm::rotate(m_camera.view, -inter_rotation[0], glm::vec3 { 1, 0, 0 });
-    m_camera.view = glm::rotate(m_camera.view, -inter_rotation[1], glm::vec3 { 0, 1, 0 });
-    m_camera.view = glm::rotate(m_camera.view, 3.1415f / 2, glm::vec3 { 0, 1, 0 });
-    m_camera.view = glm::rotate(m_camera.view, -3.1415f / 2, glm::vec3 { 1, 0, 0 });
-    m_camera.view = glm::translate(m_camera.view, -inter_location);
-}
-
 void Drawing::m_CameraApply(const Shader &shader, FLOATING weight)
 {
-    m_CameraUpdateViewMatrix(weight);
-    glUniformMatrix4fv(shader.view_loc, 1, GL_FALSE, glm::value_ptr(m_camera.view));
-    glUniformMatrix4fv(shader.projection_loc, 1, GL_FALSE, glm::value_ptr(m_camera.projection));
+    m_camera->Update(weight);
+
+    glUniformMatrix4fv(
+        shader.view_loc, 1, GL_FALSE,
+        glm::value_ptr(m_camera->GetViewMatrix()));
+
+    glUniformMatrix4fv(
+        shader.projection_loc, 1, GL_FALSE,
+        glm::value_ptr(m_camera->GetProjectionMatrix()));
 }
 
 void Drawing::m_ShaderBegin(const Shader &shader)
@@ -127,8 +82,14 @@ void Drawing::m_DrawMesh(const Shader& shader, const NdDrawing& node, FLOATING w
     m_ComputeModelMatrix(node, model, weight);
 
     glUniformMatrix4fv(shader.model_loc, 1, GL_FALSE, glm::value_ptr(model));
-    glVertexAttribPointer(shader.coord_loc, 3, GL_FLOAT, GL_FALSE, 0, &node.appr->vertexes[0]);
-    glVertexAttribPointer(shader.color_loc, 3, GL_FLOAT, GL_FALSE, 0, &node.appr->colors[0]);
+
+    glVertexAttribPointer(
+        shader.coord_loc, 3, GL_FLOAT, GL_FALSE, 0,
+        &node.appr->vertexes[0]);
+
+    glVertexAttribPointer(
+        shader.color_loc, 3, GL_FLOAT, GL_FALSE, 0,
+        &node.appr->colors[0]);
 
     glDrawArrays(GL_TRIANGLES, 0, node.appr->GetVertexCount());
 }
@@ -138,23 +99,9 @@ void Drawing::m_DrawMesh(const Shader& shader, const NdDrawing& node, FLOATING w
  */
 
 Drawing::Drawing(Resources& resources) :
-    m_resources(resources)
+    m_resources(resources),
+    m_camera(nullptr)
 {}
-
-void Drawing::CameraMove(FLOATING dx, FLOATING dy)
-{
-    m_camera.Move(dx, dy);
-}
-
-void Drawing::CameraWalk(FLOATING front, FLOATING right)
-{
-    m_camera.Walk(front, right);
-}
-
-void Drawing::CameraRotate(FLOATING pitch, FLOATING yaw)
-{
-    m_camera.Rotate(pitch, yaw);
-}
 
 void Drawing::Perform(double weight)
 {
