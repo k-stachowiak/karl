@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iterator>
 
-#include "config.h"
+#include "Config.h"
 #include "CmpAppearance.h"
 
 namespace cmp {

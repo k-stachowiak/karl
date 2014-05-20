@@ -3,8 +3,8 @@
 
 #include <allegro5/allegro_ttf.h>
 
-#include "diagnostics.h"
-#include "resources.h"
+#include "Diagnostics.h"
+#include "Resources.h"
 
 namespace {
 

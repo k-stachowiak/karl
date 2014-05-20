@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include "config.h"
+#include "Config.h"
 #include "SysPhysics.h"
 
 namespace sys {

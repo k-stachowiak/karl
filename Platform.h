@@ -5,8 +5,8 @@
 
 #include <allegro5/allegro.h>
 
-#include "auto.h"
-#include "state.h"
+#include "Auto.h"
+#include "State.h"
 
 struct Platform {
 
@@ -17,8 +17,8 @@ struct Platform {
 
 public:
     Platform();
-    Transition ProcessEvents(State& state);
-    Transition LoopStep(State& state);
+    StateTransition ProcessEvents(State& state);
+    StateTransition LoopStep(State& state);
 };
 
 #endif

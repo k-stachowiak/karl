@@ -17,11 +17,11 @@ include_directories(
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror -g -O0")
 
 add_executable(karl
-    ./config.cpp
-    ./platform.cpp
-    ./common.cpp
-    ./resources.cpp
-    ./main.cpp
+    ./Config.cpp
+    ./Platform.cpp
+    ./Common.cpp
+    ./Resources.cpp
+    ./Main.cpp
     ./cmp/CmpAppearance.cpp
     ./cmp/CmpPhysics.cpp
     ./cmp/CmpPhysicsSimple.cpp
@@ -29,8 +29,8 @@ add_executable(karl
     ./sys/SysPhysics.cpp
     ./sys/SysDrawing.cpp
     ./ent/Ent.cpp
-    ./state/state_game.cpp
-    ./state/machine.cpp
+    ./state/StateGame.cpp
+    ./state/StateMachine.cpp
     )
 
 target_link_libraries(karl moonlang allegro_monolith ode GL)

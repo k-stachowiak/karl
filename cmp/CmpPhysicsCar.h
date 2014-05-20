@@ -6,8 +6,8 @@
 
 #include <ode/ode.h>
 
-#include "auto.h"
-#include "common.h"
+#include "Auto.h"
+#include "Common.h"
 #include "CmpPhysics.h"
 
 namespace cmp {

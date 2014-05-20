@@ -1,9 +1,9 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-#include "diagnostics.h"
-#include "config.h"
-#include "platform.h"
+#include "Diagnostics.h"
+#include "Config.h"
+#include "Platform.h"
 
 Platform::Platform()
 {
@@ -47,14 +47,14 @@ Platform::Platform()
     m_time_accumulator = 0;
 }
 
-Transition Platform::ProcessEvents(State& state)
+StateTransition Platform::ProcessEvents(State& state)
 {
     ALLEGRO_EVENT ev;
     while(!al_is_event_queue_empty(m_queue.get())) {
         al_get_next_event(m_queue.get(), &ev);
         switch(ev.type) {
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
-            return { Transition::State::END };
+            return { StateTransition::State::END };
 
         case ALLEGRO_EVENT_KEY_DOWN:
             state.KeyDown(ev.keyboard.keycode);
@@ -78,10 +78,10 @@ Transition Platform::ProcessEvents(State& state)
         }
     }
 
-    return { Transition::State::THIS_STATE };
+    return { StateTransition::State::THIS_STATE };
 }
 
-Transition Platform::LoopStep(State& state)
+StateTransition Platform::LoopStep(State& state)
 {
     const double dt = 1.0 / cfg_fps;
     const double max_frame_time = 0.25;
@@ -98,7 +98,7 @@ Transition Platform::LoopStep(State& state)
 
     while (m_time_accumulator >= dt) {
         auto transition = state.Tick(dt);
-        if (transition.target_state != Transition::State::THIS_STATE) {
+        if (transition.target_state != StateTransition::State::THIS_STATE) {
             return transition;
         }
         m_time_accumulator -= dt;
@@ -108,5 +108,5 @@ Transition Platform::LoopStep(State& state)
     state.Draw(weight);
     al_flip_display();
 
-    return { Transition::State::THIS_STATE };
+    return { StateTransition::State::THIS_STATE };
 }

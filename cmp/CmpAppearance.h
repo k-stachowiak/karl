@@ -2,7 +2,7 @@
 #define CMP_APPEARANCE_H
 
 #include <vector>
-#include "common.h"
+#include "Common.h"
 
 namespace cmp {
 

@@ -1,5 +1,5 @@
-#include "config.h"
-#include "state_game.h"
+#include "Config.h"
+#include "StateGame.h"
 
 void StateGame::m_DriveCamera(
         FLOATING dright, FLOATING dfront,
@@ -24,11 +24,11 @@ void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
 
     glm::vec3 rot = m_tank.phys.GetRotationAngles();
 
-    cast_rotated_coords(
+    CastRotatedCoords(
         boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
         0, rot.z, tank_rfx, tank_rfy);
 
-    cast_rotated_coords(
+    CastRotatedCoords(
         boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
         0, rot.z, tank_lfx, tank_lfy);
 
@@ -50,7 +50,7 @@ StateGame::StateGame(Resources& resources) :
     m_drawing_system.AddNode(m_tank.MakeDrawingNode());
 }
 
-Transition StateGame::Tick(double dt)
+StateTransition StateGame::Tick(double dt)
 {
     FLOATING cam_dright = 0;
     FLOATING cam_dfront = 0;
@@ -78,8 +78,8 @@ Transition StateGame::Tick(double dt)
     m_mouse_move.dy = 0;
 
     return m_done
-        ? Transition { Transition::State::END }
-        : Transition { Transition::State::THIS_STATE };
+        ? StateTransition { StateTransition::State::END }
+        : StateTransition { StateTransition::State::THIS_STATE };
 }
 
 void StateGame::Draw(double weight)

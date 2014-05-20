@@ -4,10 +4,10 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_opengl.h>
 
-#include "common.h"
-#include "config.h"
+#include "Common.h"
+#include "Config.h"
 #include "SysDrawing.h"
-#include "resources.h"
+#include "Resources.h"
 
 /* Camera management.
  * ==================
@@ -37,7 +37,7 @@ void Drawing::Camera::Move(FLOATING dx, FLOATING dy)
 void Drawing::Camera::Walk(FLOATING front, FLOATING right)
 {
     FLOATING dx, dy;
-    cast_rotated_coords(front, right, rotation[1], dx, dy);
+    CastRotatedCoords(front, right, rotation[1], dx, dy);
     Move(dx, dy);
 }
 

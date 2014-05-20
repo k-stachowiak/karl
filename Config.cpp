@@ -1,4 +1,4 @@
-#include "diagnostics.h"
+#include "Diagnostics.h"
 #include "Moon.h"
 
 double cfg_screen_w;

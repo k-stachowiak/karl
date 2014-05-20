@@ -1,9 +1,9 @@
-#ifndef TRANSITION_H
-#define TRANSITION_H
+#ifndef STATE_TRANSITION_H
+#define STATE_TRANSITION_H
 
 #include <stdint.h>
 
-struct Transition {
+struct StateTransition {
 
     enum class State {
         GAME,
@@ -20,26 +20,26 @@ struct Transition {
         int8_t c[8];
     } data;
 
-    Transition(State target) :
+    StateTransition(State target) :
         target_state { target }
     {
         data.l = 0xDEADC0DEDEADC0DE;
     }
 
-    Transition(State target, int64_t l) :
+    StateTransition(State target, int64_t l) :
         target_state { target }
     {
         data.l = l;
     }
 
-    Transition(State target, int32_t i0, int32_t i1) :
+    StateTransition(State target, int32_t i0, int32_t i1) :
         target_state { target }
     {
         data.i[0] = i0;
         data.i[1] = i1;
     }
 
-    Transition(State target, int16_t s0, int16_t s1, int16_t s2, int16_t s3) :
+    StateTransition(State target, int16_t s0, int16_t s1, int16_t s2, int16_t s3) :
         target_state { target }
     {
         data.s[0] = s0;
@@ -48,7 +48,7 @@ struct Transition {
         data.s[3] = s3;
     }
 
-    Transition(State target,
+    StateTransition(State target,
             int8_t c0, int8_t c1, int8_t c2, int8_t c3,
             int8_t c4, int8_t c5, int8_t c6, int8_t c7) :
         target_state { target }

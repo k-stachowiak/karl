@@ -3,12 +3,12 @@
 
 #include <allegro5/allegro.h>
 
-#include "common.h"
-#include "resources.h"
+#include "Common.h"
+#include "Resources.h"
 #include "SysDrawing.h"
 #include "SysPhysics.h"
 #include "Ent.h"
-#include "state.h"
+#include "State.h"
 
 class StateGame : public State {
 
@@ -28,7 +28,7 @@ class StateGame : public State {
 
 public:
     StateGame(Resources& resources);
-    Transition Tick(double dt) override;
+    StateTransition Tick(double dt) override;
     void Draw(double weight) override;
     void KeyDown(int key) override;
     void KeyUp(int key) override;

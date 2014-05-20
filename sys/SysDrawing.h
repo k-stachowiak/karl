@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "common.h"
-#include "resources.h"
+#include "Common.h"
+#include "Resources.h"
 #include "CmpPhysics.h"
 #include "CmpAppearance.h"
 

@@ -1,8 +1,8 @@
 #ifndef CMP_PHYSICS_H
 #define CMP_PHYSICS_H
 
-#include "auto.h"
-#include "common.h"
+#include "Auto.h"
+#include "Common.h"
 
 namespace cmp {
 

@@ -5,7 +5,7 @@
 
 #include <allegro5/allegro_opengl.h>
 
-#include "auto.h"
+#include "Auto.h"
 
 class Shader {
 

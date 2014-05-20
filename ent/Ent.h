@@ -3,7 +3,7 @@
 
 #include <ode/ode.h>
 
-#include "common.h"
+#include "Common.h"
 #include "CmpPhysicsSimple.h"
 #include "SysDrawing.h"
 #include "SysPhysics.h"

@@ -2,7 +2,7 @@
 #include <iterator>
 #include <cmath>
 
-#include "config.h"
+#include "Config.h"
 #include "CmpPhysicsCar.h"
 
 namespace cmp {

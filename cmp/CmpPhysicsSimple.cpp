@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "config.h"
+#include "Config.h"
 #include "CmpPhysicsSimple.h"
 
 namespace cmp {

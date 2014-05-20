@@ -20,7 +20,13 @@ EntGround::EntGround(dWorldID, dSpaceID space) :
     const int y_segments = 20;
 
     phys = cmp::CmpPhysicsSimple::MakePlane(space);
-    appr = cmp::CmpAppearance::MakeFlat(x_segments, y_segments, 0, 0.25, 0, xy_to_zero);
+    appr = cmp::CmpAppearance::MakeFlat(
+        x_segments,
+        y_segments,
+        0,
+        0.25,
+        0,
+        xy_to_zero);
 }
 
 sys::NdDrawing EntGround::MakeDrawingNode()

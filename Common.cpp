@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdio>
 
-#include "common.h"
+#include "Common.h"
 
 /** This is obviously not mine.
  *  If you don't recognize it, look up "fast inverse square root".
@@ -25,7 +25,7 @@ float Q_rsqrt( float number )
     return y;
 }
 
-void cast_rotated_coords(
+void CastRotatedCoords(
         FLOATING front, FLOATING right, FLOATING angle,
         FLOATING &dx, FLOATING &dy)
 {
