@@ -47,14 +47,14 @@ Platform::Platform()
     m_time_accumulator = 0;
 }
 
-StateTransition Platform::ProcessEvents(State& state)
+state::StTransition Platform::ProcessEvents(state::State& state)
 {
     ALLEGRO_EVENT ev;
     while(!al_is_event_queue_empty(m_queue.get())) {
         al_get_next_event(m_queue.get(), &ev);
         switch(ev.type) {
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
-            return { StateTransition::State::END };
+            return { state::StTransition::State::END };
 
         case ALLEGRO_EVENT_KEY_DOWN:
             state.KeyDown(ev.keyboard.keycode);
@@ -78,10 +78,10 @@ StateTransition Platform::ProcessEvents(State& state)
         }
     }
 
-    return { StateTransition::State::THIS_STATE };
+    return { state::StTransition::State::THIS_STATE };
 }
 
-StateTransition Platform::LoopStep(State& state)
+state::StTransition Platform::LoopStep(state::State& state)
 {
     const double dt = 1.0 / cfg_fps;
     const double max_frame_time = 0.25;
@@ -98,7 +98,7 @@ StateTransition Platform::LoopStep(State& state)
 
     while (m_time_accumulator >= dt) {
         auto transition = state.Tick(dt);
-        if (transition.target_state != StateTransition::State::THIS_STATE) {
+        if (transition.target_state != state::StTransition::State::THIS_STATE) {
             return transition;
         }
         m_time_accumulator -= dt;
@@ -108,5 +108,5 @@ StateTransition Platform::LoopStep(State& state)
     state.Draw(weight);
     al_flip_display();
 
-    return { StateTransition::State::THIS_STATE };
+    return { state::StTransition::State::THIS_STATE };
 }

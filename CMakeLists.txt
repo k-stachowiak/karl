@@ -30,8 +30,8 @@ add_executable(karl
     ./sys/CameraFlying.cpp
     ./sys/SysPhysics.cpp
     ./sys/SysDrawing.cpp
-    ./state/StateGame.cpp
-    ./state/StateMachine.cpp
+    ./state/StGame.cpp
+    ./state/StMachine.cpp
     )
 
 target_link_libraries(karl moonlang allegro_monolith ode GL)

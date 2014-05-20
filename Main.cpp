@@ -1,8 +1,8 @@
 #include "Config.h"
 #include "Platform.h"
 #include "Resources.h"
-#include "StateGame.h"
-#include "StateMachine.h"
+#include "StGame.h"
+#include "StMachine.h"
 
 #include "Moon.h"
 
@@ -12,16 +12,18 @@ int main()
 
     Platform platform;
     Resources resources;
-    StateMachine machine {{
+    state::StMachine machine {{
         {
-            StateTransition::State::GAME,
-            [&resources](StateTransition::Data) mutable {
-                return std::unique_ptr<State> { new StateGame { resources } };
+            state::StTransition::State::GAME,
+            [&resources](state::StTransition::Data) mutable {
+                return std::unique_ptr<state::State> {
+                    new state::StGame { resources }
+                };
             }
         }
     }};
 
-    machine.ChangeState({ StateTransition::State::GAME });
+    machine.ChangeState({ state::StTransition::State::GAME });
 
     while (true) {
         auto transition = platform.ProcessEvents(machine.CurrentState());

@@ -1,7 +1,9 @@
 #include "Config.h"
-#include "StateGame.h"
+#include "StGame.h"
 
-void StateGame::m_DriveCamera(
+namespace state {
+
+void StGame::m_DriveCamera(
         FLOATING dright, FLOATING dfront,
         FLOATING dpitch, FLOATING dyaw,
         double dt)
@@ -18,7 +20,7 @@ void StateGame::m_DriveCamera(
         dright * cam_move_speed * dt);
 }
 
-void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
+void StGame::m_DriveTank(FLOATING boost, FLOATING turn)
 {
     FLOATING tank_lfx, tank_lfy, tank_rfx, tank_rfy;
 
@@ -36,7 +38,7 @@ void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
     dBodyAddForce(m_tank.phys.GetLTrackBody(), tank_lfx, tank_lfy, 0);
 }
 
-StateGame::StateGame(Resources& resources) :
+StGame::StGame(Resources& resources) :
     m_drawing_system { resources },
     m_ground { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
     m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
@@ -52,7 +54,7 @@ StateGame::StateGame(Resources& resources) :
     m_drawing_system.AddNode(m_tank.MakeDrawingNode());
 }
 
-StateTransition StateGame::Tick(double dt)
+StTransition StGame::Tick(double dt)
 {
     FLOATING cam_dright = 0;
     FLOATING cam_dfront = 0;
@@ -80,21 +82,21 @@ StateTransition StateGame::Tick(double dt)
     m_mouse_move.dy = 0;
 
     return m_done
-        ? StateTransition { StateTransition::State::END }
-        : StateTransition { StateTransition::State::THIS_STATE };
+        ? StTransition { StTransition::State::END }
+        : StTransition { StTransition::State::THIS_STATE };
 }
 
-void StateGame::Draw(double weight)
+void StGame::Draw(double weight)
 {
     m_drawing_system.Perform(weight);
 }
 
-void StateGame::KeyDown(int key)
+void StGame::KeyDown(int key)
 {
     m_keys[key] = true;
 }
 
-void StateGame::KeyUp(int key)
+void StGame::KeyUp(int key)
 {
     m_keys[key] = false;
 
@@ -103,8 +105,10 @@ void StateGame::KeyUp(int key)
     }
 }
 
-void StateGame::MouseMove(int dx, int dy)
+void StGame::MouseMove(int dx, int dy)
 {
     m_mouse_move.dx = dx;
     m_mouse_move.dy = dy;
+}
+
 }

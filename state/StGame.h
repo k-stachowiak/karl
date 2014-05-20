@@ -1,5 +1,5 @@
-#ifndef STATE_GAME_H
-#define STATE_GAME_H
+#ifndef ST_GAME_H
+#define ST_GAME_H
 
 #include <allegro5/allegro.h>
 
@@ -11,7 +11,9 @@
 #include "Ent.h"
 #include "State.h"
 
-class StateGame : public State {
+namespace state {
+
+class StGame : public State {
 
     CameraFlying m_camera;
 
@@ -30,12 +32,14 @@ class StateGame : public State {
     void m_DriveTank(FLOATING boost, FLOATING turn);
 
 public:
-    StateGame(Resources& resources);
-    StateTransition Tick(double dt) override;
+    StGame(Resources& resources);
+    StTransition Tick(double dt) override;
     void Draw(double weight) override;
     void KeyDown(int key) override;
     void KeyUp(int key) override;
     void MouseMove(int dx, int dy) override;
 };
+
+}
 
 #endif

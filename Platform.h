@@ -17,8 +17,8 @@ struct Platform {
 
 public:
     Platform();
-    StateTransition ProcessEvents(State& state);
-    StateTransition LoopStep(State& state);
+    state::StTransition ProcessEvents(state::State& state);
+    state::StTransition LoopStep(state::State& state);
 };
 
 #endif
