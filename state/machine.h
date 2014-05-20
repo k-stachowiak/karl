@@ -12,14 +12,14 @@ using StateMaker = std::function<std::unique_ptr<State> (Transition::Data)>;
 using TransitionMap = std::map<Transition::State, StateMaker>;
 
 class Machine {
-	TransitionMap m_transition_map;
-	std::unique_ptr<State> m_current_state;
+    TransitionMap m_transition_map;
+    std::unique_ptr<State> m_current_state;
 
 public:
-	Machine(TransitionMap transitionMap);
-	void ChangeState(Transition transition);
-	State& CurrentState() const { return *m_current_state; }
-	bool HasState() const { return static_cast<bool>(m_current_state); }
+    Machine(TransitionMap transitionMap);
+    void ChangeState(Transition transition);
+    State& CurrentState() const { return *m_current_state; }
+    bool HasState() const { return static_cast<bool>(m_current_state); }
 };
 
 #endif

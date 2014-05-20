@@ -9,23 +9,23 @@
 #include "sys_physics.h"
 
 struct EntGround {
-	long id;
-	cmp::PhysicsSimple phys;
-	cmp::Appearance appr;
+    long id;
+    cmp::PhysicsSimple phys;
+    cmp::Appearance appr;
 
-	EntGround(dWorldID world, dSpaceID space);
-	sys::NdDrawing MakeDrawingNode();
-	sys::NdPhysics MakePhysicsNode();
+    EntGround(dWorldID world, dSpaceID space);
+    sys::NdDrawing MakeDrawingNode();
+    sys::NdPhysics MakePhysicsNode();
 };
 
 struct EntTank {
-	long id;
-	cmp::PhysicsCar phys;
-	cmp::Appearance appr;
+    long id;
+    cmp::PhysicsCar phys;
+    cmp::Appearance appr;
 
-	EntTank(dWorldID world, dSpaceID space);
-	sys::NdDrawing MakeDrawingNode();
-	sys::NdPhysics MakePhysicsNode();
+    EntTank(dWorldID world, dSpaceID space);
+    sys::NdDrawing MakeDrawingNode();
+    sys::NdPhysics MakePhysicsNode();
 };
 
 #endif

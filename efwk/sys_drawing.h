@@ -10,56 +10,56 @@
 namespace sys {
 
 struct NdDrawing {
-	long id;
-	cmp::Physics *phys;
-	cmp::Appearance *appr;
+    long id;
+    cmp::Physics *phys;
+    cmp::Appearance *appr;
 };
 
 class Drawing {
 
-	Resources& m_resources;
+    Resources& m_resources;
 
-	std::vector<NdDrawing> m_nodes;
+    std::vector<NdDrawing> m_nodes;
 
-	struct Camera {
-		glm::vec3 location;
-		glm::vec3 prev_location;
-		glm::vec3 rotation;
-		glm::vec3 prev_rotation;
+    struct Camera {
+        glm::vec3 location;
+        glm::vec3 prev_location;
+        glm::vec3 rotation;
+        glm::vec3 prev_rotation;
 
-		glm::mat4 view;
-		glm::mat4 projection;
+        glm::mat4 view;
+        glm::mat4 projection;
 
-		Camera();
+        Camera();
 
-		void Move(FLOATING dx, FLOATING dy);
-		void Walk(FLOATING front, FLOATING right);
-		void Rotate(FLOATING pitch, FLOATING yaw);
+        void Move(FLOATING dx, FLOATING dy);
+        void Walk(FLOATING front, FLOATING right);
+        void Rotate(FLOATING pitch, FLOATING yaw);
 
-	} m_camera;
+    } m_camera;
 
-	void m_CameraUpdateViewMatrix(FLOATING weight);
-	void m_CameraApply(const Shader &shader, FLOATING weight);
+    void m_CameraUpdateViewMatrix(FLOATING weight);
+    void m_CameraApply(const Shader &shader, FLOATING weight);
 
-	static void m_ShaderBegin(const Shader &shader);
-	static void m_ShaderEnd(const Shader &shader);
+    static void m_ShaderBegin(const Shader &shader);
+    static void m_ShaderEnd(const Shader &shader);
 
-	static void m_FrameBegin();
-	static void m_FrameEnd();
+    static void m_FrameBegin();
+    static void m_FrameEnd();
 
-	static void m_ComputeModelMatrix(const NdDrawing& node, glm::mat4& model, FLOATING weight);
-	static void m_DrawMesh(const Shader &shader, const NdDrawing& node, FLOATING weight);
+    static void m_ComputeModelMatrix(const NdDrawing& node, glm::mat4& model, FLOATING weight);
+    static void m_DrawMesh(const Shader &shader, const NdDrawing& node, FLOATING weight);
 
 public:
-	Drawing(Resources& resources);
+    Drawing(Resources& resources);
 
-	void AddNode(const NdDrawing& node) { m_nodes.push_back(node); }
+    void AddNode(const NdDrawing& node) { m_nodes.push_back(node); }
 
-	void CameraMove(FLOATING dx, FLOATING dy);
-	void CameraWalk(FLOATING front, FLOATING right);
-	void CameraRotate(FLOATING pitch, FLOATING yaw);
+    void CameraMove(FLOATING dx, FLOATING dy);
+    void CameraWalk(FLOATING front, FLOATING right);
+    void CameraRotate(FLOATING pitch, FLOATING yaw);
 
-	void Perform(double weight);
+    void Perform(double weight);
 };
 
 }

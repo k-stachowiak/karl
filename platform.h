@@ -10,15 +10,15 @@
 
 struct Platform {
 
-	double m_current_time;
-	double m_time_accumulator;
-	AlDisplay m_display;
-	AlEvQueue m_queue;
+    double m_current_time;
+    double m_time_accumulator;
+    AlDisplay m_display;
+    AlEvQueue m_queue;
 
 public:
-	Platform();
-	Transition ProcessEvents(State& state);
-	Transition LoopStep(State& state);
+    Platform();
+    Transition ProcessEvents(State& state);
+    Transition LoopStep(State& state);
 };
 
 #endif

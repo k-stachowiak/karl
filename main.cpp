@@ -1,36 +1,41 @@
+#include "config.h"
 #include "platform.h"
 #include "resources.h"
 #include "state_game.h"
 #include "machine.h"
 
-int main(void)
+#include "Moon.h"
+
+int main()
 {
-	Platform platform;
-	Resources resources;
-	Machine machine {{
-		{
-			Transition::State::GAME,
-			[&resources](Transition::Data) mutable {
-				return std::unique_ptr<State> { new StateGame { resources } };
-			}
-		}
-	}};
+    CfgInit();
 
-	machine.ChangeState({ Transition::State::GAME });
+    Platform platform;
+    Resources resources;
+    Machine machine {{
+        {
+            Transition::State::GAME,
+            [&resources](Transition::Data) mutable {
+                return std::unique_ptr<State> { new StateGame { resources } };
+            }
+        }
+    }};
 
-	while (true) {
-		auto transition = platform.ProcessEvents(machine.CurrentState());
-		machine.ChangeState(transition);
-		if (!machine.HasState()) {
-			break;
-		}
+    machine.ChangeState({ Transition::State::GAME });
 
-		transition = platform.LoopStep(machine.CurrentState());
-		machine.ChangeState(transition);
-		if (!machine.HasState()) {
-			break;
-		}
-	}
+    while (true) {
+        auto transition = platform.ProcessEvents(machine.CurrentState());
+        machine.ChangeState(transition);
+        if (!machine.HasState()) {
+            break;
+        }
 
-	return 0;
+        transition = platform.LoopStep(machine.CurrentState());
+        machine.ChangeState(transition);
+        if (!machine.HasState()) {
+            break;
+        }
+    }
+
+    return 0;
 }
