@@ -34,6 +34,7 @@ void StGame::m_DriveTank(FLOATING boost, FLOATING turn)
         boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
         0, rot.z, tank_lfx, tank_lfy);
 
+    // TODO: Move the ODE calls to the physics component.
     dBodyAddForce(m_tank.phys.GetRTrackBody(), tank_rfx, tank_rfy, 0);
     dBodyAddForce(m_tank.phys.GetLTrackBody(), tank_lfx, tank_lfy, 0);
 }

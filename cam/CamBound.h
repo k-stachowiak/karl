@@ -1,9 +1,9 @@
-#ifndef CAMERA_BOUND_H
-#define CAMERA_BOUND_H
+#ifndef CAM_BOUND_H
+#define CAM_BOUND_H
 
 #include "Camera.h"
 
-class CameraBound : public Camera {
+class CamBound : public Camera {
 
     // TODO: The data here is the same as in the flying camera.
     //       consider putting the data in the base class - will this really

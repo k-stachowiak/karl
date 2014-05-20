@@ -7,7 +7,7 @@
 #include "Resources.h"
 #include "SysDrawing.h"
 #include "SysPhysics.h"
-#include "CameraFlying.h"
+#include "CamFlying.h"
 #include "Ent.h"
 #include "State.h"
 
@@ -15,7 +15,7 @@ namespace state {
 
 class StGame : public State {
 
-    CameraFlying m_camera;
+    CamFlying m_camera;
 
     sys::Drawing m_drawing_system;
     sys::Physics m_physics_system;

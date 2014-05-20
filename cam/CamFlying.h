@@ -1,9 +1,9 @@
-#ifndef CAMERA_FLYING_H
-#define CAMERA_FLYING_H
+#ifndef CAM_FLYING_H
+#define CAM_FLYING_H
 
 #include "Camera.h"
 
-class CameraFlying : public Camera {
+class CamFlying : public Camera {
 
     glm::vec3 m_location, m_prev_location;
     glm::vec3 m_rotation, m_prev_rotation;
@@ -11,7 +11,7 @@ class CameraFlying : public Camera {
     glm::mat4 m_view, m_projection;
 
 public:
-    CameraFlying();
+    CamFlying();
 
     void Update(FLOATING weight) override;
     const glm::mat4& GetViewMatrix() override { return m_view; }

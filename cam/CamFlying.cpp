@@ -1,7 +1,7 @@
 #include "Config.h"
-#include "CameraFlying.h"
+#include "CamFlying.h"
 
-CameraFlying::CameraFlying() :
+CamFlying::CamFlying() :
     m_location { 0, 0, 0.75f },
     m_rotation { 0, 0, 0 },
     m_view {},
@@ -13,7 +13,7 @@ CameraFlying::CameraFlying() :
             cfg_cam_far) }
 {}
 
-void CameraFlying::Update(FLOATING weight)
+void CamFlying::Update(FLOATING weight)
 {
     glm::vec3 inter_location = (
         weight * m_prev_location +
@@ -31,21 +31,21 @@ void CameraFlying::Update(FLOATING weight)
     m_view = glm::translate(m_view, -inter_location);
 }
 
-void CameraFlying::Move(FLOATING dx, FLOATING dy)
+void CamFlying::Move(FLOATING dx, FLOATING dy)
 {
     m_prev_location = m_location;
     m_location[0] += dx;
     m_location[1] += dy;
 }
 
-void CameraFlying::Walk(FLOATING front, FLOATING right)
+void CamFlying::Walk(FLOATING front, FLOATING right)
 {
     FLOATING dx, dy;
     CastRotatedCoords(front, right, m_rotation[1], dx, dy);
     Move(dx, dy);
 }
 
-void CameraFlying::Rotate(FLOATING pitch, FLOATING yaw)
+void CamFlying::Rotate(FLOATING pitch, FLOATING yaw)
 {
     m_prev_rotation = m_rotation;
     m_rotation[0] += pitch;

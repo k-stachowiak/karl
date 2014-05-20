@@ -5,6 +5,7 @@
 #include <allegro5/allegro_opengl.h>
 
 #include "Common.h"
+#include "Diagnostics.h"
 #include "Config.h"
 #include "SysDrawing.h"
 #include "Resources.h"
@@ -17,6 +18,8 @@ namespace sys {
 
 void Drawing::m_CameraApply(const Shader &shader, FLOATING weight)
 {
+    DIAG_ASSERT(m_camera != nullptr);
+
     m_camera->Update(weight);
 
     glUniformMatrix4fv(

@@ -8,6 +8,7 @@ include_directories(
     /home/krzysztof/Projects/moon-lang
     ./utils
     ./state
+    ./cam
     ./ent
     ./sys
     ./cmp
@@ -22,12 +23,12 @@ add_executable(karl
     ./Common.cpp
     ./Resources.cpp
     ./Main.cpp
+    ./cam/CamFlying.cpp
     ./cmp/CmpAppearance.cpp
     ./cmp/CmpPhysics.cpp
     ./cmp/CmpPhysicsSimple.cpp
     ./cmp/CmpPhysicsCar.cpp
     ./ent/Ent.cpp
-    ./sys/CameraFlying.cpp
     ./sys/SysPhysics.cpp
     ./sys/SysDrawing.cpp
     ./state/StGame.cpp
