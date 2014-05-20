@@ -3,6 +3,7 @@
 
 #include <cassert>
 
+#include "config.h"
 #include "sys_physics.h"
 
 using std::placeholders::_1;
@@ -72,8 +73,8 @@ void Physics::m_OnTrackNonTrackContact(
         dContactSoftERP |
         dContactSoftCFM |
         dContactFDir1;
-    contact.surface.mu = 0.75;
-    contact.surface.mu2 = 3;
+    contact.surface.mu = cfg_tank_dir1_mu;
+    contact.surface.mu2 = cfg_tank_dir2_mu;
     contact.surface.soft_erp = 1.0;
     contact.surface.soft_cfm = 0.01;
 

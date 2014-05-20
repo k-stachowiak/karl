@@ -1,3 +1,4 @@
+#include "config.h"
 #include "state_game.h"
 
 void StateGame::m_DriveCamera(
@@ -19,25 +20,20 @@ void StateGame::m_DriveCamera(
 
 void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
 {
-    const FLOATING boost_force = 25;
     FLOATING tank_lfx, tank_lfy, tank_rfx, tank_rfy;
 
     glm::vec3 rot = m_tank.phys.GetRotationAngles();
 
-    cast_rotated_coords(boost + turn, 0, rot.z, tank_rfx, tank_rfy);
-    cast_rotated_coords(boost - turn, 0, rot.z, tank_lfx, tank_lfy);
+    cast_rotated_coords(
+        boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
+        0, rot.z, tank_rfx, tank_rfy);
 
-    dBodyAddForce(
-        m_tank.phys.GetRTrackBody(),
-        tank_rfx * boost_force,
-        tank_rfy * boost_force,
-        0);
+    cast_rotated_coords(
+        boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
+        0, rot.z, tank_lfx, tank_lfy);
 
-    dBodyAddForce(
-        m_tank.phys.GetLTrackBody(),
-        tank_lfx * boost_force,
-        tank_lfy * boost_force,
-        0);
+    dBodyAddForce(m_tank.phys.GetRTrackBody(), tank_rfx, tank_rfy, 0);
+    dBodyAddForce(m_tank.phys.GetLTrackBody(), tank_lfx, tank_lfy, 0);
 }
 
 StateGame::StateGame(Resources& resources) :

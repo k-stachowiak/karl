@@ -13,3 +13,8 @@
 (bind track_lx 1.6)
 (bind track_ly 0.1)
 (bind track_lz 0.1)
+
+(bind tank_boost_force 25.0)
+(bind tank_turn_force 200.0)
+(bind tank_dir1_mu 0.667)
+(bind tank_dir2_mu 30.0)
