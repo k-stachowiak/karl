@@ -16,6 +16,14 @@ void StateGame::m_DriveCamera(
     m_drawing_system.CameraWalk(
         dfront * cam_move_speed * dt,
         dright * cam_move_speed * dt);
+
+    m_camera.Rotate(
+        dpitch * cam_rotate_speed * dt,
+        dyaw * cam_rotate_speed * dt);
+
+    m_camera.Walk(
+        dfront * cam_move_speed * dt,
+        dright * cam_move_speed * dt);
 }
 
 void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
@@ -38,10 +46,10 @@ void StateGame::m_DriveTank(FLOATING boost, FLOATING turn)
 
 StateGame::StateGame(Resources& resources) :
     m_drawing_system { resources },
-    m_keys(ALLEGRO_KEY_MAX, false),
-    m_done { false },
     m_ground { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
-    m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() }
+    m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
+    m_keys(ALLEGRO_KEY_MAX, false),
+    m_done { false }
 {
     m_physics_system.AddNode(m_ground.MakePhysicsNode());
     m_drawing_system.AddNode(m_ground.MakeDrawingNode());

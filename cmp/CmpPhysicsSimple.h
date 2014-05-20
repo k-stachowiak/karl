@@ -19,15 +19,15 @@ struct CmpPhysicsSimple : public CmpPhysics {
         FLOATING x, FLOATING y, FLOATING z,
         FLOATING lx, FLOATING ly, FLOATING lz);
 
-    bool HasBody() const { return (bool)body; }
+    bool HasBody() const override { return (bool)body; }
 
-    glm::vec3 GetLocation() const
+    glm::vec3 GetLocation() const override
     {
         const FLOATING *pos = dBodyGetPosition(body.get());
         return { pos[0], pos[1], pos[2] };
     }
 
-    glm::quat GetRotation() const
+    glm::quat GetRotation() const override
     {
         const FLOATING* q = dBodyGetQuaternion(body.get());
         return { q[0], q[1], q[2], q[3] };

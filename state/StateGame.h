@@ -7,21 +7,24 @@
 #include "Resources.h"
 #include "SysDrawing.h"
 #include "SysPhysics.h"
+#include "CameraFlying.h"
 #include "Ent.h"
 #include "State.h"
 
 class StateGame : public State {
 
+    CameraFlying m_camera;
+
     sys::Drawing m_drawing_system;
     sys::Physics m_physics_system;
+
+    ent::EntGround m_ground;
+    ent::EntTank m_tank;
 
     std::vector<bool> m_keys;
     struct { int dx = 0, dy = 0; } m_mouse_move;
 
     bool m_done;
-
-    ent::EntGround m_ground;
-    ent::EntTank m_tank;
 
     void m_DriveCamera(FLOATING dx, FLOATING dy, FLOATING dpitch, FLOATING dyaw, double dt);
     void m_DriveTank(FLOATING boost, FLOATING turn);

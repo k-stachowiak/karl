@@ -26,9 +26,10 @@ add_executable(karl
     ./cmp/CmpPhysics.cpp
     ./cmp/CmpPhysicsSimple.cpp
     ./cmp/CmpPhysicsCar.cpp
+    ./ent/Ent.cpp
+    ./sys/CameraFlying.cpp
     ./sys/SysPhysics.cpp
     ./sys/SysDrawing.cpp
-    ./ent/Ent.cpp
     ./state/StateGame.cpp
     ./state/StateMachine.cpp
     )

@@ -7,6 +7,7 @@
 #include "Resources.h"
 #include "CmpPhysics.h"
 #include "CmpAppearance.h"
+#include "Camera.h"
 
 namespace sys {
 
