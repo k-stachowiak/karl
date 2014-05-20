@@ -7,13 +7,13 @@
 
 #include "auto.h"
 #include "common.h"
-#include "cmp.h"
+#include "CmpPhysics.h"
 
 namespace sys {
 
 struct NdPhysics {
     long id;
-    cmp::Physics *phys;
+    cmp::CmpPhysics *phys;
 };
 
 class Physics {

@@ -5,14 +5,15 @@
 
 #include "common.h"
 #include "resources.h"
-#include "cmp.h"
+#include "CmpPhysics.h"
+#include "CmpAppearance.h"
 
 namespace sys {
 
 struct NdDrawing {
     long id;
-    cmp::Physics *phys;
-    cmp::Appearance *appr;
+    cmp::CmpPhysics *phys;
+    cmp::CmpAppearance *appr;
 };
 
 class Drawing {

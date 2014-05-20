@@ -50,8 +50,14 @@ void Drawing::Camera::Rotate(FLOATING pitch, FLOATING yaw)
 
 void Drawing::m_CameraUpdateViewMatrix(FLOATING weight)
 {
-    glm::vec3 inter_location = (weight * m_camera.prev_location + (1 - weight) * m_camera.location);
-    glm::vec3 inter_rotation = (weight * m_camera.prev_rotation + (1 - weight) * m_camera.rotation);
+    glm::vec3 inter_location = (
+        weight * m_camera.prev_location +
+        (1 - weight) * m_camera.location);
+
+    glm::vec3 inter_rotation = (
+        weight * m_camera.prev_rotation +
+        (1 - weight) * m_camera.rotation);
+
     m_camera.view = glm::mat4{};
     m_camera.view = glm::rotate(m_camera.view, -inter_rotation[0], glm::vec3 { 1, 0, 0 });
     m_camera.view = glm::rotate(m_camera.view, -inter_rotation[1], glm::vec3 { 0, 1, 0 });

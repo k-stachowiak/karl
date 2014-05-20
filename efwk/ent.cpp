@@ -17,8 +17,8 @@ EntGround::EntGround(dWorldID, dSpaceID space) :
     const int x_segments = 3;
     const int y_segments = 20;
 
-    phys = cmp::PhysicsSimple::MakePlane(space);
-    appr = cmp::Appearance::MakeFlat(x_segments, y_segments, 0, 0.25, 0, xy_to_zero);
+    phys = cmp::CmpPhysicsSimple::MakePlane(space);
+    appr = cmp::CmpAppearance::MakeFlat(x_segments, y_segments, 0, 0.25, 0, xy_to_zero);
 }
 
 sys::NdDrawing EntGround::MakeDrawingNode()
@@ -35,7 +35,7 @@ EntTank::EntTank(dWorldID world, dSpaceID space) :
     id { next_id++ },
     phys { world, space, 1.5, 1.5, 2 }
 {
-    appr = cmp::Appearance::MakeCar();
+    appr = cmp::CmpAppearance::MakeCar();
 }
 
 sys::NdDrawing EntTank::MakeDrawingNode()

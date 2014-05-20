@@ -4,14 +4,16 @@
 #include <ode/ode.h>
 
 #include "common.h"
-#include "cmp.h"
+#include "CmpPhysicsSimple.h"
 #include "sys_drawing.h"
 #include "sys_physics.h"
+#include "CmpPhysicsSimple.h"
+#include "CmpPhysicsCar.h"
 
 struct EntGround {
     long id;
-    cmp::PhysicsSimple phys;
-    cmp::Appearance appr;
+    cmp::CmpPhysicsSimple phys;
+    cmp::CmpAppearance appr;
 
     EntGround(dWorldID world, dSpaceID space);
     sys::NdDrawing MakeDrawingNode();
@@ -20,8 +22,8 @@ struct EntGround {
 
 struct EntTank {
     long id;
-    cmp::PhysicsCar phys;
-    cmp::Appearance appr;
+    cmp::CmpPhysicsCar phys;
+    cmp::CmpAppearance appr;
 
     EntTank(dWorldID world, dSpaceID space);
     sys::NdDrawing MakeDrawingNode();
