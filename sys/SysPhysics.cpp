@@ -4,9 +4,7 @@
 #include <cassert>
 
 #include "config.h"
-#include "sys_physics.h"
-
-using std::placeholders::_1;
+#include "SysPhysics.h"
 
 namespace sys {
 

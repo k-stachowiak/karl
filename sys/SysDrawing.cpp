@@ -6,7 +6,7 @@
 
 #include "common.h"
 #include "config.h"
-#include "sys_drawing.h"
+#include "SysDrawing.h"
 #include "resources.h"
 
 /* Camera management.

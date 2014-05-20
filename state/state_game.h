@@ -5,9 +5,9 @@
 
 #include "common.h"
 #include "resources.h"
-#include "sys_drawing.h"
-#include "sys_physics.h"
-#include "ent.h"
+#include "SysDrawing.h"
+#include "SysPhysics.h"
+#include "Ent.h"
 #include "state.h"
 
 class StateGame : public State {
@@ -20,8 +20,8 @@ class StateGame : public State {
 
     bool m_done;
 
-    EntGround m_ground;
-    EntTank m_tank;
+    ent::EntGround m_ground;
+    ent::EntTank m_tank;
 
     void m_DriveCamera(FLOATING dx, FLOATING dy, FLOATING dpitch, FLOATING dyaw, double dt);
     void m_DriveTank(FLOATING boost, FLOATING turn);

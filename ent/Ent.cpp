@@ -1,10 +1,12 @@
 #include <cstdio>
 
-#include "ent.h"
+#include "Ent.h"
 
 namespace {
     long next_id = 1;
 }
+
+namespace ent {
 
 static FLOATING xy_to_zero(int, int)
 {
@@ -48,3 +50,4 @@ sys::NdPhysics EntTank::MakePhysicsNode()
     return { id, &phys };
 }
 
+}

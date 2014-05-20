@@ -5,10 +5,12 @@
 
 #include "common.h"
 #include "CmpPhysicsSimple.h"
-#include "sys_drawing.h"
-#include "sys_physics.h"
+#include "SysDrawing.h"
+#include "SysPhysics.h"
 #include "CmpPhysicsSimple.h"
 #include "CmpPhysicsCar.h"
+
+namespace ent {
 
 struct EntGround {
     long id;
@@ -29,5 +31,7 @@ struct EntTank {
     sys::NdDrawing MakeDrawingNode();
     sys::NdPhysics MakePhysicsNode();
 };
+
+}
 
 #endif
