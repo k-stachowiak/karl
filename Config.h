@@ -23,6 +23,7 @@ extern double cfg_tank_boost_force;
 extern double cfg_tank_turn_force;
 extern double cfg_tank_dir1_mu;
 extern double cfg_tank_dir2_mu;
+extern double cfg_tank_max_ang_speed;
 
 void CfgInit();
 

@@ -21,6 +21,7 @@ double cfg_tank_boost_force;
 double cfg_tank_turn_force;
 double cfg_tank_dir1_mu;
 double cfg_tank_dir2_mu;
+double cfg_tank_max_ang_speed;
 
 namespace {
 
@@ -70,6 +71,7 @@ void CfgInit()
         CfgRead(itpr, cfg_tank_turn_force, "tank_turn_force");
         CfgRead(itpr, cfg_tank_dir1_mu, "tank_dir1_mu");
         CfgRead(itpr, cfg_tank_dir2_mu, "tank_dir2_mu");
+        CfgRead(itpr, cfg_tank_max_ang_speed, "tank_max_ang_speed");
 
     } catch(const moon::ExInterpretationError& e) {
         DIAG_ERROR_EXIT("Interpreter error. Message:\n%s", e.what());

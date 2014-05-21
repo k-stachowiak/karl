@@ -15,6 +15,7 @@
 (bind track_lz 0.1)
 
 (bind tank_boost_force 25.0)
-(bind tank_turn_force 200.0)
+(bind tank_turn_force 500.0)
 (bind tank_dir1_mu 0.667)
-(bind tank_dir2_mu 30.0)
+(bind tank_dir2_mu 35.0)
+(bind tank_max_ang_speed 0.3)

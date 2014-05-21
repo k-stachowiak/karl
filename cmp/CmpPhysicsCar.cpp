@@ -25,6 +25,7 @@ CmpPhysicsCar::CmpPhysicsCar(
     chassis_body.reset(dBodyCreate(world));
     dMassSetBoxTotal(&chassis_mass, 100, clx, cly, clz);
     dBodySetMass(chassis_body.get(), &chassis_mass);
+    dBodySetMaxAngularSpeed(chassis_body.get(), cfg_tank_max_ang_speed);
 
     chassis_geom.reset(dCreateBox(space, clx, cly, clz));
     dGeomSetBody(chassis_geom.get(), chassis_body.get());
