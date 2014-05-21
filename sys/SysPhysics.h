@@ -53,8 +53,16 @@ public:
     // TODO: Remember to remove geoms from space, because the deleters don't do it.
 
     void OnCollision(dGeomID geom_1, dGeomID geom_2);
-    void AddNode(const NdPhysics& node) { m_nodes.push_back(node); }
     void Perform(double dt);
+
+    template <class Entity>
+    void RegisterEntity(Entity& entity)
+    {
+        m_nodes.push_back({
+            entity.id,
+            &entity.phys,
+        });
+    }
 
     dWorldID GetWorld() const;
     dSpaceID GetSpace() const;

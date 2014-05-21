@@ -16,20 +16,14 @@ struct EntGround {
     long id;
     cmp::CmpPhysicsSimple phys;
     cmp::CmpAppearance appr;
-
     EntGround(dWorldID world, dSpaceID space);
-    sys::NdDrawing MakeDrawingNode();
-    sys::NdPhysics MakePhysicsNode();
 };
 
 struct EntTank {
     long id;
     cmp::CmpPhysicsCar phys;
     cmp::CmpAppearance appr;
-
     EntTank(dWorldID world, dSpaceID space);
-    sys::NdDrawing MakeDrawingNode();
-    sys::NdPhysics MakePhysicsNode();
 };
 
 }

@@ -29,31 +29,11 @@ EntGround::EntGround(dWorldID, dSpaceID space) :
         xy_to_zero);
 }
 
-sys::NdDrawing EntGround::MakeDrawingNode()
-{
-    return { id, &phys, &appr };
-}
-
-sys::NdPhysics EntGround::MakePhysicsNode()
-{
-    return { id, &phys };
-}
-
 EntTank::EntTank(dWorldID world, dSpaceID space) :
     id { next_id++ },
     phys { world, space, 1.5, 1.5, 2 }
 {
     appr = cmp::CmpAppearance::MakeCar();
-}
-
-sys::NdDrawing EntTank::MakeDrawingNode()
-{
-    return { id, &phys, &appr };
-}
-
-sys::NdPhysics EntTank::MakePhysicsNode()
-{
-    return { id, &phys };
 }
 
 }

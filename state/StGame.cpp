@@ -39,11 +39,11 @@ StGame::StGame(Resources& resources) :
 {
     m_drawing_system.SetCamera(&m_cam_bound);
 
-    m_physics_system.AddNode(m_ground.MakePhysicsNode());
-    m_drawing_system.AddNode(m_ground.MakeDrawingNode());
+    m_physics_system.RegisterEntity(m_ground);
+    m_drawing_system.RegisterEntity(m_ground);
 
-    m_physics_system.AddNode(m_tank.MakePhysicsNode());
-    m_drawing_system.AddNode(m_tank.MakeDrawingNode());
+    m_physics_system.RegisterEntity(m_tank);
+    m_drawing_system.RegisterEntity(m_tank);
 }
 
 StTransition StGame::Tick(double dt)

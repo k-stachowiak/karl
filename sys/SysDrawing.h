@@ -39,8 +39,17 @@ class Drawing {
 public:
     Drawing(Resources& resources);
     void SetCamera(Camera* camera) { m_camera = camera; }
-    void AddNode(const NdDrawing& node) { m_nodes.push_back(node); }
     void Perform(double weight);
+
+    template <class Entity>
+    void RegisterEntity(Entity& entity)
+    {
+        m_nodes.push_back({
+            entity.id,
+            &entity.phys,
+            &entity.appr
+        });
+    }
 };
 
 }
