@@ -1,16 +1,8 @@
-#include "Config.h"
 #include "CamFlying.h"
 
 CamFlying::CamFlying() :
     m_location { 0, 0, 0.75f },
-    m_rotation { 0, 0, 0 },
-    m_view {},
-    m_projection {
-        glm::perspective(
-            cfg_cam_fovy,
-            cfg_screen_w / cfg_screen_h,
-            cfg_cam_near,
-            cfg_cam_far) }
+    m_rotation { 0, 0, 0 }
 {}
 
 void CamFlying::Update(FLOATING weight)
@@ -23,12 +15,12 @@ void CamFlying::Update(FLOATING weight)
         weight * m_prev_rotation +
         (1 - weight) * m_rotation);
 
-    m_view = glm::mat4{};
-    m_view = glm::rotate(m_view, -inter_rotation[0], glm::vec3 { 1, 0, 0 });
-    m_view = glm::rotate(m_view, -inter_rotation[1], glm::vec3 { 0, 1, 0 });
-    m_view = glm::rotate(m_view, 3.1415f / 2, glm::vec3 { 0, 1, 0 });
-    m_view = glm::rotate(m_view, -3.1415f / 2, glm::vec3 { 1, 0, 0 });
-    m_view = glm::translate(m_view, -inter_location);
+    t_view = glm::mat4{};
+    t_view = glm::rotate(t_view, -inter_rotation[0], glm::vec3 { 1, 0, 0 });
+    t_view = glm::rotate(t_view, -inter_rotation[1], glm::vec3 { 0, 1, 0 });
+    t_view = glm::rotate(t_view, 3.1415f / 2, glm::vec3 { 0, 1, 0 });
+    t_view = glm::rotate(t_view, -3.1415f / 2, glm::vec3 { 1, 0, 0 });
+    t_view = glm::translate(t_view, -inter_location);
 }
 
 void CamFlying::Move(FLOATING dx, FLOATING dy)
