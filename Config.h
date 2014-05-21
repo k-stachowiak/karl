@@ -19,6 +19,9 @@ extern double cfg_track_lx;
 extern double cfg_track_ly;
 extern double cfg_track_lz;
 
+extern double cfg_view_altitude;
+extern double cfg_view_offset;
+
 extern double cfg_tank_boost_force;
 extern double cfg_tank_turn_force;
 extern double cfg_tank_dir1_mu;

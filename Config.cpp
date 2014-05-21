@@ -17,6 +17,9 @@ double cfg_track_lx;
 double cfg_track_ly;
 double cfg_track_lz;
 
+double cfg_view_altitude;
+double cfg_view_offset;
+
 double cfg_tank_boost_force;
 double cfg_tank_turn_force;
 double cfg_tank_dir1_mu;
@@ -66,6 +69,9 @@ void CfgInit()
         CfgRead(itpr, cfg_track_lx, "track_lx");
         CfgRead(itpr, cfg_track_ly, "track_ly");
         CfgRead(itpr, cfg_track_lz, "track_lz");
+
+        CfgRead(itpr, cfg_view_altitude, "view_altitude");
+        CfgRead(itpr, cfg_view_offset, "view_offset");
 
         CfgRead(itpr, cfg_tank_boost_force, "tank_boost_force");
         CfgRead(itpr, cfg_tank_turn_force, "tank_turn_force");

@@ -65,4 +65,22 @@ bool CmpPhysicsCar::HasTrack(dBodyID maybe_track) const
     return ltrack_body.get() == maybe_track || rtrack_body.get() == maybe_track;
 }
 
+void CmpPhysicsCar::ApplyDriveForces(FLOATING boost, FLOATING turn)
+{
+    FLOATING lfx, lfy, rfx, rfy;
+
+    glm::vec3 rot = GetRotationAngles();
+
+    CastRotatedCoords(
+        boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
+        0, rot.z, rfx, rfy);
+
+    CastRotatedCoords(
+        boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
+        0, rot.z, lfx, lfy);
+
+    dBodyAddForce(rtrack_body.get(), rfx, rfy, 0);
+    dBodyAddForce(ltrack_body.get(), lfx, lfy, 0);
+}
+
 }

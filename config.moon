@@ -14,6 +14,9 @@
 (bind track_ly 0.1)
 (bind track_lz 0.1)
 
+(bind view_altitude 1.0)
+(bind view_offset -4.5)
+
 (bind tank_boost_force 25.0)
 (bind tank_turn_force 500.0)
 (bind tank_dir1_mu 0.667)

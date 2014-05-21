@@ -1,7 +1,7 @@
 #include "CamFlying.h"
 
 CamFlying::CamFlying() :
-    m_location { 0, 0, 0.75f },
+    m_location { 0, 0, 0 },
     m_rotation { 0, 0, 0 }
 {}
 
@@ -16,10 +16,16 @@ void CamFlying::Update(FLOATING weight)
         (1 - weight) * m_rotation);
 
     t_view = glm::mat4{};
+
+    // Apply the camera rotation.
     t_view = glm::rotate(t_view, -inter_rotation[0], glm::vec3 { 1, 0, 0 });
     t_view = glm::rotate(t_view, -inter_rotation[1], glm::vec3 { 0, 1, 0 });
+
+    // Make the camera look along the x axis.
     t_view = glm::rotate(t_view, 3.1415f / 2, glm::vec3 { 0, 1, 0 });
     t_view = glm::rotate(t_view, -3.1415f / 2, glm::vec3 { 1, 0, 0 });
+
+    // Move to the location.
     t_view = glm::translate(t_view, -inter_location);
 }
 

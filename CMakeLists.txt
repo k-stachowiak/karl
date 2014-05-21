@@ -24,6 +24,7 @@ add_executable(karl
     ./Resources.cpp
     ./Main.cpp
     ./cam/CamFlying.cpp
+    ./cam/CamBound.cpp
     ./cmp/CmpAppearance.cpp
     ./cmp/CmpPhysics.cpp
     ./cmp/CmpPhysicsSimple.cpp

@@ -8,45 +8,36 @@ void StGame::m_DriveCamera(
         FLOATING dpitch, FLOATING dyaw,
         double dt)
 {
-    const FLOATING cam_move_speed = 2.0;
     const FLOATING cam_rotate_speed = 0.125;
 
-    m_camera.Rotate(
+    // Update flying camera.
+    const FLOATING cam_move_speed = 2.0;
+    m_cam_flying.Rotate(
         dpitch * cam_rotate_speed * dt,
         dyaw * cam_rotate_speed * dt);
 
-    m_camera.Walk(
+    m_cam_flying.Walk(
         dfront * cam_move_speed * dt,
         dright * cam_move_speed * dt);
-}
 
-void StGame::m_DriveTank(FLOATING boost, FLOATING turn)
-{
-    FLOATING tank_lfx, tank_lfy, tank_rfx, tank_rfy;
+    // Update bound camera.
+    m_cam_bound.Rotate(
+        dpitch * cam_rotate_speed * dt,
+        dyaw * cam_rotate_speed * dt);
 
-    glm::vec3 rot = m_tank.phys.GetRotationAngles();
-
-    CastRotatedCoords(
-        boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
-        0, rot.z, tank_rfx, tank_rfy);
-
-    CastRotatedCoords(
-        boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
-        0, rot.z, tank_lfx, tank_lfy);
-
-    // TODO: Move the ODE calls to the physics component.
-    dBodyAddForce(m_tank.phys.GetRTrackBody(), tank_rfx, tank_rfy, 0);
-    dBodyAddForce(m_tank.phys.GetLTrackBody(), tank_lfx, tank_lfy, 0);
+    glm::vec3 tank_location = m_tank.phys.GetLocation();
+    m_cam_bound.SetLocation(tank_location[0], tank_location[1]);
 }
 
 StGame::StGame(Resources& resources) :
+    m_cam_bound { float(cfg_view_offset), float(cfg_view_altitude) },
     m_drawing_system { resources },
     m_ground { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
     m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
     m_keys(ALLEGRO_KEY_MAX, false),
     m_done { false }
 {
-    m_drawing_system.SetCamera(&m_camera);
+    m_drawing_system.SetCamera(&m_cam_bound);
 
     m_physics_system.AddNode(m_ground.MakePhysicsNode());
     m_drawing_system.AddNode(m_ground.MakeDrawingNode());
@@ -75,7 +66,7 @@ StTransition StGame::Tick(double dt)
     if (m_keys[ALLEGRO_KEY_D]) tank_turn += 1;
     if (m_keys[ALLEGRO_KEY_S]) tank_boost -= 1;
     if (m_keys[ALLEGRO_KEY_W]) tank_boost += 1;
-    m_DriveTank(tank_boost, tank_turn);
+    m_tank.phys.ApplyDriveForces(tank_boost, tank_turn);
 
     m_physics_system.Perform(dt);
 
@@ -95,15 +86,23 @@ void StGame::Draw(double weight)
 void StGame::KeyDown(int key)
 {
     m_keys[key] = true;
+
+    switch (key) {
+    case ALLEGRO_KEY_ESCAPE:
+        m_done = true;
+        break;
+    case ALLEGRO_KEY_F1:
+        m_drawing_system.SetCamera(&m_cam_bound);
+        break;
+    case ALLEGRO_KEY_F2:
+        m_drawing_system.SetCamera(&m_cam_flying);
+        break;
+    }
 }
 
 void StGame::KeyUp(int key)
 {
     m_keys[key] = false;
-
-    if (key == ALLEGRO_KEY_ESCAPE) {
-        m_done = true;
-    }
 }
 
 void StGame::MouseMove(int dx, int dy)

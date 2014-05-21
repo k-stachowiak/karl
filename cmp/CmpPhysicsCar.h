@@ -43,8 +43,7 @@ struct CmpPhysicsCar : public CmpPhysics {
 
     bool HasTrack(dBodyID maybe_track) const override;
 
-    dBodyID GetLTrackBody() const { return ltrack_body.get(); }
-    dBodyID GetRTrackBody() const { return rtrack_body.get(); }
+    void ApplyDriveForces(FLOATING boost, FLOATING turn);
 };
 
 }

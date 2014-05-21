@@ -8,6 +8,7 @@
 #include "SysDrawing.h"
 #include "SysPhysics.h"
 #include "CamFlying.h"
+#include "CamBound.h"
 #include "Ent.h"
 #include "State.h"
 
@@ -15,7 +16,8 @@ namespace state {
 
 class StGame : public State {
 
-    CamFlying m_camera;
+    CamFlying m_cam_flying;
+    CamBound m_cam_bound;
 
     sys::Drawing m_drawing_system;
     sys::Physics m_physics_system;
@@ -29,7 +31,6 @@ class StGame : public State {
     bool m_done;
 
     void m_DriveCamera(FLOATING dx, FLOATING dy, FLOATING dpitch, FLOATING dyaw, double dt);
-    void m_DriveTank(FLOATING boost, FLOATING turn);
 
 public:
     StGame(Resources& resources);
