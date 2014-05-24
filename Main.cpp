@@ -16,7 +16,7 @@ int main()
     CfgInit();
 
     Platform platform;
-    Resources resources;
+    res::Resources resources;
 
     state::StMachine machine {{
         {

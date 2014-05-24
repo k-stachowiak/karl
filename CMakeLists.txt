@@ -12,28 +12,32 @@ include_directories(
     ./ent
     ./sys
     ./cmp
+    ./res
     .
     )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror -g -O0")
 
 add_executable(karl
-    ./Config.cpp
-    ./Platform.cpp
-    ./Common.cpp
-    ./Resources.cpp
     ./Main.cpp
-    ./cam/CamFlying.cpp
-    ./cam/CamBound.cpp
-    ./cmp/CmpAppearance.cpp
-    ./cmp/CmpPhysics.cpp
-    ./cmp/CmpPhysicsSimple.cpp
-    ./cmp/CmpPhysicsCar.cpp
-    ./ent/Ent.cpp
     ./sys/SysPhysics.cpp
     ./sys/SysDrawing.cpp
+    ./cam/CamBound.cpp
+    ./cam/CamFlying.cpp
+    ./res/Resources.cpp
+    ./res/ResShaderDebug.cpp
+    ./res/ResShader.cpp
+    ./Config.cpp
+    ./ent/Ent.cpp
+    ./cmp/CmpPhysicsSimple.cpp
+    ./cmp/CmpApprDebug.cpp
+    ./cmp/CmpAppearance.cpp
+    ./cmp/CmpPhysicsCar.cpp
+    ./cmp/CmpPhysics.cpp
     ./state/StGame.cpp
     ./state/StMachine.cpp
+    ./Platform.cpp
+    ./Common.cpp
     )
 
 target_link_libraries(karl moonlang allegro_monolith ode GL)

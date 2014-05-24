@@ -5,10 +5,10 @@
 
 #include "Common.h"
 #include "CmpPhysicsSimple.h"
-#include "SysDrawing.h"
-#include "SysPhysics.h"
 #include "CmpPhysicsSimple.h"
 #include "CmpPhysicsCar.h"
+#include "CmpAppearance.h"
+#include "CmpApprDebug.h"
 
 namespace ent {
 

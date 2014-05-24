@@ -16,7 +16,7 @@
 
 namespace sys {
 
-void Drawing::m_CameraApply(const Shader &shader, FLOATING weight)
+void Drawing::m_CameraApply(const res::ResShader &shader, FLOATING weight)
 {
     DIAG_ASSERT(m_camera != nullptr);
 
@@ -31,17 +31,18 @@ void Drawing::m_CameraApply(const Shader &shader, FLOATING weight)
         glm::value_ptr(m_camera->GetProjectionMatrix()));
 }
 
-void Drawing::m_ShaderBegin(const Shader &shader)
+void Drawing::m_ShaderBegin(const res::ResShaderDebug &shader)
 {
     glUseProgram(shader.program);
     glEnableVertexAttribArray(shader.coord_loc);
     glEnableVertexAttribArray(shader.color_loc);
 }
 
-void Drawing::m_ShaderEnd(const Shader &shader)
+void Drawing::m_ShaderEnd(const res::ResShaderDebug &shader)
 {
     glDisableVertexAttribArray(shader.coord_loc);
     glDisableVertexAttribArray(shader.color_loc);
+    glUseProgram(0);
 }
 
 void Drawing::m_FrameBegin()
@@ -79,7 +80,10 @@ void Drawing::m_ComputeModelMatrix(const NdDrawing& node, glm::mat4& model, FLOA
     }
 }
 
-void Drawing::m_DrawMesh(const Shader& shader, const NdDrawing& node, FLOATING weight)
+void Drawing::m_DrawDebugMesh(
+        const res::ResShaderDebug& shader,
+        const NdDrawing& node,
+        FLOATING weight)
 {
     glm::mat4 model;
     m_ComputeModelMatrix(node, model, weight);
@@ -101,7 +105,7 @@ void Drawing::m_DrawMesh(const Shader& shader, const NdDrawing& node, FLOATING w
  * ===================
  */
 
-Drawing::Drawing(Resources& resources) :
+Drawing::Drawing(res::Resources& resources) :
     m_resources(resources),
     m_camera(nullptr)
 {}
@@ -109,14 +113,14 @@ Drawing::Drawing(Resources& resources) :
 void Drawing::Perform(double weight)
 {
     m_FrameBegin();
-    m_ShaderBegin(*m_resources.res_simple_shader);
-    m_CameraApply(*m_resources.res_simple_shader, weight);
+    m_ShaderBegin(*m_resources.res_debug_shader);
+    m_CameraApply(*m_resources.res_debug_shader, weight);
 
     for (auto& node : m_nodes) {
-        m_DrawMesh(*m_resources.res_simple_shader, node, weight);
+        m_DrawDebugMesh(*m_resources.res_debug_shader, node, weight);
     }
 
-    m_ShaderEnd(*m_resources.res_simple_shader);
+    m_ShaderEnd(*m_resources.res_debug_shader);
     m_FrameEnd();
 }
 

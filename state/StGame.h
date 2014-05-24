@@ -33,7 +33,7 @@ class StGame : public State {
     void m_DriveCamera(FLOATING dx, FLOATING dy, FLOATING dpitch, FLOATING dyaw, double dt);
 
 public:
-    StGame(Resources& resources);
+    StGame(res::Resources& resources);
     StTransition Tick(double dt) override;
     void Draw(double weight) override;
     void KeyDown(int key) override;

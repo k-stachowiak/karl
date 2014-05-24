@@ -19,25 +19,32 @@ struct NdDrawing {
 
 class Drawing {
 
-    Resources& m_resources;
+    res::Resources& m_resources;
 
     Camera* m_camera;
 
     std::vector<NdDrawing> m_nodes;
 
-    void m_CameraApply(const Shader &shader, FLOATING weight);
+    void m_CameraApply(const res::ResShader &shader, FLOATING weight);
 
-    static void m_ShaderBegin(const Shader &shader);
-    static void m_ShaderEnd(const Shader &shader);
+    static void m_ShaderBegin(const res::ResShaderDebug &shader);
+    static void m_ShaderEnd(const res::ResShaderDebug &shader);
 
     static void m_FrameBegin();
     static void m_FrameEnd();
 
-    static void m_ComputeModelMatrix(const NdDrawing& node, glm::mat4& model, FLOATING weight);
-    static void m_DrawMesh(const Shader &shader, const NdDrawing& node, FLOATING weight);
+    static void m_ComputeModelMatrix(
+            const NdDrawing& node,
+            glm::mat4& model,
+            FLOATING weight);
+
+    static void m_DrawDebugMesh(
+            const res::ResShaderDebug &shader,
+            const NdDrawing& node,
+            FLOATING weight);
 
 public:
-    Drawing(Resources& resources);
+    Drawing(res::Resources& resources);
     void SetCamera(Camera* camera) { m_camera = camera; }
     void Perform(double weight);
 

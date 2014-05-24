@@ -29,8 +29,8 @@ void StGame::m_DriveCamera(
     m_cam_bound.SetLocation(tank_location[0], tank_location[1]);
 }
 
-StGame::StGame(Resources& resources) :
-    m_cam_bound { float(cfg_view_offset), float(cfg_view_altitude) },
+StGame::StGame(res::Resources& resources) :
+    m_cam_bound { FLOATING(cfg_view_offset), FLOATING(cfg_view_altitude) },
     m_drawing_system { resources },
     m_ground { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
     m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() },

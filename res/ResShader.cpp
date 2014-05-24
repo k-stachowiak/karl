@@ -1,36 +1,9 @@
-#include <cstdio>
-#include <array>
-
-#include <allegro5/allegro_ttf.h>
-
 #include "Diagnostics.h"
-#include "Resources.h"
+#include "ResShader.h"
 
-namespace {
+namespace res {
 
-const char *g_simple_vsource =
-    "#version 130\n"
-    "attribute vec3 attr_coord;\n"
-    "attribute vec3 attr_color;\n"
-    "uniform mat4 uni_model;\n"
-    "uniform mat4 uni_view;\n"
-    "uniform mat4 uni_projection;\n"
-    "out vec3 frag_color;\n"
-    "void main(void) {\n"
-    "    frag_color = attr_color;\n"
-    "    gl_Position = uni_projection * uni_view * uni_model * vec4(attr_coord, 1.0);\n"
-    "}";
-
-const char *g_simple_fsource =
-    "#version 130\n"
-    "in vec3 frag_color;\n"
-    "void main(void) {\n"
-    "    gl_FragColor = vec4(frag_color, 1.0);\n"
-    "}";
-
-}
-
-void Shader::m_PrintShaderErrorLog(GLuint shader)
+void ResShader::m_PrintShaderErrorLog(GLuint shader)
 {
     GLint log_size;
     char *log_buffer;
@@ -44,7 +17,7 @@ void Shader::m_PrintShaderErrorLog(GLuint shader)
     free(log_buffer);
 }
 
-void Shader::m_PrintProgramErrorLog(GLuint program)
+void ResShader::m_PrintProgramErrorLog(GLuint program)
 {
     GLint log_size;
     char *log_buffer;
@@ -58,7 +31,7 @@ void Shader::m_PrintProgramErrorLog(GLuint program)
     free(log_buffer);
 }
 
-Shader::Shader(const std::string& vsource, const std::string& fsource)
+ResShader::ResShader(const std::string& vsource, const std::string& fsource)
 {
     GLint result;
 
@@ -102,29 +75,20 @@ Shader::Shader(const std::string& vsource, const std::string& fsource)
     glDetachShader(program, vshader);
     glDetachShader(program, fshader);
 
-    coord_loc = glGetAttribLocation(program, "attr_coord");
-    color_loc = glGetAttribLocation(program, "attr_color");
     model_loc = glGetUniformLocation(program, "uni_model");
     view_loc = glGetUniformLocation(program, "uni_view");
     projection_loc = glGetUniformLocation(program, "uni_projection");
 
-    if (coord_loc == -1 ||
-        color_loc == -1 ||
-        model_loc == -1 ||
-        view_loc == -1 ||
-        projection_loc == -1) {
-            DIAG_ERROR_EXIT("Failed finding locations in GLSL program.\n");
+    if (model_loc == -1 || view_loc == -1 || projection_loc == -1) {
+        DIAG_ERROR_EXIT("Failed finding locations in GLSL program.\n");
     }
 }
 
-Shader::~Shader()
+ResShader::~ResShader()
 {
     glDeleteShader(vshader);
     glDeleteShader(fshader);
     glDeleteProgram(program);
 }
 
-Resources::Resources() :
-    res_simple_shader { new Shader { g_simple_vsource, g_simple_fsource } }
-{
 }
