@@ -28,13 +28,11 @@ double cfg_tank_max_ang_speed;
 
 namespace {
 
-    void CfgRead(moon::itpr::CInterpreter& itpr,
-                 double& value,
-                 const std::string& symbol)
+    double CfgRead(moon::itpr::CInterpreter& itpr, const std::string& symbol)
     {
         moon::itpr::CValue script_value = itpr.GetValue("config", symbol);
         DIAG_ASSERT(IsReal(script_value));
-        value = script_value.GetReal();
+        return script_value.GetReal();
     }
 
 }
@@ -54,30 +52,30 @@ void CfgInit()
     }
 
     try {
-        CfgRead(itpr, cfg_screen_w, "screen_w");
-        CfgRead(itpr, cfg_screen_h, "screen_h");
-        CfgRead(itpr, cfg_fps, "fps");
+        cfg_screen_w = CfgRead(itpr, "screen_w");
+        cfg_screen_h = CfgRead(itpr, "screen_h");
+        cfg_fps =      CfgRead(itpr, "fps");
 
-        CfgRead(itpr, cfg_cam_fovy, "cam_fovy");
-        CfgRead(itpr, cfg_cam_near, "cam_near");
-        CfgRead(itpr, cfg_cam_far, "cam_far");
+        cfg_cam_fovy = CfgRead(itpr, "cam_fovy");
+        cfg_cam_near = CfgRead(itpr, "cam_near");
+        cfg_cam_far =  CfgRead(itpr, "cam_far");
 
-        CfgRead(itpr, cfg_chassis_lx, "chassis_lx");
-        CfgRead(itpr, cfg_chassis_ly, "chassis_ly");
-        CfgRead(itpr, cfg_chassis_lz, "chassis_lz");
+        cfg_chassis_lx = CfgRead(itpr, "chassis_lx");
+        cfg_chassis_ly = CfgRead(itpr, "chassis_ly");
+        cfg_chassis_lz = CfgRead(itpr, "chassis_lz");
 
-        CfgRead(itpr, cfg_track_lx, "track_lx");
-        CfgRead(itpr, cfg_track_ly, "track_ly");
-        CfgRead(itpr, cfg_track_lz, "track_lz");
+        cfg_track_lx = CfgRead(itpr, "track_lx");
+        cfg_track_ly = CfgRead(itpr, "track_ly");
+        cfg_track_lz = CfgRead(itpr, "track_lz");
 
-        CfgRead(itpr, cfg_view_altitude, "view_altitude");
-        CfgRead(itpr, cfg_view_offset, "view_offset");
+        cfg_view_altitude = CfgRead(itpr, "view_altitude");
+        cfg_view_offset =   CfgRead(itpr, "view_offset");
 
-        CfgRead(itpr, cfg_tank_boost_force, "tank_boost_force");
-        CfgRead(itpr, cfg_tank_turn_force, "tank_turn_force");
-        CfgRead(itpr, cfg_tank_dir1_mu, "tank_dir1_mu");
-        CfgRead(itpr, cfg_tank_dir2_mu, "tank_dir2_mu");
-        CfgRead(itpr, cfg_tank_max_ang_speed, "tank_max_ang_speed");
+        cfg_tank_boost_force =   CfgRead(itpr, "tank_boost_force");
+        cfg_tank_turn_force =    CfgRead(itpr, "tank_turn_force");
+        cfg_tank_dir1_mu =       CfgRead(itpr, "tank_dir1_mu");
+        cfg_tank_dir2_mu =       CfgRead(itpr, "tank_dir2_mu");
+        cfg_tank_max_ang_speed = CfgRead(itpr, "tank_max_ang_speed");
 
     } catch(const moon::ExInterpretationError& e) {
         DIAG_ERROR_EXIT("Interpreter error. Message:\n%s", e.what());

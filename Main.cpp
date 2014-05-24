@@ -6,12 +6,19 @@
 
 #include "Moon.h"
 
+/* TODO:
+ * - Reverse the matrix multiplication order.
+ * - Move to indexed vertexes in the OpenGL.
+ * - Move to interleaved vertex attributes.
+ */
+
 int main()
 {
     CfgInit();
 
     Platform platform;
     Resources resources;
+
     state::StMachine machine {{
         {
             state::StTransition::State::GAME,
