@@ -128,7 +128,3 @@ Resources::Resources() :
     res_simple_shader { new Shader { g_simple_vsource, g_simple_fsource } }
 {
 }
-
-Resources::~Resources()
-{
-}

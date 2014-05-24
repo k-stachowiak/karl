@@ -26,7 +26,6 @@ public:
 struct Resources {
     std::unique_ptr<Shader> res_simple_shader;
     Resources();
-    ~Resources();
 };
 
 #endif
