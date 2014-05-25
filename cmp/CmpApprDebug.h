@@ -1,15 +1,16 @@
 #ifndef CMP_APPR_DEBUG_H
 #define CMP_APPR_DEBUG_H
 
+#include <vector>
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_opengl.h>
 
 #include "CmpVertexDef.h"
-#include "CmpAppearance.h"
 
 namespace cmp {
 
-class CmpApprDebug : public CmpAppearance {
+class CmpApprDebug {
 
     GLuint m_vao;
     GLuint m_vbo;

@@ -57,38 +57,6 @@ static glm::vec3 verbose_cube_definition[36] = {
     { +1, +1, +1 },
 };
 
-CmpAppearance CmpAppearance::MakeFlat(
-        int lx, int ly,
-        FLOATING r, FLOATING g, FLOATING b,
-        FLOATING (*altitude)(int, int))
-{
-    CmpAppearance result;
-
-    for (int i = 0; i < lx; ++i) {
-        for (int j = 0; j < ly; ++j) {
-
-            const FLOATING base_x = (FLOATING)i + 0.5;
-            const FLOATING base_y = (FLOATING)j + 0.5;
-
-            result.vertexes.push_back(glm::vec3 { base_x - 0.5f, base_y - 0.5f, altitude(i, j) });
-            result.vertexes.push_back(glm::vec3 { base_x - 0.5f, base_y + 0.5f, altitude(i, j + 1) });
-            result.vertexes.push_back(glm::vec3 { base_x + 0.5f, base_y + 0.5f, altitude(i + 1, j + 1) });
-            result.vertexes.push_back(glm::vec3 { base_x - 0.5f, base_y - 0.5f, altitude(i, j) });
-            result.vertexes.push_back(glm::vec3 { base_x + 0.5f, base_y + 0.5f, altitude(i + 1, j + 1) });
-            result.vertexes.push_back(glm::vec3 { base_x + 0.5f, base_y - 0.5f, altitude(i + 1, j) });
-
-            result.colors.push_back(glm::vec3 { r, g, b });
-            result.colors.push_back(glm::vec3 { r, g, b });
-            result.colors.push_back(glm::vec3 { r, g, b });
-            result.colors.push_back(glm::vec3 { r, g, b });
-            result.colors.push_back(glm::vec3 { r, g, b });
-            result.colors.push_back(glm::vec3 { r, g, b });
-        }
-    }
-
-    return result;
-}
-
 CmpAppearance CmpAppearance::MakeBox(
         FLOATING lx, FLOATING ly, FLOATING lz,
         FLOATING r, FLOATING g, FLOATING b)

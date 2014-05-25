@@ -35,3 +35,4 @@ void CastRotatedCoords(
     dx = coords[0];
     dy = coords[1];
 }
+

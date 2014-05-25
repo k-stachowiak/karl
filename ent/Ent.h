@@ -15,8 +15,10 @@ namespace ent {
 struct EntGround {
     long id;
     cmp::CmpPhysicsSimple phys;
-    cmp::CmpAppearance appr;
-    EntGround(dWorldID world, dSpaceID space);
+    cmp::CmpApprDebug appr;
+    EntGround(
+        dWorldID world, dSpaceID space,
+        GLint location_loc, GLint color_loc);
 };
 
 struct EntTank {

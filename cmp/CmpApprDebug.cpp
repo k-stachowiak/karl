@@ -10,24 +10,20 @@ void CmpApprDebug::m_PrepareBuffers(
 {
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    /*
-    glBufferStorage(
+    glBufferData(
         GL_ARRAY_BUFFER,
         sizeof(VtxDebug) * vertexes.size(),
         &vertexes[0],
-        0);
-        */
+        GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glGenBuffers(1, &m_ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-    /*
-    glBufferStorage(
+    glBufferData(
         GL_ELEMENT_ARRAY_BUFFER,
         sizeof(unsigned) * indexes.size(),
         &indexes[0],
-        0);
-        */
+        GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 

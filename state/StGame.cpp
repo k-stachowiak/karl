@@ -32,7 +32,10 @@ void StGame::m_DriveCamera(
 StGame::StGame(res::Resources& resources) :
     m_cam_bound { FLOATING(cfg_view_offset), FLOATING(cfg_view_altitude) },
     m_drawing_system { resources },
-    m_ground { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
+    m_ground { m_physics_system.GetWorld(),
+               m_physics_system.GetSpace(),
+               resources.res_debug_shader->coord_loc,
+               resources.res_debug_shader->color_loc },
     m_tank { m_physics_system.GetWorld(), m_physics_system.GetSpace() },
     m_keys(ALLEGRO_KEY_MAX, false),
     m_done { false }
@@ -40,7 +43,7 @@ StGame::StGame(res::Resources& resources) :
     m_drawing_system.SetCamera(&m_cam_bound);
 
     m_physics_system.RegisterEntity(m_ground);
-    m_drawing_system.RegisterEntity(m_ground);
+    m_drawing_system.RegisterDebugEntity(m_ground);
 
     m_physics_system.RegisterEntity(m_tank);
     m_drawing_system.RegisterEntity(m_tank);

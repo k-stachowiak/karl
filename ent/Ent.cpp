@@ -1,5 +1,6 @@
 #include <cstdio>
 
+#include "GeomFac.h"
 #include "Ent.h"
 
 namespace {
@@ -8,25 +9,15 @@ namespace {
 
 namespace ent {
 
-static FLOATING xy_to_zero(int, int)
+EntGround::EntGround(
+        dWorldID, dSpaceID space,
+        GLint location_loc, GLint color_loc) :
+    id { next_id++ },
+    appr { g_GenerateGroundDebugVertexes(3, 20, 0.0, 0.25, 0.0),
+           g_GenerateGroundDebugIndexes(3, 20),
+           location_loc, color_loc }
 {
-    return 0;
-}
-
-EntGround::EntGround(dWorldID, dSpaceID space) :
-    id { next_id++ }
-{
-    const int x_segments = 3;
-    const int y_segments = 20;
-
     phys = cmp::CmpPhysicsSimple::MakePlane(space);
-    appr = cmp::CmpAppearance::MakeFlat(
-        x_segments,
-        y_segments,
-        0,
-        0.25,
-        0,
-        xy_to_zero);
 }
 
 EntTank::EntTank(dWorldID world, dSpaceID space) :

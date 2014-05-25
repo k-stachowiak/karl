@@ -7,6 +7,7 @@
 #include "Resources.h"
 #include "CmpPhysics.h"
 #include "CmpAppearance.h"
+#include "CmpApprDebug.h"
 #include "Camera.h"
 
 namespace sys {
@@ -17,6 +18,12 @@ struct NdDrawing {
     cmp::CmpAppearance *appr;
 };
 
+struct NdDrawingDebug {
+    long id;
+    cmp::CmpPhysics *phys;
+    cmp::CmpApprDebug *appr;
+};
+
 class Drawing {
 
     res::Resources& m_resources;
@@ -24,6 +31,7 @@ class Drawing {
     Camera* m_camera;
 
     std::vector<NdDrawing> m_nodes;
+    std::vector<NdDrawingDebug> m_nodes_debug;
 
     void m_CameraApply(const res::ResShader &shader, FLOATING weight);
 
@@ -52,6 +60,16 @@ public:
     void RegisterEntity(Entity& entity)
     {
         m_nodes.push_back({
+            entity.id,
+            &entity.phys,
+            &entity.appr
+        });
+    }
+
+    template <class Entity>
+    void RegisterDebugEntity(Entity& entity)
+    {
+        m_nodes_debug.push_back({
             entity.id,
             &entity.phys,
             &entity.appr
