@@ -42,14 +42,16 @@ class Drawing {
     static void m_FrameEnd();
 
     static void m_ComputeModelMatrix(
-            const NdDrawing& node,
+            const cmp::CmpPhysics& phys,
             glm::mat4& model,
             FLOATING weight);
 
-    static void m_DrawDebugMesh(
+    static void m_DrawMesh(
             const res::ResShaderDebug &shader,
             const NdDrawing& node,
             FLOATING weight);
+
+    void m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight);
 
 public:
     Drawing(res::Resources& resources);

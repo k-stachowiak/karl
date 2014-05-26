@@ -12,7 +12,7 @@ struct State {
     virtual void KeyDown(int) {};
     virtual void KeyUp(int) {};
     virtual void KeyTyped(int) {};
-    virtual void MouseMove(int, int) {};
+    virtual bool MouseMove(int, int) { return false; };
 };
 
 }

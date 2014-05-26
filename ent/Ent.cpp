@@ -13,8 +13,8 @@ EntGround::EntGround(
         dWorldID, dSpaceID space,
         GLint location_loc, GLint color_loc) :
     id { next_id++ },
-    appr { g_GenerateGroundDebugVertexes(3, 20, 0.0, 0.25, 0.0),
-           g_GenerateGroundDebugIndexes(3, 20),
+    appr { g_GenerateGroundDebugVertexes(1, 1, 0.0, 0.25, 0.0),
+           g_GenerateGroundDebugIndexes(1, 1),
            location_loc, color_loc }
 {
     phys = cmp::CmpPhysicsSimple::MakePlane(space);

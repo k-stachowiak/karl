@@ -38,7 +38,7 @@ public:
     void Draw(double weight) override;
     void KeyDown(int key) override;
     void KeyUp(int key) override;
-    void MouseMove(int dx, int dy) override;
+    bool MouseMove(int dx, int dy) override;
 };
 
 }

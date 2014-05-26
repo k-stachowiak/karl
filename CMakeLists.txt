@@ -35,6 +35,7 @@ add_executable(karl
     ./cmp/CmpPhysicsCar.cpp
     ./cmp/CmpPhysics.cpp
     ./state/StGame.cpp
+    ./state/StGlPlay.cpp
     ./state/StMachine.cpp
     ./utils/GeomFac.cpp
     ./Platform.cpp

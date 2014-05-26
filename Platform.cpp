@@ -50,6 +50,7 @@ Platform::Platform()
 state::StTransition Platform::ProcessEvents(state::State& state)
 {
     ALLEGRO_EVENT ev;
+    bool reset_mouse;
     while(!al_is_event_queue_empty(m_queue.get())) {
         al_get_next_event(m_queue.get(), &ev);
         switch(ev.type) {
@@ -69,8 +70,13 @@ state::StTransition Platform::ProcessEvents(state::State& state)
             break;
 
         case ALLEGRO_EVENT_MOUSE_AXES:
-            state.MouseMove(ev.mouse.dx, ev.mouse.dy);
-            al_set_mouse_xy(m_display.get(), cfg_screen_w / 2, cfg_screen_h / 2);
+            reset_mouse = state.MouseMove(ev.mouse.dx, ev.mouse.dy);
+            if (reset_mouse) {
+                al_set_mouse_xy(
+                    m_display.get(),
+                    cfg_screen_w / 2,
+                    cfg_screen_h / 2);
+            }
             break;
 
         default:

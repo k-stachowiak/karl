@@ -108,10 +108,11 @@ void StGame::KeyUp(int key)
     m_keys[key] = false;
 }
 
-void StGame::MouseMove(int dx, int dy)
+bool StGame::MouseMove(int dx, int dy)
 {
     m_mouse_move.dx = dx;
     m_mouse_move.dy = dy;
+    return true; // reset mouse.
 }
 
 }

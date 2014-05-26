@@ -2,6 +2,7 @@
 #include "Platform.h"
 #include "Resources.h"
 #include "StGame.h"
+#include "StGlPlay.h"
 #include "StMachine.h"
 
 #include "Moon.h"
@@ -26,10 +27,18 @@ int main()
                     new state::StGame { resources }
                 };
             }
+        },
+        {
+            state::StTransition::State::GL_PLAY,
+            [&resources](state::StTransition::Data) mutable {
+                return std::unique_ptr<state::State> {
+                    new state::StGlPlay { resources }
+                };
+            }
         }
     }};
 
-    machine.ChangeState({ state::StTransition::State::GAME });
+    machine.ChangeState({ state::StTransition::State::GL_PLAY });
 
     while (true) {
         auto transition = platform.ProcessEvents(machine.CurrentState());

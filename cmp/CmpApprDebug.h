@@ -12,20 +12,21 @@ namespace cmp {
 
 class CmpApprDebug {
 
-    GLuint m_vao;
-    GLuint m_vbo;
-    GLuint m_ibo;
-
     void m_PrepareBuffers(
-        std::vector<VtxDebug> vertexes,
-        std::vector<unsigned> indexes);
+        const std::vector<VtxDebug>& vertexes,
+        const std::vector<unsigned>& indexes);
 
     void m_PrepareArrayObject(GLint location_loc, GLint color_loc);
 
 public:
+    GLuint m_vao;
+    GLuint m_vbo;
+    GLuint m_ibo;
+    unsigned m_num_primitives;
+
     CmpApprDebug(
-        std::vector<VtxDebug> vertexes,
-        std::vector<unsigned> indexes,
+        const std::vector<VtxDebug>& vertexes,
+        const std::vector<unsigned>& indexes,
         GLint location_loc, GLint color_loc);
     ~CmpApprDebug();
 };

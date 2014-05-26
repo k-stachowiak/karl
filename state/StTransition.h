@@ -9,6 +9,7 @@ struct StTransition {
 
     enum class State {
         GAME,
+        GL_PLAY,
         THIS_STATE,
         END
     };

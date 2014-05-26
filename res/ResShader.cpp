@@ -48,6 +48,8 @@ ResShader::ResShader(const std::string& vsource, const std::string& fsource)
         DIAG_ERROR_EXIT("Failed initializing GLSL vertex shader.\n");
     }
 
+    DIAG_GL_ERROR;
+
     fshader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fshader, 1, fsource_array, NULL);
     glCompileShader(fshader);
@@ -58,6 +60,8 @@ ResShader::ResShader(const std::string& vsource, const std::string& fsource)
         glDeleteShader(fshader);
         DIAG_ERROR_EXIT("Failed initializing GLSL fragment shader.\n");
     }
+
+    DIAG_GL_ERROR;
 
     program = glCreateProgram();
     glAttachShader(program, vshader);
@@ -72,12 +76,24 @@ ResShader::ResShader(const std::string& vsource, const std::string& fsource)
         DIAG_ERROR_EXIT("Failed initializing GLSL program.\n");
     }
 
+    DIAG_GL_ERROR;
+
     glDetachShader(program, vshader);
     glDetachShader(program, fshader);
 
+    glUseProgram(program);
+
     model_loc = glGetUniformLocation(program, "uni_model");
+    DIAG_GL_ERROR;
+    DIAG_MESSAGE("Model location : %d\n", model_loc);
+
     view_loc = glGetUniformLocation(program, "uni_view");
+    DIAG_GL_ERROR;
+    DIAG_MESSAGE("View location : %d\n", view_loc);
+
     projection_loc = glGetUniformLocation(program, "uni_projection");
+    DIAG_GL_ERROR;
+    DIAG_MESSAGE("Projection location : %d\n", projection_loc);
 
     if (model_loc == -1 || view_loc == -1 || projection_loc == -1) {
         DIAG_ERROR_EXIT("Failed finding locations in GLSL program.\n");
