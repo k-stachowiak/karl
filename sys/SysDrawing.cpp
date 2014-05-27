@@ -113,7 +113,6 @@ void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
         1, GL_FALSE, glm::value_ptr(model));
 
     glBindVertexArray(node.appr->m_vao);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, node.appr->m_ibo);
 
     glDrawElements(
         GL_TRIANGLES,
@@ -121,7 +120,6 @@ void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
         GL_UNSIGNED_INT,
         0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
@@ -144,11 +142,9 @@ void Drawing::Perform(double weight)
         m_DrawMesh(*m_resources.res_debug_shader, node, weight);
     }
 
-    /*
     for (const auto& node : m_nodes_debug) {
         m_DrawDebugNode(node, weight);
     }
-    */
 
     m_ShaderEnd(*m_resources.res_debug_shader);
 

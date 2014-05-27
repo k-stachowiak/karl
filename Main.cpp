@@ -38,7 +38,8 @@ int main()
         }
     }};
 
-    machine.ChangeState({ state::StTransition::State::GL_PLAY });
+    machine.ChangeState({ state::StTransition::State::GAME });
+    // machine.ChangeState({ state::StTransition::State::GL_PLAY });
 
     while (true) {
         auto transition = platform.ProcessEvents(machine.CurrentState());

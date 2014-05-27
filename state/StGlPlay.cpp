@@ -52,9 +52,6 @@ StGlPlay::StGlPlay(res::Resources& resources) :
     glUniformMatrix4fv(modloc, 1, GL_FALSE, glm::value_ptr(identity));
     glUniformMatrix4fv(projloc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
@@ -62,6 +59,12 @@ StGlPlay::StGlPlay(res::Resources& resources) :
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
+
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
     glEnableVertexAttribArray(vloc);
     glEnableVertexAttribArray(cloc);

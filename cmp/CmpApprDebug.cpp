@@ -36,7 +36,12 @@ void CmpApprDebug::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
 {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
+
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+
+    glEnableVertexAttribArray(location_loc);
+    glEnableVertexAttribArray(color_loc);
 
     glVertexAttribPointer(location_loc, 3, GL_FLOAT, GL_FALSE, sizeof(VtxDebug),
             reinterpret_cast<void*>(offsetof(VtxDebug, attr_location)));
@@ -45,6 +50,9 @@ void CmpApprDebug::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
             reinterpret_cast<void*>(offsetof(VtxDebug, attr_color)));
 
     glBindVertexArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 CmpApprDebug::CmpApprDebug(
@@ -54,6 +62,7 @@ CmpApprDebug::CmpApprDebug(
     m_num_primitives { indexes.size() }
 {
     DIAG_MESSAGE("loading %d vertexes and %d indexes.\n", vertexes.size(), indexes.size());
+    DIAG_MESSAGE("location_loc: %d, color_loc: %d.\n", location_loc, color_loc);
     m_PrepareBuffers(vertexes, indexes);
     m_PrepareArrayObject(location_loc, color_loc);
 }
