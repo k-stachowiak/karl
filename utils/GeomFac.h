@@ -11,4 +11,7 @@ std::vector<cmp::VtxDebug> g_GenerateGroundDebugVertexes(
 
 std::vector<unsigned> g_GenerateGroundDebugIndexes(int lx, int ly);
 
+std::vector<cmp::VtxDebug> g_GenerateCarDebugVertexes();
+std::vector<unsigned> g_GenerateCarDebugIndexes();
+
 #endif

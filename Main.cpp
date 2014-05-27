@@ -7,11 +7,6 @@
 
 #include "Moon.h"
 
-/* TODO:
- * - Move to indexed vertexes in the OpenGL.
- * - Move to interleaved vertex attributes.
- */
-
 int main()
 {
     CfgInit();
