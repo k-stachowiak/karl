@@ -8,9 +8,7 @@ ResShaderDebug::ResShaderDebug() :
     coord_loc { glGetAttribLocation(program, "attr_coord") },
     color_loc { glGetAttribLocation(program, "attr_color") }
 {
-    if (coord_loc == -1 || color_loc == -1) {
-        DIAG_ERROR_EXIT("Failed finding locations in GLSL program.\n");
-    }
+    t_AssertLocations(coord_loc, color_loc);
 }
 
 }

@@ -31,7 +31,9 @@ void ResShader::m_PrintProgramErrorLog(GLuint program)
     free(log_buffer);
 }
 
-ResShader::ResShader(const std::string& vsource, const std::string& fsource)
+void ResShader::m_LoadSources(
+        const std::string& vsource,
+        const std::string& fsource)
 {
     GLint result;
 
@@ -80,24 +82,23 @@ ResShader::ResShader(const std::string& vsource, const std::string& fsource)
 
     glDetachShader(program, vshader);
     glDetachShader(program, fshader);
+}
 
+void ResShader::m_GetLocations()
+{
     glUseProgram(program);
 
     model_loc = glGetUniformLocation(program, "uni_model");
-    DIAG_GL_ERROR;
-    DIAG_MESSAGE("Model location : %d\n", model_loc);
-
     view_loc = glGetUniformLocation(program, "uni_view");
-    DIAG_GL_ERROR;
-    DIAG_MESSAGE("View location : %d\n", view_loc);
-
     projection_loc = glGetUniformLocation(program, "uni_projection");
-    DIAG_GL_ERROR;
-    DIAG_MESSAGE("Projection location : %d\n", projection_loc);
 
-    if (model_loc == -1 || view_loc == -1 || projection_loc == -1) {
-        DIAG_ERROR_EXIT("Failed finding locations in GLSL program.\n");
-    }
+    t_AssertLocations(model_loc, view_loc, projection_loc);
+}
+
+ResShader::ResShader(const std::string& vsource, const std::string& fsource)
+{
+    m_LoadSources(vsource, fsource);
+    m_GetLocations();
 }
 
 ResShader::~ResShader()

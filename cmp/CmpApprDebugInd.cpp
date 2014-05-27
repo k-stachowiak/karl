@@ -43,11 +43,17 @@ void CmpApprDebugInd::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
     glEnableVertexAttribArray(location_loc);
     glEnableVertexAttribArray(color_loc);
 
-    glVertexAttribPointer(location_loc, 3, GL_FLOAT, GL_FALSE, sizeof(res::ResShaderDebug::Vertex),
-            reinterpret_cast<void*>(offsetof(res::ResShaderDebug::Vertex, attr_location)));
+    glVertexAttribPointer(
+        location_loc, 3, GL_FLOAT, GL_FALSE,
+        sizeof(res::ResShaderDebug::Vertex),
+        reinterpret_cast<void*>(
+            offsetof(res::ResShaderDebug::Vertex, attr_location)));
 
-    glVertexAttribPointer(color_loc, 3, GL_FLOAT, GL_FALSE, sizeof(res::ResShaderDebug::Vertex),
-            reinterpret_cast<void*>(offsetof(res::ResShaderDebug::Vertex, attr_color)));
+    glVertexAttribPointer(
+        color_loc, 3, GL_FLOAT, GL_FALSE,
+        sizeof(res::ResShaderDebug::Vertex),
+        reinterpret_cast<void*>(
+            offsetof(res::ResShaderDebug::Vertex, attr_color)));
 
     glBindVertexArray(0);
 
@@ -61,8 +67,6 @@ CmpApprDebugInd::CmpApprDebugInd(
         GLint location_loc, GLint color_loc) :
     m_num_primitives { indexes.size() }
 {
-    DIAG_MESSAGE("loading %d vertexes and %d indexes.\n", vertexes.size(), indexes.size());
-    DIAG_MESSAGE("location_loc: %d, color_loc: %d.\n", location_loc, color_loc);
     m_PrepareBuffers(vertexes, indexes);
     m_PrepareArrayObject(location_loc, color_loc);
 }

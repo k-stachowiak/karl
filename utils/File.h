@@ -6,7 +6,7 @@
 
 #include "Diagnostics.h"
 
-std::string g_ReadStream(std::istream& input)
+inline std::string g_ReadStream(std::istream& input)
 {
     std::string line;
     std::stringstream resultStream;
@@ -17,7 +17,7 @@ std::string g_ReadStream(std::istream& input)
     return resultStream.str();
 }
 
-std::string g_ReadFile(const std::string& fileName)
+inline std::string g_ReadFile(const std::string& fileName)
 {
     std::ifstream fileStream{ fileName.c_str() };
     DIAG_ASSERT(fileStream.is_open());

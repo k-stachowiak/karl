@@ -25,6 +25,7 @@ add_executable(karl
     ./cam/CamBound.cpp
     ./cam/CamFlying.cpp
     ./res/Resources.cpp
+    ./res/ResShaderTank.cpp
     ./res/ResShaderDebug.cpp
     ./res/ResShader.cpp
     ./Config.cpp
