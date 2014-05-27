@@ -33,6 +33,7 @@ add_executable(karl
     ./ent/Ent.cpp
     ./cmp/CmpPhysicsSimple.cpp
     ./cmp/CmpApprDebugInd.cpp
+    ./cmp/CmpApprTankVex.cpp
     ./cmp/CmpPhysicsCar.cpp
     ./cmp/CmpPhysics.cpp
     ./state/StGame.cpp

@@ -15,6 +15,7 @@ public:
 
     GLint coord_loc;
     GLint tex_coord_loc;
+    GLint texture_loc;
     ResShaderTank();
 };
 
