@@ -22,9 +22,11 @@ using OdeJoint = std::unique_ptr<dxJoint, OdeJointDeleter>;
 struct AlDisplayDeleter { void operator()(ALLEGRO_DISPLAY *display) { al_destroy_display(display); } };
 struct AlEvQueueDeleter { void operator()(ALLEGRO_EVENT_QUEUE *queue) { al_destroy_event_queue(queue); } };
 struct AlFontDeleter { void operator()(ALLEGRO_FONT *font) { al_destroy_font(font); } };
+struct AlBitmapDeleter { void operator()(ALLEGRO_BITMAP *bitmap) { al_destroy_bitmap(bitmap); } };
 
 using AlDisplay = std::unique_ptr<ALLEGRO_DISPLAY, AlDisplayDeleter>;
 using AlEvQueue = std::unique_ptr<ALLEGRO_EVENT_QUEUE, AlEvQueueDeleter>;
 using AlFont = std::unique_ptr<ALLEGRO_FONT, AlFontDeleter>;
+using AlBitmap = std::unique_ptr<ALLEGRO_BITMAP, AlBitmapDeleter>;
 
 #endif

@@ -1,5 +1,6 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_image.h>
 
 #include "Diagnostics.h"
 #include "Config.h"
@@ -15,6 +16,10 @@ Platform::Platform()
     al_init_font_addon();
     if (!al_init_ttf_addon()) {
         DIAG_ERROR_EXIT("Failed initializing TTF addon.\n");
+    }
+
+    if (!al_init_image_addon()) {
+        DIAG_ERROR_EXIT("Failed initializing image addon.\n");
     }
 
     if (!al_install_keyboard()) {
