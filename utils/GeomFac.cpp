@@ -177,9 +177,9 @@ std::vector<cmp::VtxDebug> g_GenerateCarDebugVertexes()
         });
         if (found == end(result)) {
             if (i < 36) {
-                result.push_back({ v, { 0.25f, 0, 0 } });
+                result.push_back({ v, { 0.75f, 0, 0 } });
             } else {
-                result.push_back({ v, { 0, 0, 0.25f } });
+                result.push_back({ v, { 0, 0, 0.75f } });
             }
         }
     }

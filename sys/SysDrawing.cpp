@@ -52,7 +52,7 @@ void Drawing::m_FrameBegin()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT, GL_FILL);
 }
 
 void Drawing::m_FrameEnd()
@@ -81,27 +81,6 @@ void Drawing::m_ComputeModelMatrix(
     } else {
         model = glm::mat4{};
     }
-}
-
-void Drawing::m_DrawMesh(
-        const res::ResShaderDebug& shader,
-        const NdDrawing& node,
-        FLOATING weight)
-{
-    glm::mat4 model;
-    m_ComputeModelMatrix(*node.phys, model, weight);
-
-    glUniformMatrix4fv(shader.model_loc, 1, GL_FALSE, glm::value_ptr(model));
-
-    glVertexAttribPointer(
-        shader.coord_loc, 3, GL_FLOAT, GL_FALSE, 0,
-        &node.appr->vertexes[0]);
-
-    glVertexAttribPointer(
-        shader.color_loc, 3, GL_FLOAT, GL_FALSE, 0,
-        &node.appr->colors[0]);
-
-    glDrawArrays(GL_TRIANGLES, 0, node.appr->GetVertexCount());
 }
 
 void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
@@ -137,10 +116,6 @@ void Drawing::Perform(double weight)
     m_FrameBegin();
     m_ShaderBegin(*m_resources.res_debug_shader);
     m_CameraApply(*m_resources.res_debug_shader, weight);
-
-    for (auto& node : m_nodes) {
-        m_DrawMesh(*m_resources.res_debug_shader, node, weight);
-    }
 
     for (const auto& node : m_nodes_debug) {
         m_DrawDebugNode(node, weight);

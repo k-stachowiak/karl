@@ -20,11 +20,14 @@ EntGround::EntGround(
     phys = cmp::CmpPhysicsSimple::MakePlane(space);
 }
 
-EntTank::EntTank(dWorldID world, dSpaceID space) :
+EntTank::EntTank(
+        dWorldID world, dSpaceID space,
+        GLint location_loc, GLint color_loc) :
     id { next_id++ },
-    phys { world, space, 1.5, 1.5, 2 }
-{
-    appr = cmp::CmpAppearance::MakeCar();
-}
+    phys { world, space, 1.5, 1.5, 2 },
+    appr { g_GenerateCarDebugVertexes(),
+           g_GenerateCarDebugIndexes(),
+           location_loc, color_loc }
+{}
 
 }
