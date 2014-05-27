@@ -6,14 +6,20 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_opengl.h>
 
-#include "CmpVertexDef.h"
+#include "Common.h"
 
 namespace cmp {
 
 class CmpApprDebug {
+public:
+    struct Vertex {
+        glm::vec3 attr_location;
+        glm::vec3 attr_color;
+    };
 
+private:
     void m_PrepareBuffers(
-        const std::vector<VtxDebug>& vertexes,
+        const std::vector<Vertex>& vertexes,
         const std::vector<unsigned>& indexes);
 
     void m_PrepareArrayObject(GLint location_loc, GLint color_loc);
@@ -25,7 +31,7 @@ public:
     unsigned m_num_primitives;
 
     CmpApprDebug(
-        const std::vector<VtxDebug>& vertexes,
+        const std::vector<Vertex>& vertexes,
         const std::vector<unsigned>& indexes,
         GLint location_loc, GLint color_loc);
     ~CmpApprDebug();
