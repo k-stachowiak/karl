@@ -121,18 +121,18 @@ std::vector<glm::vec3> g_MakeCar() {
 
 }
 
-std::vector<cmp::CmpApprDebug::Vertex> g_GenerateGroundDebugVertexes(
+std::vector<res::ResShaderDebug::Vertex> g_GenerateGroundDebugVertexes(
         int lx, int ly,
         FLOATING r, FLOATING g, FLOATING b)
 {
-    std::vector<cmp::CmpApprDebug::Vertex> result;
+    std::vector<res::ResShaderDebug::Vertex> result;
 
     auto raw_vertexes = g_MakeFlat(lx, ly);
 
     for (const auto& v : raw_vertexes) {
         auto found = std::find_if(
                 begin(result), end(result),
-                [&v](const cmp::CmpApprDebug::Vertex& outv) {
+                [&v](const res::ResShaderDebug::Vertex& outv) {
             return outv.attr_location == v;
         });
         if (found == end(result)) {
@@ -162,9 +162,9 @@ std::vector<unsigned> g_GenerateGroundDebugIndexes(int lx, int ly)
     return result;
 }
 
-std::vector<cmp::CmpApprDebug::Vertex> g_GenerateCarDebugVertexes()
+std::vector<res::ResShaderDebug::Vertex> g_GenerateCarDebugVertexes()
 {
-    std::vector<cmp::CmpApprDebug::Vertex> result;
+    std::vector<res::ResShaderDebug::Vertex> result;
 
     auto raw_vertexes = g_MakeCar();
 
@@ -172,7 +172,7 @@ std::vector<cmp::CmpApprDebug::Vertex> g_GenerateCarDebugVertexes()
         const auto& v = raw_vertexes[i];
         auto found = std::find_if(
                 begin(result), end(result),
-                [&v](const cmp::CmpApprDebug::Vertex& outv) {
+                [&v](const res::ResShaderDebug::Vertex& outv) {
             return outv.attr_location == v;
         });
         if (found == end(result)) {

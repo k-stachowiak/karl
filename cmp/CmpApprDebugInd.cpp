@@ -1,12 +1,12 @@
 #include <stddef.h>
 
 #include "Diagnostics.h"
-#include "CmpApprDebug.h"
+#include "CmpApprDebugInd.h"
 
 namespace cmp {
 
-void CmpApprDebug::m_PrepareBuffers(
-        const std::vector<Vertex>& vertexes,
+void CmpApprDebugInd::m_PrepareBuffers(
+        const std::vector<res::ResShaderDebug::Vertex>& vertexes,
         const std::vector<unsigned>& indexes)
 {
     glGenBuffers(1, &m_vbo);
@@ -15,7 +15,7 @@ void CmpApprDebug::m_PrepareBuffers(
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(
         GL_ARRAY_BUFFER,
-        sizeof(Vertex) * vertexes.size(),
+        sizeof(res::ResShaderDebug::Vertex) * vertexes.size(),
         &vertexes[0],
         GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -32,7 +32,7 @@ void CmpApprDebug::m_PrepareBuffers(
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void CmpApprDebug::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
+void CmpApprDebugInd::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
 {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
@@ -43,11 +43,11 @@ void CmpApprDebug::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
     glEnableVertexAttribArray(location_loc);
     glEnableVertexAttribArray(color_loc);
 
-    glVertexAttribPointer(location_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-            reinterpret_cast<void*>(offsetof(Vertex, attr_location)));
+    glVertexAttribPointer(location_loc, 3, GL_FLOAT, GL_FALSE, sizeof(res::ResShaderDebug::Vertex),
+            reinterpret_cast<void*>(offsetof(res::ResShaderDebug::Vertex, attr_location)));
 
-    glVertexAttribPointer(color_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-            reinterpret_cast<void*>(offsetof(Vertex, attr_color)));
+    glVertexAttribPointer(color_loc, 3, GL_FLOAT, GL_FALSE, sizeof(res::ResShaderDebug::Vertex),
+            reinterpret_cast<void*>(offsetof(res::ResShaderDebug::Vertex, attr_color)));
 
     glBindVertexArray(0);
 
@@ -55,8 +55,8 @@ void CmpApprDebug::m_PrepareArrayObject(GLint location_loc, GLint color_loc)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-CmpApprDebug::CmpApprDebug(
-        const std::vector<Vertex>& vertexes,
+CmpApprDebugInd::CmpApprDebugInd(
+        const std::vector<res::ResShaderDebug::Vertex>& vertexes,
         const std::vector<unsigned>& indexes,
         GLint location_loc, GLint color_loc) :
     m_num_primitives { indexes.size() }
@@ -67,7 +67,7 @@ CmpApprDebug::CmpApprDebug(
     m_PrepareArrayObject(location_loc, color_loc);
 }
 
-CmpApprDebug::~CmpApprDebug()
+CmpApprDebugInd::~CmpApprDebugInd()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_ibo);
