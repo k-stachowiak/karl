@@ -30,4 +30,18 @@ EntTank::EntTank(
            location_loc, color_loc }
 {}
 
+EntTank2::EntTank2(
+        dWorldID world, dSpaceID space,
+        GLint location_loc, GLint tex_coord_loc,
+        GLuint texture_id) :
+    id { next_id++ }, // TODO: Store ID in resources?
+    // Move all this global crap into resources class.
+    appr { g_GenerateCubeVertexes(1, 1, 1),
+           location_loc, tex_coord_loc,
+           texture_id }
+{
+    phys = cmp::CmpPhysicsSimple::MakeBox(
+        world, space, 1000, 0, 0, 0, 1, 1, 1);
+}
+
 }

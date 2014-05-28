@@ -31,20 +31,6 @@ void Drawing::m_CameraApply(const res::ResShader &shader, FLOATING weight)
         glm::value_ptr(m_camera->GetProjectionMatrix()));
 }
 
-void Drawing::m_ShaderBegin(const res::ResShaderDebug &shader)
-{
-    glUseProgram(shader.program);
-    glEnableVertexAttribArray(shader.coord_loc);
-    glEnableVertexAttribArray(shader.color_loc);
-}
-
-void Drawing::m_ShaderEnd(const res::ResShaderDebug &shader)
-{
-    glDisableVertexAttribArray(shader.coord_loc);
-    glDisableVertexAttribArray(shader.color_loc);
-    glUseProgram(0);
-}
-
 void Drawing::m_FrameBegin()
 {
     glViewport(0, 0, cfg_screen_w, cfg_screen_h);
@@ -102,6 +88,24 @@ void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
     glBindVertexArray(0);
 }
 
+void Drawing::m_DrawTankNode(const NdDrawingTank& node, FLOATING weight)
+{
+    glm::mat4 model;
+    m_ComputeModelMatrix(*node.phys, model, weight);
+    glUniformMatrix4fv(
+        m_resources.res_debug_shader->model_loc,
+        1, GL_FALSE, glm::value_ptr(model));
+
+    glBindVertexArray(node.appr->m_vao);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, node.appr->m_tid);
+
+    glDrawArrays(GL_TRIANGLES, 0, node.appr->m_num_primitives);
+
+    glBindVertexArray(0);
+}
+
 /* API implementation.
  * ===================
  */
@@ -109,19 +113,30 @@ void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
 Drawing::Drawing(res::Resources& resources) :
     m_resources(resources),
     m_camera(nullptr)
-{}
+{
+}
 
 void Drawing::Perform(double weight)
 {
     m_FrameBegin();
-    m_ShaderBegin(*m_resources.res_debug_shader);
+
+    m_resources.res_debug_shader->Begin();
     m_CameraApply(*m_resources.res_debug_shader, weight);
 
     for (const auto& node : m_nodes_debug) {
         m_DrawDebugNode(node, weight);
     }
 
-    m_ShaderEnd(*m_resources.res_debug_shader);
+    m_resources.res_debug_shader->End();
+
+    m_resources.res_tank_shader->Begin();
+    m_CameraApply(*m_resources.res_tank_shader, weight);
+
+    for (const auto& node : m_nodes_tank) {
+        m_DrawTankNode(node, weight);
+    }
+
+    m_resources.res_tank_shader->End();
 
     m_FrameEnd();
 

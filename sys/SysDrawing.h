@@ -7,6 +7,7 @@
 #include "Resources.h"
 #include "CmpPhysics.h"
 #include "CmpApprDebugInd.h"
+#include "CmpApprTankVex.h"
 #include "Camera.h"
 
 namespace sys {
@@ -17,6 +18,12 @@ struct NdDrawingDebug {
     cmp::CmpApprDebugInd *appr;
 };
 
+struct NdDrawingTank {
+    long id;
+    cmp::CmpPhysics *phys;
+    cmp::CmpApprTankVex *appr;
+};
+
 class Drawing {
 
     res::Resources& m_resources;
@@ -24,11 +31,9 @@ class Drawing {
     Camera* m_camera;
 
     std::vector<NdDrawingDebug> m_nodes_debug;
+    std::vector<NdDrawingTank> m_nodes_tank;
 
     void m_CameraApply(const res::ResShader &shader, FLOATING weight);
-
-    static void m_ShaderBegin(const res::ResShaderDebug &shader);
-    static void m_ShaderEnd(const res::ResShaderDebug &shader);
 
     static void m_FrameBegin();
     static void m_FrameEnd();
@@ -39,6 +44,7 @@ class Drawing {
             FLOATING weight);
 
     void m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight);
+    void m_DrawTankNode(const NdDrawingTank& node, FLOATING weight);
 
 public:
     Drawing(res::Resources& resources);
@@ -49,6 +55,16 @@ public:
     void RegisterDebugEntity(Entity& entity)
     {
         m_nodes_debug.push_back({
+            entity.id,
+            &entity.phys,
+            &entity.appr
+        });
+    }
+
+    template <class Entity>
+    void RegisterTankEntity(Entity& entity)
+    {
+        m_nodes_tank.push_back({
             entity.id,
             &entity.phys,
             &entity.appr

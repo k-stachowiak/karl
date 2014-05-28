@@ -16,6 +16,9 @@ public:
     GLint coord_loc;
     GLint color_loc;
     ResShaderDebug();
+
+    void Begin() const;
+    void End() const;
 };
 
 }

@@ -1,23 +1,23 @@
 #include "Config.h"
 #include "StGlPlay.h"
+#include "ResShaderTank.h"
+#include "ResTexture.h"
 
 namespace {
 
     struct vertex {
         glm::vec3 coords;
-        glm::vec3 color;
+        glm::vec2 tcoord;
     };
 
     vertex vertexes[] {
-        { { -1, -1, 0 }, { 1, 0, 0 } },
-        { { -1, +1, 0 }, { 0, 1, 0 } },
-        { { +1, +1, 0 }, { 0, 0, 1 } },
-        { { +1, -1, 0 }, { 1, 1, 0 } }
-    };
+        { { -1, -1, 0 }, { 0, 0 } },
+        { { -1, +1, 0 }, { 0, 1 } },
+        { { +1, +1, 0 }, { 1, 1 } },
 
-    unsigned int indexes[] = {
-        0, 1, 2,
-        0, 2, 3
+        { { -1, -1, 0 }, { 0, 0 } },
+        { { +1, +1, 0 }, { 1, 1 } },
+        { { +1, -1, 0 }, { 1, 0 } }
     };
 
     glm::mat4 identity;
@@ -25,51 +25,51 @@ namespace {
 
     GLuint vao;
     GLuint vbo;
-    GLuint ibo;
 
     GLint vloc;
-    GLint cloc;
+    GLint tcloc;
 
-    GLint modloc, viewloc, projloc;
+    GLint modloc, viewloc, projloc, texloc;
 }
 
 namespace state {
 
 StGlPlay::StGlPlay(res::Resources& resources) :
     m_done { false },
-    m_resources { resources }
+    m_resources { resources },
+    m_texture { "data/tank.png" }
 {
     projection = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f, -1.0f, 1.0f);
 
-    glUseProgram(m_resources.res_debug_shader->program);
-    vloc = m_resources.res_debug_shader->coord_loc;
-    cloc = m_resources.res_debug_shader->color_loc;
-    modloc = m_resources.res_debug_shader->model_loc;
-    viewloc = m_resources.res_debug_shader->view_loc;
-    projloc = m_resources.res_debug_shader->projection_loc;
+    glUseProgram(m_resources.res_tank_shader->program);
+    vloc = m_resources.res_tank_shader->coord_loc;
+    tcloc = m_resources.res_tank_shader->tex_coord_loc;
+    texloc = m_resources.res_tank_shader->texture_loc;
+    modloc = m_resources.res_tank_shader->model_loc;
+    viewloc = m_resources.res_tank_shader->view_loc;
+    projloc = m_resources.res_tank_shader->projection_loc;
 
     glUniformMatrix4fv(viewloc, 1, GL_FALSE, glm::value_ptr(identity));
     glUniformMatrix4fv(modloc, 1, GL_FALSE, glm::value_ptr(identity));
     glUniformMatrix4fv(projloc, 1, GL_FALSE, glm::value_ptr(projection));
+    glUniform1i(texloc, GL_TEXTURE0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_texture.GetGlId());
 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
 
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
-
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
     glEnableVertexAttribArray(vloc);
-    glEnableVertexAttribArray(cloc);
+    glEnableVertexAttribArray(tcloc);
     glVertexAttribPointer(vloc, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)0);
-    glVertexAttribPointer(cloc, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)sizeof(glm::vec3));
+    glVertexAttribPointer(tcloc, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)sizeof(glm::vec3));
 
     glBindVertexArray(0);
 
@@ -91,7 +91,7 @@ StTransition StGlPlay::Tick(double)
 void StGlPlay::Draw(double)
 {
     glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void StGlPlay::KeyUp(int key)

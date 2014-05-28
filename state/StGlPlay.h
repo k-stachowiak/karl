@@ -6,12 +6,14 @@
 #include "Common.h"
 #include "Resources.h"
 #include "State.h"
+#include "ResTexture.h"
 
 namespace state {
 
 class StGlPlay : public State {
     bool m_done;
     res::Resources& m_resources;
+    res::ResTexture m_texture;
 public:
     StGlPlay(res::Resources& resources);
     StTransition Tick(double dt) override;

@@ -46,7 +46,9 @@ void CmpApprTankVex::m_PrepareArrayObject(
 
 CmpApprTankVex::CmpApprTankVex(
         const std::vector<res::ResShaderTank::Vertex>& vertexes,
-        GLint location_loc, GLint tex_coord_loc) :
+        GLint location_loc, GLint tex_coord_loc,
+        GLuint texture_id) :
+    m_tid { texture_id },
     m_num_primitives { vertexes.size() }
 {
     m_PrepareBuffers(vertexes);

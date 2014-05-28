@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "ResShaderDebug.h"
+#include "ResShaderTank.h"
 
 std::vector<res::ResShaderDebug::Vertex> g_GenerateGroundDebugVertexes(
         int lx, int ly,
@@ -12,5 +13,8 @@ std::vector<unsigned> g_GenerateGroundDebugIndexes(int lx, int ly);
 
 std::vector<res::ResShaderDebug::Vertex> g_GenerateCarDebugVertexes();
 std::vector<unsigned> g_GenerateCarDebugIndexes();
+
+std::vector<res::ResShaderTank::Vertex> g_GenerateCubeVertexes(
+        FLOATING lx, FLOATING ly, FLOATING lz);
 
 #endif

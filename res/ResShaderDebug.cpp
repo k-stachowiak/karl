@@ -11,4 +11,18 @@ ResShaderDebug::ResShaderDebug() :
     t_AssertLocations(coord_loc, color_loc);
 }
 
+void ResShaderDebug::Begin() const
+{
+    glUseProgram(program);
+    glEnableVertexAttribArray(coord_loc);
+    glEnableVertexAttribArray(color_loc);
+}
+
+void ResShaderDebug::End() const
+{
+    glDisableVertexAttribArray(coord_loc);
+    glDisableVertexAttribArray(color_loc);
+    glUseProgram(0);
+}
+
 }

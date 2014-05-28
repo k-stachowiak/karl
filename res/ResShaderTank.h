@@ -11,12 +11,17 @@ public:
     struct Vertex {
         glm::vec3 attr_location;
         glm::vec2 attr_tex_coord;
+        // TODO: Add tank part identifier here.
     };
 
     GLint coord_loc;
     GLint tex_coord_loc;
     GLint texture_loc;
+
     ResShaderTank();
+
+    void Begin() const;
+    void End() const;
 };
 
 }

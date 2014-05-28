@@ -9,6 +9,7 @@
 
 /*
  * TODO:
+ * - Add test cube entity.
  * - Replace the current tank appearance component with the specialized class.
  * - Implement special drawing routine for the tank appearance.
  */

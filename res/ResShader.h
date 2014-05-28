@@ -41,6 +41,9 @@ public:
 
     ResShader(const std::string& vsource, const std::string& fsource);
     ~ResShader();
+
+    virtual void Begin() const = 0;
+    virtual void End() const = 0;
 };
 
 }

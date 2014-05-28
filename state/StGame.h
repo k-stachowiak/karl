@@ -24,6 +24,7 @@ class StGame : public State {
 
     ent::EntGround m_ground;
     ent::EntTank m_tank;
+    ent::EntTank2 m_tank2;
 
     std::vector<bool> m_keys;
     struct { int dx = 0, dy = 0; } m_mouse_move;

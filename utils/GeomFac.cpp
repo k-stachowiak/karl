@@ -56,6 +56,15 @@ std::vector<glm::vec3> g_cube {
     { +1, +1, +1 },
 };
 
+std::vector<glm::vec2> g_cube_tex_coords {
+    { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 0 },
+    { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 0 },
+    { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 0 },
+    { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 0 },
+    { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 0 },
+    { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 1 }, { 1, 0 },
+};
+
 std::vector<glm::vec3> g_MakeFlat(int lx, int ly)
 {
     std::vector<glm::vec3> result;
@@ -202,6 +211,31 @@ std::vector<unsigned> g_GenerateCarDebugIndexes()
             result.push_back(std::distance(begin(packed_vertexes), found));
         }
     }
+
+    return result;
+}
+
+std::vector<res::ResShaderTank::Vertex> g_GenerateCubeVertexes(
+        FLOATING lx, FLOATING ly, FLOATING lz)
+{
+    std::vector<res::ResShaderTank::Vertex> result;
+
+    std::transform(
+        begin(g_cube),
+        end(g_cube),
+        begin(g_cube_tex_coords),
+        std::back_inserter(result),
+        [](const glm::vec3& c, const glm::vec2& tc) {
+            return res::ResShaderTank::Vertex { c, tc };
+        });
+
+    std::transform(begin(result), end(result), begin(result),
+        [lx, ly, lz](res::ResShaderTank::Vertex v) {
+            v.attr_location[0] *= lx * 0.5;
+            v.attr_location[1] *= ly * 0.5;
+            v.attr_location[2] *= lz * 0.5;
+            return v;
+        });
 
     return result;
 }

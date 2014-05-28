@@ -12,4 +12,18 @@ ResShaderTank::ResShaderTank() :
     t_AssertLocations(coord_loc, tex_coord_loc, texture_loc);
 }
 
+void ResShaderTank::Begin() const
+{
+    glUseProgram(program);
+    glEnableVertexAttribArray(coord_loc);
+    glEnableVertexAttribArray(tex_coord_loc);
+}
+
+void ResShaderTank::End() const
+{
+    glDisableVertexAttribArray(coord_loc);
+    glDisableVertexAttribArray(tex_coord_loc);
+    glUseProgram(0);
+}
+
 }

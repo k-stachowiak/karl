@@ -7,7 +7,9 @@
 namespace res {
 
 Resources::Resources() :
-    res_debug_shader { new ResShaderDebug }
+    res_debug_shader { new ResShaderDebug },
+    res_tank_shader { new ResShaderTank },
+    res_tank_texture { new ResTexture { "data/tank.png" } }
 {}
 
 }
