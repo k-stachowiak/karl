@@ -42,6 +42,7 @@ StGame::StGame(res::Resources& resources) :
              resources.res_debug_shader->color_loc },
     m_tank2 { m_physics_system.GetWorld(),
               m_physics_system.GetSpace(),
+              *(resources.res_tank_model),
               resources.res_tank_shader->coord_loc,
               resources.res_tank_shader->tex_coord_loc,
               resources.res_tank_texture->GetGlId() },

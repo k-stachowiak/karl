@@ -29,6 +29,8 @@ add_executable(karl
     ./res/ResShaderDebug.cpp
     ./res/ResShader.cpp
     ./res/ResTexture.cpp
+    ./res/ResModelLoader.cpp
+    ./res/ResModelTank.cpp
     ./Config.cpp
     ./ent/Ent.cpp
     ./cmp/CmpPhysicsSimple.cpp

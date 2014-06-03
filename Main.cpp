@@ -14,6 +14,10 @@
  * - Implement special drawing routine for the tank appearance.
  */
 
+#include <cstdio>
+#include "File.h"
+#include "ResModelLoader.h"
+
 int main()
 {
     CfgInit();
