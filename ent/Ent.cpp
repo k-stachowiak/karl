@@ -32,11 +32,12 @@ EntTank::EntTank(
 
 EntTank2::EntTank2(
         dWorldID world, dSpaceID space,
+        const res::ResModelTank& model,
         GLint location_loc, GLint tex_coord_loc,
         GLuint texture_id) :
     id { next_id++ }, // TODO: Store ID in resources?
     // Move all this global crap into resources class.
-    appr { g_GenerateCubeVertexes(1, 1, 1),
+    appr { model.GetAllVertexes(),
            location_loc, tex_coord_loc,
            texture_id }
 {

@@ -9,6 +9,7 @@
 #include "CmpPhysicsCar.h"
 #include "CmpApprDebugInd.h"
 #include "CmpApprTankVex.h"
+#include "ResModelTank.h"
 
 namespace ent {
 
@@ -36,6 +37,7 @@ struct EntTank2 {
     cmp::CmpApprTankVex appr;
     EntTank2(
         dWorldID world, dSpaceID space,
+        const res::ResModelTank& model,
         GLint location_loc, GLint tex_coord_loc,
         GLuint texture_id);
 };
