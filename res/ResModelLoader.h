@@ -34,6 +34,14 @@ class ResModelLoader {
         bool ThreeProps() const { return faces2.empty() && !faces3.empty(); }
     };
 
+    static std::vector<ResShaderTank::Vertex> m_BuildDrawablePiece(
+        const ObjTankObject& object);
+
+    static std::vector<glm::vec3> m_BuildCollidablePiece(
+        const ObjTankObject& object);
+
+    static glm::vec3 m_BuildJointPiece(const ObjTankObject& object);
+
     static ResModelTank m_CombineObjTankObjects(
         const std::map<std::string, ObjTankObject>& obj_map);
 
