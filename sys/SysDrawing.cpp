@@ -45,34 +45,9 @@ void Drawing::m_FrameEnd()
 {
 }
 
-void Drawing::m_ComputeModelMatrix(
-        const cmp::CmpPhysics& phys,
-        glm::mat4& model,
-        FLOATING weight)
-{
-    if (phys.HasBody()) {
-
-        glm::vec3 prev_location = phys.prev_location;
-        glm::vec3 current_location = phys.GetLocation();
-        glm::quat prev_rotation = phys.prev_rotation;
-        glm::quat current_rotation = phys.GetRotation();
-
-        glm::vec3 location = weight * prev_location + (1 - weight) * current_location;
-        glm::quat rotation = glm::slerp(prev_rotation, current_rotation, weight);
-
-        model = glm::mat4{};
-        model = glm::translate(model, location);
-        model *= glm::mat4_cast(rotation);
-
-    } else {
-        model = glm::mat4{};
-    }
-}
-
 void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
 {
-    glm::mat4 model;
-    m_ComputeModelMatrix(*node.phys, model, weight);
+    glm::mat4 model = node.phys->GetMatrix(weight);
     glUniformMatrix4fv(
         m_resources.res_debug_shader->model_loc,
         1, GL_FALSE, glm::value_ptr(model));
@@ -90,8 +65,7 @@ void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
 
 void Drawing::m_DrawTankNode(const NdDrawingTank& node, FLOATING weight)
 {
-    glm::mat4 model;
-    m_ComputeModelMatrix(*node.phys, model, weight);
+    glm::mat4 model = node.phys->GetMatrix(weight);
     glUniformMatrix4fv(
         m_resources.res_debug_shader->model_loc,
         1, GL_FALSE, glm::value_ptr(model));

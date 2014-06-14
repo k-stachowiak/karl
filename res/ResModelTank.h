@@ -26,13 +26,13 @@ struct ResModelTank {
     };
 
     static std::map<std::string, Piece> stringPieceMap;
+    static std::map<Piece, std::string> pieceStringMap;
 
     std::map<Piece, std::vector<ResShaderTank::Vertex>> vertexes;
     std::map<Piece, std::vector<glm::vec3>> coll_geoms;
     std::map<Piece, glm::vec3> joints;
 
     std::vector<ResShaderTank::Vertex> GetAllVertexes() const;
-    std::vector<glm::vec3> GetAllCollGeoms() const;
 };
 
 }

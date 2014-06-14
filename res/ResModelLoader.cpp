@@ -128,12 +128,15 @@ ResModelTank ResModelLoader::m_CombineObjTankObjects(
         const ResModelTank::Piece key = ResModelTank::stringPieceMap[name];
 
         if (name[0] == 'c') {
+            DIAG_MESSAGE("Discovered collidable piece \"%s\".\n", name.c_str());
             result.coll_geoms[key] = m_BuildCollidablePiece(object);
 
         } else if (name[0] == 'j') {
+            DIAG_MESSAGE("Discovered joint piece \"%s\".\n", name.c_str());
             result.joints[key] = m_BuildJointPiece(object);
 
         } else {
+            DIAG_MESSAGE("Discovered drawable piece \"%s\".\n", name.c_str());
             result.vertexes[key] = m_BuildDrawablePiece(object);
 
         }
@@ -189,7 +192,10 @@ ResModelLoader::m_LoadObjTankObjects(
         std::string current_name;
 
         if (IsObject(*lineIt, current_name)) {
+            DIAG_MESSAGE("Start reading object \"%s\".\n", current_name.c_str());
             if (!previous_name.empty()) {
+                DIAG_MESSAGE("Have been reading \"%s\"; writing result.\n",
+                             previous_name.c_str());
                 result[previous_name] = m_BuildObjTankObject(v_bag, f_bag);
                 f_bag.Clear();
             }
@@ -223,6 +229,8 @@ ResModelLoader::m_LoadObjTankObjects(
 
     // Write last object.
     result[previous_name] = m_BuildObjTankObject(v_bag, f_bag);
+    DIAG_MESSAGE("Have been reading \"%s\"; writing result.\n",
+                 previous_name.c_str());
 
     return result;
 }

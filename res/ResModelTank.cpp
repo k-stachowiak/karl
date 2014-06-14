@@ -18,6 +18,18 @@ std::vector<T> g_FlattenMap(const std::map<DISCARD, std::vector<T>>& map)
     return result;
 }
 
+template <class K, class V>
+std::map<V, K> g_ReverseMap(const std::map<K, V>& in) {
+    std::map<V, K> out;
+    for (const auto& pr : in) {
+        if (out.find(pr.second) != end(out)) {
+            DIAG_ERROR_EXIT("Attempt to reverse non-injective map.");
+        }
+        out[pr.second] = pr.first;
+    }
+    return out;
+}
+
 }
 
 namespace res {
@@ -35,14 +47,12 @@ std::map<std::string, ResModelTank::Piece> ResModelTank::stringPieceMap {
     { "cRTrack", ResModelTank::Piece::COL_RTRACK }
 };
 
+std::map<ResModelTank::Piece, std::string> ResModelTank::pieceStringMap =
+    g_ReverseMap(ResModelTank::stringPieceMap);
+
 std::vector<ResShaderTank::Vertex> ResModelTank::GetAllVertexes() const
 {
     return g_FlattenMap(vertexes);
-}
-
-std::vector<glm::vec3> ResModelTank::GetAllCollGeoms() const
-{
-    return g_FlattenMap(coll_geoms);
 }
 
 }

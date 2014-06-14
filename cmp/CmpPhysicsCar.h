@@ -27,19 +27,7 @@ struct CmpPhysicsCar : public CmpPhysics {
         dWorldID world, dSpaceID space,
         FLOATING cx, FLOATING cy, FLOATING cz);
 
-    bool HasBody() const override { return true; }
-
-    glm::vec3 GetLocation() const override
-    {
-        const FLOATING *pos = dBodyGetPosition(chassis_body.get());
-        return { pos[0], pos[1], pos[2] };
-    }
-
-    glm::quat GetRotation() const override
-    {
-        const FLOATING* q = dBodyGetQuaternion(chassis_body.get());
-        return { q[0], q[1], q[2], q[3] };
-    }
+    dBodyID GetBody() const override { return chassis_body.get(); }
 
     bool HasTrack(dBodyID maybe_track) const override;
 

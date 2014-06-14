@@ -39,7 +39,7 @@ void CamFlying::Move(FLOATING dx, FLOATING dy)
 void CamFlying::Walk(FLOATING front, FLOATING right)
 {
     FLOATING dx, dy;
-    CastRotatedCoords(front, right, m_rotation[1], dx, dy);
+    g_CastRotatedCoords(front, right, m_rotation[1], dx, dy);
     Move(dx, dy);
 }
 

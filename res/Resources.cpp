@@ -15,6 +15,11 @@ Resources::Resources() :
     res_tank_model { new ResModelTank(
         ResModelLoader::LoadObjTankModel(g_ReadFile("data/tank2.obj"))
     )}
-{}
+{
+    for (const auto& pr : res_tank_model->coll_geoms) {
+        const std::string key = ResModelTank::pieceStringMap[pr.first];
+        DIAG_MESSAGE("|coll_geoms[%s]| = %d\n", key.c_str(), pr.second.size());
+    }
+}
 
 }
