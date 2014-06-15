@@ -6,8 +6,8 @@
 #include "Common.h"
 #include "Resources.h"
 #include "CmpPhysics.h"
-#include "CmpApprDebugInd.h"
-#include "CmpApprTankVex.h"
+#include "CmpApprDebug.h"
+#include "CmpApprTank.h"
 #include "Camera.h"
 
 namespace sys {
@@ -15,13 +15,13 @@ namespace sys {
 struct NdDrawingDebug {
     long id;
     cmp::CmpPhysics *phys;
-    cmp::CmpApprDebugInd *appr;
+    cmp::CmpApprDebug *appr;
 };
 
 struct NdDrawingTank {
     long id;
     cmp::CmpPhysics *phys;
-    cmp::CmpApprTankVex *appr;
+    cmp::CmpApprTank *appr;
 };
 
 class Drawing {

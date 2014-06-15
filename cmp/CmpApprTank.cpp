@@ -1,8 +1,8 @@
-#include "CmpApprTankVex.h"
+#include "CmpApprTank.h"
 
 namespace cmp {
 
-void CmpApprTankVex::m_PrepareBuffers(
+void CmpApprTank::m_PrepareBuffers(
     const std::vector<res::ResShaderTank::Vertex>& vertexes)
 {
     glGenBuffers(1, &m_vbo);
@@ -16,7 +16,7 @@ void CmpApprTankVex::m_PrepareBuffers(
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CmpApprTankVex::m_PrepareArrayObject(
+void CmpApprTank::m_PrepareArrayObject(
     GLint location_loc,
     GLint tex_coord_loc)
 {
@@ -47,7 +47,7 @@ void CmpApprTankVex::m_PrepareArrayObject(
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-CmpApprTankVex::CmpApprTankVex(
+CmpApprTank::CmpApprTank(
         const std::vector<res::ResShaderTank::Vertex>& vertexes,
         GLint location_loc, GLint tex_coord_loc,
         GLuint texture_id) :
@@ -58,7 +58,7 @@ CmpApprTankVex::CmpApprTankVex(
     m_PrepareArrayObject(location_loc, tex_coord_loc);
 }
 
-CmpApprTankVex::~CmpApprTankVex()
+CmpApprTank::~CmpApprTank()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_vbo);

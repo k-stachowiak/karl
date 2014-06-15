@@ -1,5 +1,5 @@
-#ifndef CMP_APPR_DEBUG_VEX_H
-#define CMP_APPR_DEBUG_VEX_H
+#ifndef CMP_APPR_DEBUG_H
+#define CMP_APPR_DEBUG_H
 
 #include <vector>
 
@@ -7,7 +7,7 @@
 
 namespace cmp {
 
-class CmpApprDebugVex {
+class CmpApprDebug {
     void m_PrepareBuffers(
         const std::vector<res::ResShaderDebug::Vertex>& vertexes);
 
@@ -18,11 +18,11 @@ public:
     GLuint m_vbo;
     unsigned m_num_primitives;
 
-    CmpApprDebugVex(
+    CmpApprDebug(
         const std::vector<res::ResShaderDebug::Vertex>& vertexes,
         GLint location_loc, GLint color_loc);
 
-    ~CmpApprDebugVex();
+    ~CmpApprDebug();
 };
 
 }

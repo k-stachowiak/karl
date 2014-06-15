@@ -1,8 +1,8 @@
-#include "CmpApprDebugVex.h"
+#include "CmpApprDebug.h"
 
 namespace cmp {
 
-void CmpApprDebugVex::m_PrepareBuffers(
+void CmpApprDebug::m_PrepareBuffers(
     const std::vector<res::ResShaderDebug::Vertex>& vertexes)
 {
     glGenBuffers(1, &m_vbo);
@@ -15,7 +15,7 @@ void CmpApprDebugVex::m_PrepareBuffers(
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CmpApprDebugVex::m_PrepareArrayObject(
+void CmpApprDebug::m_PrepareArrayObject(
     GLint location_loc, GLint color_loc)
 {
     glGenVertexArrays(1, &m_vao);
@@ -45,7 +45,7 @@ void CmpApprDebugVex::m_PrepareArrayObject(
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-CmpApprDebugVex::CmpApprDebugVex(
+CmpApprDebug::CmpApprDebug(
         const std::vector<res::ResShaderDebug::Vertex>& vertexes,
         GLint location_loc, GLint color_loc) :
     m_num_primitives { vertexes.size() }
@@ -54,7 +54,7 @@ CmpApprDebugVex::CmpApprDebugVex(
     m_PrepareArrayObject(location_loc, color_loc);
 }
 
-CmpApprDebugVex::~CmpApprDebugVex()
+CmpApprDebug::~CmpApprDebug()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_vbo);

@@ -14,7 +14,6 @@ EntGround::EntGround(
         GLint location_loc, GLint color_loc) :
     id { next_id++ },
     appr { g_GenerateGroundDebugVertexes(3, 20, 0.0, 0.25, 0.0),
-           g_GenerateGroundDebugIndexes(3, 20),
            location_loc, color_loc }
 {
     phys = cmp::CmpPhysicsSimple::MakePlane(space);
@@ -27,7 +26,6 @@ EntTank::EntTank(
     phys { world, space, 1.5, 1.5, 2 },
     // Move all this global crap into resources class or delete.
     appr { g_GenerateCarDebugVertexes(),
-           g_GenerateCarDebugIndexes(),
            location_loc, color_loc }
 {}
 
