@@ -61,7 +61,7 @@ EntTank2::EntTank2(
         GLint debug_location_loc, GLint debug_color_loc,
         GLuint texture_id) :
     id { next_id++ }, // TODO: Store ID in resources?
-    phys { world, space, 3, 3, 1,
+    phys { world, space, 5, 5, 0.5f,
         model.coll_geoms.at(res::ResModelTank::Piece::COL_LTRACK),
         model.coll_geoms.at(res::ResModelTank::Piece::COL_RTRACK),
         model.coll_geoms.at(res::ResModelTank::Piece::COL_CHASSIS) },

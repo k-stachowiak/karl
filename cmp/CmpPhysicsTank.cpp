@@ -4,7 +4,7 @@
 namespace cmp {
 
 CmpPhysicsTank::TriMeshPiece::TriMeshPiece(
-        dWorldID world, dSpaceID space,
+        dWorldID world, dSpaceID space, FLOATING mass,
         FLOATING cx, FLOATING cy, FLOATING cz,
         const std::vector<glm::vec3>& vertexes) :
     vex { vertexes },
@@ -42,18 +42,19 @@ CmpPhysicsTank::TriMeshPiece::TriMeshPiece(
     FLOATING lz = bound_max[2] - bound_min[2];
 
     dMass dm;
-    dMassSetBoxTotal(&dm, 100, lx, ly, lz);
+    dMassSetBoxTotal(&dm, mass, lx, ly, lz);
 
     FLOATING x = cx + bound_min[0] + lx / 2;
     FLOATING y = cy + bound_min[1] + ly / 2;
     FLOATING z = cz + bound_min[2] + lz / 2;
 
     body.reset(dBodyCreate(world));
-    dBodySetPosition(body.get(), x, y, z);
     dBodySetMass(body.get(), &dm);
+    dBodySetMaxAngularSpeed(body.get(), cfg_tank_max_ang_speed);
 
     // Attach the body to the geom.
     dGeomSetBody(geom.get(), body.get());
+    dGeomSetPosition(geom.get(), x, y, z);
 
     // Set initial "prevoius transform".
     StoreTransform();
@@ -70,9 +71,9 @@ CmpPhysicsTank::CmpPhysicsTank(
         const std::vector<glm::vec3>& ltrack_vertexes,
         const std::vector<glm::vec3>& rtrack_vertexes,
         const std::vector<glm::vec3>& body_vertexes) :
-    m_ltrack_piece { world, space, cx, cy, cz, ltrack_vertexes },
-    m_rtrack_piece { world, space, cx, cy, cz, rtrack_vertexes },
-    m_chassis_piece { world, space, cx, cy, cz, body_vertexes }
+    m_ltrack_piece { world, space, 10, cx, cy, cz, ltrack_vertexes },
+    m_rtrack_piece { world, space, 10, cx, cy, cz, rtrack_vertexes },
+    m_chassis_piece { world, space, 100, cx, cy, cz, body_vertexes }
 {
     m_ljoint.reset(dJointCreateFixed(world, 0));
     dJointAttach(m_ljoint.get(), m_chassis_piece.body.get(), m_ltrack_piece.body.get());
@@ -104,11 +105,11 @@ void CmpPhysicsTank::ApplyDriveForces(FLOATING boost, FLOATING turn)
     glm::vec3 rot = GetRotationAngles();
 
     g_CastRotatedCoords(
-        boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
+        boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
         0, rot.z, rfx, rfy);
 
     g_CastRotatedCoords(
-        boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
+        boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
         0, rot.z, lfx, lfy);
 
     dBodyAddForce(m_rtrack_piece.body.get(), rfx, rfy, 0);

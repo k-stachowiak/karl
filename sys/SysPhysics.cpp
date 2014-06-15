@@ -77,8 +77,8 @@ void Physics::m_OnDefaultContact(dBodyID b1, dBodyID b2, dContact &contact)
 {
     contact.surface.mode = dContactSoftERP | dContactSoftCFM;
     contact.surface.mu = 1;
-    contact.surface.soft_erp = 1.0;
-    contact.surface.soft_cfm = 0.001;
+    contact.surface.soft_erp = 0.9;
+    contact.surface.soft_cfm = 0.01;
 
     dJointID contact_joint = dJointCreateContact(m_world.get(), m_contact_group.get(), &contact);
     dJointAttach(contact_joint, b1, b2);
@@ -90,8 +90,8 @@ Physics::Physics()
 
     m_world.reset(dWorldCreate());
     dWorldSetGravity(m_world.get(), 0, 0, -10);
-    dWorldSetERP(m_world.get(), 0.2);
-    dWorldSetCFM(m_world.get(), 10E-5);
+    dWorldSetERP(m_world.get(), 0.9);
+    dWorldSetCFM(m_world.get(), 0.01);
 
     m_space.reset(dSimpleSpaceCreate(0));
     m_contact_group.reset(dJointGroupCreate(0));
