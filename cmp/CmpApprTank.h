@@ -1,5 +1,5 @@
-#ifndef CMP_APPR_TANK_VEX_H
-#define CMP_APPR_TANK_VEX_H
+#ifndef CMP_APPR_TANK_H
+#define CMP_APPR_TANK_H
 
 #include <vector>
 
@@ -7,7 +7,7 @@
 
 namespace cmp {
 
-class CmpApprTankVex {
+class CmpApprTank {
     void m_PrepareBuffers(
         const std::vector<res::ResShaderTank::Vertex>& vertexes);
 
@@ -19,12 +19,12 @@ public:
     GLuint m_tid;
     unsigned m_num_primitives;
 
-    CmpApprTankVex(
+    CmpApprTank(
         const std::vector<res::ResShaderTank::Vertex>& vertexes,
         GLint location_loc, GLint tex_coord_loc,
         GLuint texture_id);
 
-    ~CmpApprTankVex();
+    ~CmpApprTank();
 };
 
 }

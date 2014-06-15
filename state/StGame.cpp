@@ -25,7 +25,7 @@ void StGame::m_DriveCamera(
         dpitch * cam_rotate_speed * dt,
         dyaw * cam_rotate_speed * dt);
 
-    glm::vec3 tank_location = m_tank.phys.GetLocation();
+    glm::vec3 tank_location = m_tank2.phys.GetLocation();
     m_cam_bound.SetLocation(tank_location[0], tank_location[1]);
 }
 
@@ -45,6 +45,8 @@ StGame::StGame(res::Resources& resources) :
               *(resources.res_tank_model),
               resources.res_tank_shader->coord_loc,
               resources.res_tank_shader->tex_coord_loc,
+              resources.res_debug_shader->coord_loc,
+              resources.res_debug_shader->color_loc,
               resources.res_tank_texture->GetGlId() },
     m_keys(ALLEGRO_KEY_MAX, false),
     m_done { false }
@@ -59,6 +61,7 @@ StGame::StGame(res::Resources& resources) :
 
     m_physics_system.RegisterEntity(m_tank2);
     m_drawing_system.RegisterTankEntity(m_tank2);
+    // m_drawing_system.RegisterDebugEntity(m_tank2);
 }
 
 StTransition StGame::Tick(double dt)
@@ -81,7 +84,7 @@ StTransition StGame::Tick(double dt)
     if (m_keys[ALLEGRO_KEY_D]) tank_turn += 1;
     if (m_keys[ALLEGRO_KEY_S]) tank_boost -= 1;
     if (m_keys[ALLEGRO_KEY_W]) tank_boost += 1;
-    m_tank.phys.ApplyDriveForces(tank_boost, tank_turn);
+    //m_tank.phys.ApplyDriveForces(tank_boost, tank_turn);
     m_tank2.phys.ApplyDriveForces(tank_boost, tank_turn);
 
     m_physics_system.Perform(dt);

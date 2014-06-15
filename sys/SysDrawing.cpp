@@ -53,13 +53,7 @@ void Drawing::m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight)
         1, GL_FALSE, glm::value_ptr(model));
 
     glBindVertexArray(node.appr->m_vao);
-
-    glDrawElements(
-        GL_TRIANGLES,
-        node.appr->m_num_primitives,
-        GL_UNSIGNED_INT,
-        0);
-
+    glDrawArrays(GL_TRIANGLES, 0, node.appr->m_num_primitives);
     glBindVertexArray(0);
 }
 

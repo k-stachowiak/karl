@@ -19,7 +19,7 @@ class CmpPhysicsTank : public CmpPhysics {
         glm::mat4 prev_transform;
 
         TriMeshPiece(
-            dWorldID world, dSpaceID space,
+            dWorldID world, dSpaceID space, FLOATING mass,
             FLOATING cx, FLOATING cy, FLOATING cz,
             const std::vector<glm::vec3>& vertexes);
 

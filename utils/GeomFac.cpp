@@ -139,33 +139,7 @@ std::vector<res::ResShaderDebug::Vertex> g_GenerateGroundDebugVertexes(
     auto raw_vertexes = g_MakeFlat(lx, ly);
 
     for (const auto& v : raw_vertexes) {
-        auto found = std::find_if(
-                begin(result), end(result),
-                [&v](const res::ResShaderDebug::Vertex& outv) {
-            return outv.attr_location == v;
-        });
-        if (found == end(result)) {
-            result.push_back({ v, { r, g, b } });
-        }
-    }
-
-    return result;
-}
-
-std::vector<unsigned> g_GenerateGroundDebugIndexes(int lx, int ly)
-{
-    std::vector<glm::vec3> raw_vertexes = g_MakeFlat(lx, ly);
-    std::vector<glm::vec3> packed_vertexes;
-    std::vector<unsigned> result;
-
-    for (const auto& v : raw_vertexes) {
-        auto found = std::find(begin(packed_vertexes), end(packed_vertexes), v);
-        if (found == end(packed_vertexes)) {
-            result.push_back(packed_vertexes.size());
-            packed_vertexes.push_back(v);
-        } else {
-            result.push_back(std::distance(begin(packed_vertexes), found));
-        }
+        result.push_back({ v, { r, g, b } });
     }
 
     return result;
@@ -178,37 +152,10 @@ std::vector<res::ResShaderDebug::Vertex> g_GenerateCarDebugVertexes()
     auto raw_vertexes = g_MakeCar();
 
     for (unsigned i = 0; i < raw_vertexes.size(); ++i) {
-        const auto& v = raw_vertexes[i];
-        auto found = std::find_if(
-                begin(result), end(result),
-                [&v](const res::ResShaderDebug::Vertex& outv) {
-            return outv.attr_location == v;
-        });
-        if (found == end(result)) {
-            if (i < 36) {
-                result.push_back({ v, { 0.75f, 0, 0 } });
-            } else {
-                result.push_back({ v, { 0, 0, 0.75f } });
-            }
-        }
-    }
-
-    return result;
-}
-
-std::vector<unsigned> g_GenerateCarDebugIndexes()
-{
-    std::vector<glm::vec3> raw_vertexes = g_MakeCar();
-    std::vector<glm::vec3> packed_vertexes;
-    std::vector<unsigned> result;
-
-    for (const auto& v : raw_vertexes) {
-        auto found = std::find(begin(packed_vertexes), end(packed_vertexes), v);
-        if (found == end(packed_vertexes)) {
-            result.push_back(packed_vertexes.size());
-            packed_vertexes.push_back(v);
+        if (i < 36) {
+            result.push_back({ raw_vertexes[i], { 0.75f, 0, 0 } });
         } else {
-            result.push_back(std::distance(begin(packed_vertexes), found));
+            result.push_back({ raw_vertexes[i], { 0, 0, 0.75f } });
         }
     }
 

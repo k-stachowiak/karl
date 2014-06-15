@@ -34,8 +34,8 @@ add_executable(karl
     ./Config.cpp
     ./ent/Ent.cpp
     ./cmp/CmpPhysicsSimple.cpp
-    ./cmp/CmpApprDebugInd.cpp
-    ./cmp/CmpApprTankVex.cpp
+    ./cmp/CmpApprDebug.cpp
+    ./cmp/CmpApprTank.cpp
     ./cmp/CmpPhysicsCar.cpp
     ./cmp/CmpPhysicsTank.cpp
     ./cmp/CmpPhysics.cpp
