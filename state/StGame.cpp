@@ -45,6 +45,8 @@ StGame::StGame(res::Resources& resources) :
               *(resources.res_tank_model),
               resources.res_tank_shader->coord_loc,
               resources.res_tank_shader->tex_coord_loc,
+              resources.res_debug_shader->coord_loc,
+              resources.res_debug_shader->color_loc,
               resources.res_tank_texture->GetGlId() },
     m_keys(ALLEGRO_KEY_MAX, false),
     m_done { false }
@@ -59,6 +61,7 @@ StGame::StGame(res::Resources& resources) :
 
     m_physics_system.RegisterEntity(m_tank2);
     m_drawing_system.RegisterTankEntity(m_tank2);
+    m_drawing_system.RegisterDebugEntity(m_tank2);
 }
 
 StTransition StGame::Tick(double dt)

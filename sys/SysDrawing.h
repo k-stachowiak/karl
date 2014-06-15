@@ -52,7 +52,7 @@ public:
         m_nodes_debug.push_back({
             entity.id,
             &entity.phys,
-            &entity.appr
+            &entity.apprd
         });
     }
 
@@ -62,7 +62,7 @@ public:
         m_nodes_tank.push_back({
             entity.id,
             &entity.phys,
-            &entity.appr
+            &entity.apprt
         });
     }
 };
