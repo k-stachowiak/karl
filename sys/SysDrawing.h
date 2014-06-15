@@ -38,11 +38,6 @@ class Drawing {
     static void m_FrameBegin();
     static void m_FrameEnd();
 
-    static void m_ComputeModelMatrix(
-            const cmp::CmpPhysics& phys,
-            glm::mat4& model,
-            FLOATING weight);
-
     void m_DrawDebugNode(const NdDrawingDebug& node, FLOATING weight);
     void m_DrawTankNode(const NdDrawingTank& node, FLOATING weight);
 

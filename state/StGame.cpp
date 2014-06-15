@@ -82,6 +82,7 @@ StTransition StGame::Tick(double dt)
     if (m_keys[ALLEGRO_KEY_S]) tank_boost -= 1;
     if (m_keys[ALLEGRO_KEY_W]) tank_boost += 1;
     m_tank.phys.ApplyDriveForces(tank_boost, tank_turn);
+    m_tank2.phys.ApplyDriveForces(tank_boost, tank_turn);
 
     m_physics_system.Perform(dt);
 

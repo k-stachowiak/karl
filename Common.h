@@ -11,7 +11,7 @@
 
 float Q_rsqrt( float number );
 
-void CastRotatedCoords(
+void g_CastRotatedCoords(
         FLOATING up, FLOATING right,
         FLOATING angle,
         FLOATING &dx, FLOATING &dy);

@@ -85,6 +85,37 @@ bool IsFace3(const std::string& line,
 
 namespace res {
 
+std::vector<ResShaderTank::Vertex> ResModelLoader::m_BuildDrawablePiece(
+        const ObjTankObject& object)
+{
+    assert(object.HasTexCoord());
+    assert(object.vertexes.size() == object.normals.size() &&
+           object.normals.size() == object.tex_coords.size());
+
+    std::vector<ResShaderTank::Vertex> vertexes;
+    for (unsigned i = 0; i != object.vertexes.size(); ++i) {
+        vertexes.push_back(ResShaderTank::Vertex {
+            object.vertexes[i], object.tex_coords[i],
+        });
+    }
+    return vertexes;
+}
+
+std::vector<glm::vec3> ResModelLoader::m_BuildCollidablePiece(
+        const ObjTankObject& object)
+{
+    return object.vertexes;
+}
+
+glm::vec3 ResModelLoader::m_BuildJointPiece(
+        const ObjTankObject& object)
+{
+    assert(!object.HasTexCoord());
+    glm::vec3 sum = std::accumulate(
+        begin(object.vertexes), end(object.vertexes), glm::vec3 {});
+    return sum * (1.0f / object.vertexes.size());
+}
+
 ResModelTank ResModelLoader::m_CombineObjTankObjects(
         const std::map<std::string, ObjTankObject>& obj_map)
 {
@@ -93,26 +124,21 @@ ResModelTank ResModelLoader::m_CombineObjTankObjects(
     for (const auto& pr : obj_map) {
 
         const std::string& name = pr.first;
-        const ObjTankObject& o = pr.second;
+        const ObjTankObject& object = pr.second;
+        const ResModelTank::Piece key = ResModelTank::stringPieceMap[name];
 
-        if (o.HasTexCoord()) {
+        if (name[0] == 'c') {
+            DIAG_MESSAGE("Discovered collidable piece \"%s\".\n", name.c_str());
+            result.coll_geoms[key] = m_BuildCollidablePiece(object);
 
-            assert(o.vertexes.size() == o.normals.size() &&
-                   o.normals.size() == o.tex_coords.size());
-
-            std::vector<ResShaderTank::Vertex> vertexes;
-            for (unsigned i = 0; i != o.vertexes.size(); ++i) {
-                vertexes.push_back(ResShaderTank::Vertex {
-                    o.vertexes[i], o.tex_coords[i],
-                });
-            }
-            result.vertexes[name] = vertexes;
+        } else if (name[0] == 'j') {
+            DIAG_MESSAGE("Discovered joint piece \"%s\".\n", name.c_str());
+            result.joints[key] = m_BuildJointPiece(object);
 
         } else {
-            glm::vec3 joint;
-            glm::vec3 sum = std::accumulate(
-                begin(o.vertexes), end(o.vertexes), glm::vec3 {});
-            result.joints[name] = sum * (1.0f / o.vertexes.size());
+            DIAG_MESSAGE("Discovered drawable piece \"%s\".\n", name.c_str());
+            result.vertexes[key] = m_BuildDrawablePiece(object);
+
         }
     }
 

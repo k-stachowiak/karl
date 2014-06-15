@@ -11,6 +11,7 @@ struct OdeBodyDeleter { void operator()(dxBody *body) { dBodyDestroy(body); } };
 struct OdeGeomDeleter { void operator()(dxGeom *geom) { dGeomDestroy(geom); } };
 struct OdeJointGroupDeleter { void operator()(dxJointGroup *joint_group) { dJointGroupDestroy(joint_group); } };
 struct OdeJointDeleter { void operator()(dxJoint *joint) { dJointDestroy(joint); } };
+struct OdeTriMeshDataDeleter { void operator()(dxTriMeshData *data) { dGeomTriMeshDataDestroy(data); } };
 
 using OdeWorld = std::unique_ptr<dxWorld, OdeWorldDeleter>;
 using OdeSpace = std::unique_ptr<dxSpace, OdeSpaceDeleter>;
@@ -18,6 +19,7 @@ using OdeBody = std::unique_ptr<dxBody, OdeBodyDeleter>;
 using OdeGeom = std::unique_ptr<dxGeom, OdeGeomDeleter>;
 using OdeJointGroup = std::unique_ptr<dxJointGroup, OdeJointGroupDeleter>;
 using OdeJoint = std::unique_ptr<dxJoint, OdeJointDeleter>;
+using OdeTriMeshData = std::unique_ptr<dxTriMeshData, OdeTriMeshDataDeleter>;
 
 struct AlDisplayDeleter { void operator()(ALLEGRO_DISPLAY *display) { al_destroy_display(display); } };
 struct AlEvQueueDeleter { void operator()(ALLEGRO_EVENT_QUEUE *queue) { al_destroy_event_queue(queue); } };

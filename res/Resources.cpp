@@ -13,7 +13,7 @@ Resources::Resources() :
     res_tank_shader { new ResShaderTank },
     res_tank_texture { new ResTexture { "data/tank2.png" } },
     res_tank_model { new ResModelTank(
-        ResModelLoader::LoadObjTankModel(g_ReadFile("data/tank.obj"))
+        ResModelLoader::LoadObjTankModel(g_ReadFile("data/tank2.obj"))
     )}
 {}
 

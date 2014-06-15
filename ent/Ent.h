@@ -5,8 +5,8 @@
 
 #include "Common.h"
 #include "CmpPhysicsSimple.h"
-#include "CmpPhysicsSimple.h"
 #include "CmpPhysicsCar.h"
+#include "CmpPhysicsTank.h"
 #include "CmpApprDebugInd.h"
 #include "CmpApprTankVex.h"
 #include "ResModelTank.h"
@@ -33,7 +33,7 @@ struct EntTank {
 
 struct EntTank2 {
     long id;
-    cmp::CmpPhysicsSimple phys;
+    cmp::CmpPhysicsTank phys;
     cmp::CmpApprTankVex appr;
     EntTank2(
         dWorldID world, dSpaceID space,

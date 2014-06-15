@@ -6,6 +6,8 @@
 
 namespace cmp {
 
+glm::mat4 g_ComputeBodyMatrix(dBodyID body);
+
 struct CmpPhysics {
 
     glm::vec3 prev_location;
@@ -13,14 +15,19 @@ struct CmpPhysics {
 
     virtual ~CmpPhysics() {}
 
-    virtual bool HasBody() const = 0;
-    virtual glm::vec3 GetLocation() const = 0;
-    virtual glm::quat GetRotation() const = 0;
+    virtual dBodyID GetBody() const = 0;
 
     virtual bool HasTrack(dBodyID) const { return false; }
+    virtual void UpdateFrame();
+
+    glm::vec3 GetLocation() const;
+    glm::quat GetRotation() const;
 
     glm::vec3 GetDirection() const;
     glm::vec3 GetRotationAngles() const;
+
+    glm::mat4 GetMatrix() const;
+    glm::mat4 GetMatrix(FLOATING weight) const;
 };
 
 }

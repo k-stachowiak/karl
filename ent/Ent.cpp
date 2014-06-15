@@ -25,6 +25,7 @@ EntTank::EntTank(
         GLint location_loc, GLint color_loc) :
     id { next_id++ },
     phys { world, space, 1.5, 1.5, 2 },
+    // Move all this global crap into resources class or delete.
     appr { g_GenerateCarDebugVertexes(),
            g_GenerateCarDebugIndexes(),
            location_loc, color_loc }
@@ -36,13 +37,14 @@ EntTank2::EntTank2(
         GLint location_loc, GLint tex_coord_loc,
         GLuint texture_id) :
     id { next_id++ }, // TODO: Store ID in resources?
-    // Move all this global crap into resources class.
+    phys { world, space, 3, 3, 1,
+        model.coll_geoms.at(res::ResModelTank::Piece::COL_LTRACK),
+        model.coll_geoms.at(res::ResModelTank::Piece::COL_RTRACK),
+        model.coll_geoms.at(res::ResModelTank::Piece::COL_CHASSIS) },
     appr { model.GetAllVertexes(),
            location_loc, tex_coord_loc,
            texture_id }
 {
-    phys = cmp::CmpPhysicsSimple::MakeBox(
-        world, space, 1000, 0, 0, 0, 1, 1, 1);
 }
 
 }

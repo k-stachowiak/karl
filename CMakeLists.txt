@@ -37,6 +37,7 @@ add_executable(karl
     ./cmp/CmpApprDebugInd.cpp
     ./cmp/CmpApprTankVex.cpp
     ./cmp/CmpPhysicsCar.cpp
+    ./cmp/CmpPhysicsTank.cpp
     ./cmp/CmpPhysics.cpp
     ./state/StGame.cpp
     ./state/StGlPlay.cpp

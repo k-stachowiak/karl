@@ -71,11 +71,11 @@ void CmpPhysicsCar::ApplyDriveForces(FLOATING boost, FLOATING turn)
 
     glm::vec3 rot = GetRotationAngles();
 
-    CastRotatedCoords(
+    g_CastRotatedCoords(
         boost * cfg_tank_boost_force + turn * cfg_tank_turn_force,
         0, rot.z, rfx, rfy);
 
-    CastRotatedCoords(
+    g_CastRotatedCoords(
         boost * cfg_tank_boost_force - turn * cfg_tank_turn_force,
         0, rot.z, lfx, lfy);
 

@@ -25,7 +25,7 @@ float Q_rsqrt( float number )
     return y;
 }
 
-void CastRotatedCoords(
+void g_CastRotatedCoords(
         FLOATING front, FLOATING right, FLOATING angle,
         FLOATING &dx, FLOATING &dy)
 {
