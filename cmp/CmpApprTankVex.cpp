@@ -6,6 +6,7 @@ void CmpApprTankVex::m_PrepareBuffers(
     const std::vector<res::ResShaderTank::Vertex>& vertexes)
 {
     glGenBuffers(1, &m_vbo);
+    DIAG_ASSERT(m_vbo != 0);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(
         GL_ARRAY_BUFFER,
@@ -20,6 +21,8 @@ void CmpApprTankVex::m_PrepareArrayObject(
     GLint tex_coord_loc)
 {
     glGenVertexArrays(1, &m_vao);
+    DIAG_ASSERT(m_vao != 0);
+
     glBindVertexArray(m_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
